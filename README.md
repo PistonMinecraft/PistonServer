@@ -1,2 +1,2 @@
 # PistonServer
-A MinecraftServer
+A MinecraftServer that implements the Paper API
