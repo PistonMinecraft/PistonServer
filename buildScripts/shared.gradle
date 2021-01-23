@@ -1,9 +1,21 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.code.gson:gson:2.8.6'
+    }
+}
 java {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-Xplugin:Manifold'
 }
+task genDependciesFromMinecraftJson {
+    
+}
+build.dependsOn genDependciesFromMinecraftJson
 dependencies {
     implementation "systems.manifold:manifold-rt:${rootProject.ext.libManifoldVersion}"
     implementation "systems.manifold:manifold-ext-rt:${rootProject.ext.libManifoldVersion}"
