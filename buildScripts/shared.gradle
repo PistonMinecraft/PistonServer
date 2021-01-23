@@ -1,0 +1,16 @@
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
+tasks.withType(JavaCompile) {
+    options.compilerArgs.add '-Xplugin:Manifold'
+}
+dependencies {
+    implementation "systems.manifold:manifold-rt:${rootProject.ext.libManifoldVersion}"
+    implementation "systems.manifold:manifold-ext-rt:${rootProject.ext.libManifoldVersion}"
+
+    annotationProcessor "systems.manifold:manifold:${rootProject.ext.libManifoldVersion}"
+    annotationProcessor "systems.manifold:manifold-preprocessor:${rootProject.ext.libManifoldVersion}"
+    annotationProcessor "systems.manifold:manifold-exceptions:${rootProject.ext.libManifoldVersion}"
+    annotationProcessor "systems.manifold:manifold-strings:${rootProject.ext.libManifoldVersion}"
+    annotationProcessor "systems.manifold:manifold-ext:${rootProject.ext.libManifoldVersion}"
+}

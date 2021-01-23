@@ -7,5 +7,5 @@
  * in the user manual at https://docs.gradle.org/6.8.1/userguide/multi_project_builds.html
  */
 
-rootProject.name = 'piston'
-include('MC-Patches', 'Piston-API')
+rootProject.name = 'Piston'
+include('Piston-API', 'Piston-Server')
