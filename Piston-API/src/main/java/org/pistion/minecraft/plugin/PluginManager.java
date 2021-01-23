@@ -12,7 +12,7 @@ public class PluginManager {
         try {
             clazz = Class.forName(mainClass);
             plugin = (PistonPlugin) clazz.newInstance();
-            Method method = clazz.getMethod("onEnable",String.class);
+            Method method = clazz.getMethod("onEnable");
             method.invoke(plugin);
         } catch (ClassNotFoundException
                 | IllegalAccessException
