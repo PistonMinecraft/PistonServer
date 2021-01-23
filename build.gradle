@@ -1,7 +1,8 @@
+def ENV = System.getenv()
 ext {
-    ENV = System.getenv()
-    MC_VERSION = "1.16.5"
-    libManifoldVersion = '2020.1.45'
+    MC_VERSION = '1.16.5'
+    VERSION = '0.1'
+    BUILD_NUMBER = "${ENV.GITHUB_RUN_NUMBER ? 'build' : 'INTERNAL_BUILD'}${ENV.GITHUB_RUN_NUMBER ?: ''}"
 }
 subprojects {
     repositories {

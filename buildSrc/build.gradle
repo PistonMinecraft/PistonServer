@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+java {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
+tasks.withType(JavaCompile) {
+    options.compilerArgs.add '-Xplugin:Manifold'
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    annotationProcessor "systems.manifold:manifold-exceptions:$LIB_MANIFOLD_VERSION"
+}

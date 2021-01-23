@@ -1,15 +1,12 @@
-package org.pistion.minecraft;
+package org.pistonmc.pluginapi;
 
-import org.pistion.minecraft.plugin.PluginManager;
+import org.pistonmc.pluginapi.plugin.PluginManager;
 
 public class Piston {
-    //Pistion.java
-    //完成对插件的基础操作
     private PluginManager pluginManager;
-    //PistonPluginManager
     public void initPistonPlugin(){
         //初始化PistonPluginAPI并加载Piston插件
-        pluginManager =new PluginManager();
+        pluginManager = new PluginManager();
         /*
         此处应有jar包解析
          */

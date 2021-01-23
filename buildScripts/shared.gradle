@@ -1,28 +1,21 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.google.code.gson:gson:2.8.6'
-    }
-}
+import org.pistonmc.build.util.DependencyUtil
+
 java {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-Xplugin:Manifold'
 }
-task genDependciesFromMinecraftJson {
-    
-}
-build.dependsOn genDependciesFromMinecraftJson
 dependencies {
-    implementation "systems.manifold:manifold-rt:${rootProject.ext.libManifoldVersion}"
-    implementation "systems.manifold:manifold-ext-rt:${rootProject.ext.libManifoldVersion}"
+    DependencyUtil.genDependencyListFromMinecraftJson("${rootProject.ext.MC_VERSION}").each {
+        implementation it
+    }
+    implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
+    implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
 
-    annotationProcessor "systems.manifold:manifold:${rootProject.ext.libManifoldVersion}"
-    annotationProcessor "systems.manifold:manifold-preprocessor:${rootProject.ext.libManifoldVersion}"
-    annotationProcessor "systems.manifold:manifold-exceptions:${rootProject.ext.libManifoldVersion}"
-    annotationProcessor "systems.manifold:manifold-strings:${rootProject.ext.libManifoldVersion}"
-    annotationProcessor "systems.manifold:manifold-ext:${rootProject.ext.libManifoldVersion}"
+    annotationProcessor "systems.manifold:manifold:$LIB_MANIFOLD_VERSION"
+    annotationProcessor "systems.manifold:manifold-preprocessor:$LIB_MANIFOLD_VERSION"
+    annotationProcessor "systems.manifold:manifold-exceptions:$LIB_MANIFOLD_VERSION"
+    annotationProcessor "systems.manifold:manifold-strings:$LIB_MANIFOLD_VERSION"
+    annotationProcessor "systems.manifold:manifold-ext:$LIB_MANIFOLD_VERSION"
 }
