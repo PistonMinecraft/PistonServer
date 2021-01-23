@@ -3,6 +3,9 @@ plugins {
     id 'idea'
 }
 apply from: '../buildScripts/shared.gradle'
+dependencies {
+    implementation 'org.yaml:snakeyaml:1.21'
+}
 
 archivesBaseName = 'piston-api'
 version = "${rootProject.ext.MC_VERSION}-0.1+${rootProject.ext.ENV.GITHUB_RUN_NUMBER ? 'build' : 'INTERNAL_BUILD'}${rootProject.ext.ENV.GITHUB_RUN_NUMBER ?: ''}"

@@ -11,6 +11,5 @@ subprojects {
     configurations {
         testImplementation.extendsFrom annotationProcessor
     }
-
     group = 'io.github.pistonmc'
 }
