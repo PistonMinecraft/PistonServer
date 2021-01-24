@@ -5,4 +5,5 @@ public enum EntityType {
     ARMOR_STAND,
     ARROW,
     CREEPER,
+    TNT,
 }

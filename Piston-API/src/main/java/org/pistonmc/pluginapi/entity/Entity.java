@@ -12,4 +12,5 @@ public interface Entity {
     String getName();
     String getDisplayName();
     EntityType getEntityType();
+    void killEntity();
 }
