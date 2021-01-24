@@ -5,18 +5,15 @@ plugins {
 apply from: '../buildScripts/shared.gradle'
 
 sourceSets {
-    pluginApi {
-        java {
-            srcDirs = ["src/pluginapi/java", "src/common/java"]
-        }
+    pluginApi.java {
+        srcDir "src/pluginapi/java"
     }
-    main.java {
-        srcDirs = []
+    main.java { srcDirs = [] }
+    common.java {
+        srcDir "src/common/java"
     }
-    moddingApi {
-        java {
-            srcDirs = ["src/moddingapi/java", "src/common/java"]
-        }
+    moddingApi.java {
+        srcDir "src/moddingapi/java"
     }
 }
 
