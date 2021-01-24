@@ -16,5 +16,7 @@ public interface Entity {
     void killEntity();
     double getHealth();
     void setHealth(double health);
+    //是否有权限 (所有实体都存在权限?)
+    boolean hasPermission(String permission);
 
 }

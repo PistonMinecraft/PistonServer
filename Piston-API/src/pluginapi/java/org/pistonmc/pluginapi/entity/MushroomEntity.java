@@ -1,5 +1,5 @@
 package org.pistonmc.pluginapi.entity;
 
-public interface MushroomEntity extends Entity{
+public interface MushroomEntity extends Entity {
 
 }

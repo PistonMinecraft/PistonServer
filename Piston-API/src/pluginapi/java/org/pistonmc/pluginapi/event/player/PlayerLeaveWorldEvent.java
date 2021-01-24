@@ -3,7 +3,7 @@ package org.pistonmc.pluginapi.event.player;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
 import org.pistonmc.pluginapi.world.World;
 
-public class PlayerLeaveWorldEvent extends PlayerEvent{
+public class PlayerLeaveWorldEvent extends PlayerEvent {
     private World world;
     public PlayerLeaveWorldEvent(PlayerEntity player, World world, boolean isAsync) {
         super(player, isAsync);

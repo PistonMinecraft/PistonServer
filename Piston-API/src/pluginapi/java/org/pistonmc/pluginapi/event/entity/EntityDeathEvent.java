@@ -2,7 +2,7 @@ package org.pistonmc.pluginapi.event.entity;
 
 import org.pistonmc.pluginapi.entity.Entity;
 
-public class EntityDeathEvent extends EntityEvent{
+public class EntityDeathEvent extends EntityEvent {
     private Entity killerEntity;
     public EntityDeathEvent(Entity killerEntity,Entity triggerEntity, boolean isAsync) {
         super(triggerEntity, isAsync);

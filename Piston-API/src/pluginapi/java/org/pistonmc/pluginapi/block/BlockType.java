@@ -1,10 +1,10 @@
 package org.pistonmc.pluginapi.block;
 
 public enum BlockType {
-    MOD_FORGE_BLOCK,
-    MOD_PISTON_BLOCK,
-    MOD_FABRIC_BLOCK,
-    MOD_OTHER_BLOCK,
+    MOD_FORGE,
+    MOD_PISTON,
+    MOD_FABRIC,
+    MOD_OTHER,
     AIR,
     GRASS,
 }

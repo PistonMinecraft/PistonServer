@@ -3,12 +3,13 @@ package org.pistonmc.pluginapi.event.player;
 import org.pistonmc.pluginapi.entity.MushroomEntity;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
 
-public class PlayerShearMushroomEvent extends PlayerEvent{
+public class PlayerShearMushroomEvent extends PlayerEvent {
     private MushroomEntity mushroomEntity;
     private boolean agreeShearMushroom;
     public PlayerShearMushroomEvent(MushroomEntity mushroomEntity, PlayerEntity triggerPlayer, boolean isAsync) {
         super(triggerPlayer, isAsync);
         this.mushroomEntity = mushroomEntity;
+        agreeShearMushroom = true;
     }
     /**
      * 获取 将要被剪掉蘑菇的Mushroom实体

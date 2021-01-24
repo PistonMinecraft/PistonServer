@@ -6,11 +6,13 @@ import org.pistonmc.pluginapi.entity.PlayerEntity;
 /**
  *  Cow/Mushroom 被挤奶的事件
  */
-public class PlayerMilkEvent extends PlayerEvent{
+public class PlayerMilkEvent extends PlayerEvent {
     private Entity milkEntity;
     private boolean milkable;
     public PlayerMilkEvent(Entity milkEntity, PlayerEntity triggerPlayer, boolean isAsync) {
         super(triggerPlayer, isAsync);
+        this.milkEntity = milkEntity;
+        milkable = true;
     }
 
     /**

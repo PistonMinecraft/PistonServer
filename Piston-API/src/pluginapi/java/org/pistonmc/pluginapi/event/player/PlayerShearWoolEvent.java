@@ -3,12 +3,13 @@ package org.pistonmc.pluginapi.event.player;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
 import org.pistonmc.pluginapi.entity.SheepEntity;
 
-public class PlayerShearWoolEvent extends PlayerEvent{
+public class PlayerShearWoolEvent extends PlayerEvent {
     private SheepEntity cutWoolSheep;
     private boolean agreeShearWool;
     public PlayerShearWoolEvent(SheepEntity cutWoolSheep, PlayerEntity triggerPlayer, boolean isAsync) {
         super(triggerPlayer, isAsync);
         this.cutWoolSheep = cutWoolSheep;
+        agreeShearWool = true;
     }
 
     /**
