@@ -1,6 +1,6 @@
 package org.pistonmc.pluginapi.world;
 
-public class World {
+public interface World {
     String getWorldName();
 
 }

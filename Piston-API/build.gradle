@@ -4,6 +4,22 @@ plugins {
 }
 apply from: '../buildScripts/shared.gradle'
 
+sourceSets {
+    pluginApi {
+        java {
+            srcDirs = ["src/pluginapi/java", "src/common/java"]
+        }
+    }
+    main.java {
+        srcDirs = []
+    }
+    moddingApi {
+        java {
+            srcDirs = ["src/moddingapi/java", "src/common/java"]
+        }
+    }
+}
+
 dependencies {
     implementation 'org.yaml:snakeyaml:1.21'
 }

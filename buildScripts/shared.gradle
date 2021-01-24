@@ -4,7 +4,7 @@ java {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 tasks.withType(JavaCompile) {
-    options.compilerArgs.add '-Xplugin:Manifold'
+    options.compilerArgs.addAll(['-Xplugin:Manifold', '-encoding', 'UTF-8'])
 }
 dependencies {
     DependencyUtil.genDependencyListFromMinecraftJson("${rootProject.ext.MC_VERSION}").each {

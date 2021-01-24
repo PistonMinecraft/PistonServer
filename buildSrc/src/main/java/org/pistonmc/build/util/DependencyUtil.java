@@ -7,6 +7,8 @@ import java.util.stream.StreamSupport;
 
 public class DependencyUtil {
     public static List<String> genDependencyListFromMinecraftJson(String version) {
+        String os = System.getProperty("os.name").toLowerCase();
+
         return StreamSupport.stream(VersionManifest.getVersion(version).getAsJsonArray("libraries").spliterator(), true)
                 .map(ele->ele.getAsJsonObject().get("downloads").getAsJsonObject()).filter(obj->obj.has("artifact"))
                 .map(obj->obj.get("artifact").getAsJsonObject().get("url").getAsString()).map(URL::new).map(url -> url.getPath().substring(1))
