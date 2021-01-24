@@ -10,7 +10,13 @@ public class PlayerDeliveryInfernalEvent extends PlayerEvent{
     public boolean isAgreeDelivery(){
         return agreeDelivery;
     }
-    public void setAgreeDelivery(boolean agreeDelivery){
-        this.agreeDelivery = agreeDelivery;
+
+    /**
+     * 设置是否允许玩家传送
+     * 如果拒绝玩家传送玩家会在地狱们一直不会传送至地狱
+     * @param deliverable
+     */
+    public void setDeliverable(boolean deliverable){
+        this.agreeDelivery = deliverable;
     }
 }

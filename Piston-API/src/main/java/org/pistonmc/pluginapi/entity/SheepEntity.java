@@ -7,4 +7,5 @@ public interface SheepEntity extends Entity {
     void setWool(boolean hasWool);
     BlockColor getColor();
     void setColor(BlockColor woolColor);
+    boolean canShear();
 }
