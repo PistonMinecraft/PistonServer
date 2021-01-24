@@ -11,6 +11,10 @@ public interface Entity {
     UUID getUUID();
     String getName();
     String getDisplayName();
+    void setDisplayName(String displayName);
     EntityType getEntityType();
     void killEntity();
+    double getHealth();
+    void setHealth(double health);
+
 }
