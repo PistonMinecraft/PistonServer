@@ -1,5 +1,7 @@
 package org.pistonmc.pluginapi.entity;
 
+import org.pistonmc.pluginapi.location.Location;
+
 import java.util.UUID;
 
 /**
@@ -18,5 +20,6 @@ public interface Entity {
     void setHealth(double health);
     //是否有权限 (所有实体都存在权限?)
     boolean hasPermission(String permission);
-
+    Location getLocation();
+    void setLocation(Location location);
 }
