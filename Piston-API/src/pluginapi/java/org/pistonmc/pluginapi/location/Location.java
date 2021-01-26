@@ -1,6 +1,7 @@
 package org.pistonmc.pluginapi.location;
 
 import org.pistonmc.pluginapi.block.Block;
+import org.pistonmc.pluginapi.world.World;
 
 public interface Location {
     double getX();
@@ -11,4 +12,5 @@ public interface Location {
     void setZ(double locationZ);
     Block getBlock();
     void setBlock(Block block);
+    World getWorld();
 }

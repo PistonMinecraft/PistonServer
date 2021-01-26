@@ -1,8 +1,8 @@
 package org.pistonmc.pluginapi.plugin;
 
-public class PluginManager {
-    public PluginManager() {}
-    public static boolean loadPistonPlugin(String mainClass) {
+public interface PluginManager {
+    boolean loadPistonPlugin(String mainClass);
+    /*{
         //加载Piston插件
         //此函数不会判断主类是否继承PistonPlugin
         try {
@@ -18,8 +18,10 @@ public class PluginManager {
             e.printStackTrace();
         }
         return false;
-    }
-    public static boolean registerEventListener() {
-        return false;
-    }
+    }*/
+    boolean registerEventListener();
+    boolean loadPlugin(PistonPlugin plugin);
+    boolean loadPlugin(String plugin);
+    boolean unloadPlugin(PistonPlugin plugin);
+    boolean unloadPlugin(String plugin);
 }

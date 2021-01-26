@@ -7,5 +7,6 @@ public enum InventoryType {
     SHULKER_BOX,
     CUSTOM_CHEST,
     BAG,
+    Armor,
     OTHER,
 }
