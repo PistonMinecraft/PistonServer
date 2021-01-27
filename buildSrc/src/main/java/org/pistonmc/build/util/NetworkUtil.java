@@ -103,7 +103,7 @@ public class NetworkUtil {
         private HttpURLConnection connection;
         private Net(URL url, Proxy proxy, Method method, Duration timeout, Map<String, List<String>> headers, byte[] reqData) {
             try {
-                connection = (HttpURLConnection) url.openConnection(proxy == null ? Proxy.NO_PROXY : proxy);
+                connection = (HttpURLConnection) (proxy == null ? url.openConnection() : url.openConnection(proxy));
                 connection.setRequestMethod(method.name());
                 connection.setReadTimeout((int) timeout.toMillis());
                 connection.setConnectTimeout((int) timeout.toMillis());
