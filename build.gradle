@@ -4,6 +4,9 @@ ext {
     VERSION = '0.1'
     BUILD_NUMBER = "${ENV.GITHUB_RUN_NUMBER ? 'build' : 'INTERNAL_BUILD'}${ENV.GITHUB_RUN_NUMBER ?: ''}"
 }
+allprojects {
+    group = 'io.github.pistonmc'
+}
 subprojects {
     repositories {
         mavenCentral()
@@ -12,5 +15,4 @@ subprojects {
     configurations {
         testImplementation.extendsFrom annotationProcessor
     }
-    group = 'io.github.pistonmc'
 }

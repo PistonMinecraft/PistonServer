@@ -1,10 +1,8 @@
 package org.pistonmc.pluginapi.block;
 
+import java.util.function.Supplier;
+
 public enum BlockType {
-    MOD_FORGE("minecraft:null"),
-    MOD_PISTON("minecraft:null"),
-    MOD_FABRIC("minecraft:null"),
-    MOD_OTHER("minecraft:null"),
     AIR,
     STONE,
     GRANITE,
@@ -849,9 +847,17 @@ public enum BlockType {
     POINTED_DRIPSTONE,
     DRIPSTONE_BLOCK,
     GLOW_LICHEN;
-    private BlockType(){
-
-    }
-    BlockType(String BlockID) {
+    public enum ModBlockType {
+        FORGE,
+        PISTON,
+        FABRIC,
+        UNKNOWN;
+        private Supplier<Block> specificBlock;
+        public void setSpecificBlock(Supplier<Block> specificBlock) {
+            this.specificBlock = specificBlock;
+        }
+        public Block getSpecificBlock() {
+            return specificBlock.get();
+        }
     }
 }

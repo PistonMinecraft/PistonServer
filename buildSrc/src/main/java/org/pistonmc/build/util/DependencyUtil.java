@@ -32,7 +32,7 @@ public class DependencyUtil {
         Path fileProcessed = dir.toPath().resolve("server_processed.jar");
         try {
             Files.deleteIfExists(fileProcessed);
-        } catch(Throwable ignored) {}
+        } catch(Throwable ignored) {return null;}
         if(Files.exists(file)) {
             if(Files.isDirectory(file)) Files.delete(file);
             MessageDigest md = MessageDigest.getInstance("SHA-1");
@@ -51,8 +51,6 @@ public class DependencyUtil {
         if(Files.notExists(file)) {
             try(NetworkUtil.Net.Connection connection = NetworkUtil.newBuilder(server.get("url").getAsString()).connect()) {
                 Files.copy(connection.asStream(), file, StandardCopyOption.REPLACE_EXISTING);
-            } catch(Throwable t) {
-                throw t;
             }
         }
         try(FileSystem jarFs = JAR_FSP.newFileSystem(file, Collections.emptyMap());
