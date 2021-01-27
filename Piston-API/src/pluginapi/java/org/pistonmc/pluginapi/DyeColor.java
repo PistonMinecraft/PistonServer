@@ -1,6 +1,6 @@
-package org.pistonmc.pluginapi.block;
+package org.pistonmc.pluginapi;
 
-public enum BlockColor {
+public enum DyeColor {
     WHITE,
     ORANGE,
     MAGENTA,

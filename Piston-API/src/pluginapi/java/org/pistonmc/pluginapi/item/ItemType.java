@@ -1,10 +1,8 @@
 package org.pistonmc.pluginapi.item;
 
+import java.util.function.Supplier;
+
 public enum ItemType {
-    MOD_Fabric,
-    MOD_FORGE,
-    MOD_PISTON,
-    MOD_OTHER,
     AIR,
     STONE,
     GRANITE,
@@ -1050,5 +1048,18 @@ public enum ItemType {
     DRIPSTONE_BLOCK,
     SCULK_SENSOR,
     GLOW_LICHEN,
-    GLOW_INK_SAC,
+    GLOW_INK_SAC;
+    public enum ModEntityType {
+        FORGE,
+        PISTON,
+        FABRIC,
+        UNKNOWN;
+        private Supplier<Item> specificItem;
+        public void setSpecificItem(Supplier<Item> specificItem) {
+            this.specificItem = specificItem;
+        }
+        public Item getSpecificItem() {
+            return specificItem.get();
+        }
+    }
 }

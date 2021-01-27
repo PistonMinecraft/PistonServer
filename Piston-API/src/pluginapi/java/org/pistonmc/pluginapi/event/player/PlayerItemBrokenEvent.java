@@ -1,7 +1,7 @@
 package org.pistonmc.pluginapi.event.player;
 
 import org.pistonmc.pluginapi.entity.PlayerEntity;
-import org.pistonmc.pluginapi.util.Item;
+import org.pistonmc.pluginapi.item.Item;
 
 public class PlayerItemBrokenEvent extends PlayerEvent {
     private Item item;

@@ -1,10 +1,8 @@
 package org.pistonmc.pluginapi.entity;
 
+import java.util.function.Supplier;
+
 public enum EntityType {
-    MOD_FORGE("minecraft:null","null"),
-    MOD_PISTON("minecraft:null","null"),
-    MOD_FABRIC("minecraft:null","null"),
-    MOD_OTHER("minecraft:null","null"),
     AREA_EFFECT_CLOUD,
     ARMOR_STAND,
     ARROW,
@@ -116,9 +114,17 @@ public enum EntityType {
     ZOMBIFIED_PIGLIN,
     PLAYER,
     FISHING_BOBBER;
-    private EntityType() {
-    }
-
-    EntityType(String EntityID,String EntityName) {
+    public enum ModEntityType {
+        FORGE,
+        PISTON,
+        FABRIC,
+        UNKNOWN;
+        private Supplier<Entity> specificEntity;
+        public void setSpecificEntity(Supplier<Entity> specificEntity) {
+            this.specificEntity = specificEntity;
+        }
+        public Entity getSpecificEntity() {
+            return specificEntity.get();
+        }
     }
 }

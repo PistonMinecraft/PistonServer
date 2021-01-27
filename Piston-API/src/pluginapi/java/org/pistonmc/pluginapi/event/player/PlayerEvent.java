@@ -3,8 +3,14 @@ package org.pistonmc.pluginapi.event.player;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
 import org.pistonmc.pluginapi.event.Event;
 
-public class PlayerEvent extends Event {
+public abstract class PlayerEvent extends Event {
     private final PlayerEntity triggerPlayer;
+
+    public PlayerEvent(PlayerEntity triggerPlayer) {
+        super();
+        this.triggerPlayer = triggerPlayer;
+    }
+
     public PlayerEvent(PlayerEntity triggerPlayer, boolean isAsync) {
         super(isAsync);
         this.triggerPlayer = triggerPlayer;

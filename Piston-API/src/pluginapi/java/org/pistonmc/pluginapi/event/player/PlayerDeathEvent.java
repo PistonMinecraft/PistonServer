@@ -5,11 +5,11 @@ import org.pistonmc.pluginapi.entity.PlayerEntity;
 
 public class PlayerDeathEvent extends PlayerEvent {
     private String deathMessage;
-    private final Entity killerEntity;
-    public PlayerDeathEvent(PlayerEntity deathPlayer, boolean isAsync, Entity killerEntity, String deathMessage) {
+    private final Entity killer;
+    public PlayerDeathEvent(PlayerEntity deathPlayer, boolean isAsync, Entity killer, String deathMessage) {
         super(deathPlayer, isAsync);
         this.deathMessage = deathMessage;
-        this.killerEntity = killerEntity;
+        this.killer = killer;
     }
 
     /**
@@ -32,7 +32,7 @@ public class PlayerDeathEvent extends PlayerEvent {
      * 获取击杀玩家的实体
      * @return 击杀玩家的实体
      */
-    public Entity getKillerEntity(){
-        return killerEntity;
+    public Entity getKiller(){
+        return killer;
     }
 }

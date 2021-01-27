@@ -5,14 +5,14 @@ package org.pistonmc.pluginapi.event;
  * <br><br>
  * This class represents an {@code Event}.
  */
-public class Event {
+public abstract class Event {
     private final boolean async;
     /**
      * 构造一个同步{@code 事件}
      * <br><br>
      * Constructs a sync {@code Event}
      */
-    public Event(){
+    public Event() {
         this(false);
     }
 
@@ -22,7 +22,7 @@ public class Event {
      * Constructs a {@code Event}
      * @param async 此事件是否为异步事件<br><br>Whether this event is async
      */
-    public Event(boolean async){
+    public Event(boolean async) {
         this.async = async;
     }
 

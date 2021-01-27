@@ -5,6 +5,8 @@ tasks.withType(JavaCompile) {
     options.compilerArgs.addAll(['-Xplugin:Manifold', '-encoding', 'UTF-8'])
 }
 dependencies {
+    implementation 'org.snakeyaml:snakeyaml-engine:2.2.1'
+
     implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
     implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
 

@@ -1,8 +1,6 @@
 package org.pistonmc.pluginapi.event.entity;
 
-import org.pistonmc.pluginapi.entity.CreeperBlastReason;
 import org.pistonmc.pluginapi.entity.CreeperEntity;
-import org.pistonmc.pluginapi.entity.Entity;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
 
 public class CreeperBlastEvent extends EntityEvent {
@@ -45,5 +43,10 @@ public class CreeperBlastEvent extends EntityEvent {
      */
     public boolean isDamageOnly() {
         return damageOnly;
+    }
+
+    public enum CreeperBlastReason {
+        FLINT,
+        PLAYER
     }
 }

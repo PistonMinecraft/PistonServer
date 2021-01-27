@@ -17,9 +17,5 @@ sourceSets {
     }
 }
 
-dependencies {
-    implementation 'org.yaml:snakeyaml:1.21'
-}
-
 archivesBaseName = 'piston-api'
 version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD_NUMBER}"

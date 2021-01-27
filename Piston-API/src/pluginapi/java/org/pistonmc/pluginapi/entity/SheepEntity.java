@@ -1,11 +1,11 @@
 package org.pistonmc.pluginapi.entity;
 
-import org.pistonmc.pluginapi.block.BlockColor;
+import org.pistonmc.pluginapi.DyeColor;
 
 public interface SheepEntity extends Entity {
-    boolean hasWool();
-    void setWool(boolean hasWool);
-    BlockColor getColor();
-    void setColor(BlockColor woolColor);
+    boolean isWooled();
+    void setWooled(boolean wooled);
+    DyeColor getColor();
+    void setColor(DyeColor woolColor);
     boolean canShear();
 }
