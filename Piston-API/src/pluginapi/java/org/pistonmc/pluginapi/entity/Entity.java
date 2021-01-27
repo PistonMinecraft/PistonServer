@@ -1,7 +1,9 @@
 package org.pistonmc.pluginapi.entity;
 
+import org.pistonmc.pluginapi.effect.Effect;
 import org.pistonmc.pluginapi.location.Location;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -22,4 +24,6 @@ public interface Entity {
     boolean hasPermission(String permission);
     Location getLocation();
     void setLocation(Location location);
+    List<Effect> getEffects();
+    void removeEffect();
 }

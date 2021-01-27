@@ -1,6 +1,7 @@
 package org.pistonmc.pluginapi;
 
 import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.world.World;
 
 public interface Piston {
     /**
@@ -14,4 +15,5 @@ public interface Piston {
      * @return 玩家实体
      */
     PlayerEntity getPlayer(String playerName);
+    World getWorld(String worldName);
 }
