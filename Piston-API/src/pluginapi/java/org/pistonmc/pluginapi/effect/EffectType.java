@@ -1,8 +1,10 @@
 package org.pistonmc.pluginapi.effect;
 
+import org.pistonmc.pluginapi.Types;
+
 import java.util.function.Supplier;
 
-public enum EffectType {
+public enum EffectType implements Types.EffectType {
     MOVEMENT_SPEED,
     MOVEMENT_SLOWDOWN,
     DIG_SPEED,
@@ -34,7 +36,7 @@ public enum EffectType {
     CONDUIT_POWER,
     DOLPHINS_GRACE,
     BAD_OMEN;
-    public enum ModEffectType {
+    public enum ModEffectType implements Types.EffectType {
         FORGE,
         PISTON,
         FABRIC,

@@ -1,8 +1,10 @@
 package org.pistonmc.pluginapi.entity;
 
+import org.pistonmc.pluginapi.Types;
+
 import java.util.function.Supplier;
 
-public enum EntityType {
+public enum EntityType implements Types.EntityType {
     AREA_EFFECT_CLOUD,
     ARMOR_STAND,
     ARROW,
@@ -114,7 +116,7 @@ public enum EntityType {
     ZOMBIFIED_PIGLIN,
     PLAYER,
     FISHING_BOBBER;
-    public enum ModEntityType {
+    public enum ModEntityType implements Types.EntityType {
         FORGE,
         PISTON,
         FABRIC,

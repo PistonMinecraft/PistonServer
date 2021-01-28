@@ -1,8 +1,10 @@
 package org.pistonmc.pluginapi.block;
 
+import org.pistonmc.pluginapi.Types;
+
 import java.util.function.Supplier;
 
-public enum BlockType {
+public enum BlockType implements Types.BlockType {
     AIR,
     STONE,
     GRANITE,
@@ -847,7 +849,7 @@ public enum BlockType {
     POINTED_DRIPSTONE,
     DRIPSTONE_BLOCK,
     GLOW_LICHEN;
-    public enum ModBlockType {
+    public enum ModBlockType implements Types.BlockType {
         FORGE,
         PISTON,
         FABRIC,

@@ -1,8 +1,10 @@
 package org.pistonmc.pluginapi.item;
 
+import org.pistonmc.pluginapi.Types;
+
 import java.util.function.Supplier;
 
-public enum ItemType {
+public enum ItemType implements Types.ItemType {
     AIR,
     STONE,
     GRANITE,
@@ -1049,7 +1051,7 @@ public enum ItemType {
     SCULK_SENSOR,
     GLOW_LICHEN,
     GLOW_INK_SAC;
-    public enum ModEntityType {
+    public enum ModItemType implements Types.ItemType {
         FORGE,
         PISTON,
         FABRIC,

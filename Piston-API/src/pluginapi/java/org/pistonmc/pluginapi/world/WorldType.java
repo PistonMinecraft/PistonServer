@@ -1,12 +1,14 @@
 package org.pistonmc.pluginapi.world;
 
+import org.pistonmc.pluginapi.Types;
+
 import java.util.function.Supplier;
 
-public enum WorldType {
+public enum WorldType implements Types.WorldType {
     END,
     NETHER,
     OVERWORLD;
-    public enum ModWorldType {
+    public enum ModWorldType implements Types.WorldType {
         FORGE,
         PISTON,
         FABRIC,
