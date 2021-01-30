@@ -1,11 +1,14 @@
-import org.pistonmc.build.DependencyCreator
+import org.pistonmc.build.task.GenProcessedVanillaServerJarTask
 
 plugins {
     id 'java'
     id 'idea'
 }
 apply from: '../buildScripts/shared.gradle'
-apply plugin: DependencyCreator
+
+task genProcessedJar(type: GenProcessedVanillaServerJarTask) {
+    forceProcess = false
+}
 
 archivesBaseName = 'piston-server'
 version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD_NUMBER}"
@@ -22,6 +25,7 @@ repositories {
 }
 
 dependencies {
+    implementation files(genProcessedJar.execute())
     implementation "com.destroystokyo.paper:paper-api:${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
     implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
 }
