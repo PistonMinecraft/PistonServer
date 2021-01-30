@@ -26,13 +26,15 @@ public class DependencyUtil {
         if(provider == null) throw new IllegalStateException("jar/zip file system provider does not exist");
         JAR_FSP = provider;
     }
+//    project.getDependencies().add("implementation", project.files(genDependencyFromMinecraftJson((String)
+//            project.getRootProject().getExtensions().getByType(ExtraPropertiesExtension.class).get("MC_VERSION"), PROCESS_DIR)));
     public static File genDependencyFromMinecraftJson(String version, File dir) {
         JsonObject server = VersionManifest.getVersion(version).get("downloads").getAsJsonObject().get("server").getAsJsonObject();
         Path file = dir.toPath().resolve("server.jar");
-        Path fileProcessed = dir.toPath().resolve("server_processed.jar");
+        Path fileProcessed = dir.toPath().resolve(version + "_server_processed.jar");
         try {
             Files.deleteIfExists(fileProcessed);
-        } catch(Throwable ignored) {return null;}
+        } catch(Throwable ignored) { return fileProcessed.toFile(); }
         if(Files.exists(file)) {
             if(Files.isDirectory(file)) Files.delete(file);
             MessageDigest md = MessageDigest.getInstance("SHA-1");

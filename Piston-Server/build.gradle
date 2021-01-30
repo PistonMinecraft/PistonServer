@@ -12,11 +12,16 @@ version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProjec
 
 repositories {
     maven {
-        name 'PaperMC'
+        name 'paper-repo'
         url 'https://papermc.io/repo/repository/maven-public/'
+    }
+    maven {
+        name 'sponge-repo'
+        url 'https://repo-new.spongepowered.org/repository/maven-public'
     }
 }
 
 dependencies {
     implementation "com.destroystokyo.paper:paper-api:${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
+    implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
 }
