@@ -1,4 +1,4 @@
-package org.pistonmc.pluginapi.util;
+package org.pistonmc.pluginapi.inventory;
 
 public enum InventoryType {
     CHEST,
@@ -7,6 +7,6 @@ public enum InventoryType {
     SHULKER_BOX,
     CUSTOM_CHEST,
     BAG,
-    Armor,
+    ARMOR,
     OTHER,
 }

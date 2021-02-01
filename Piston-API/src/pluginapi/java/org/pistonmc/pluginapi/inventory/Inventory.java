@@ -1,4 +1,4 @@
-package org.pistonmc.pluginapi.util;
+package org.pistonmc.pluginapi.inventory;
 
 public interface Inventory {
     InventoryType getInventoryType();
