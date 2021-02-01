@@ -1,5 +1,7 @@
 import org.pistonmc.build.task.GenProcessedVanillaServerJarTask
 
+import java.nio.file.Files
+
 plugins {
     id 'java'
     id 'idea'
@@ -24,8 +26,24 @@ repositories {
     }
 }
 
+java.nio.file.Path p = genProcessedJar.outputPath
+
 dependencies {
-    implementation files(genProcessedJar.execute())
+    if(Files.exists(p)) {
+        implementation files(p)
+    }
     implementation "com.destroystokyo.paper:paper-api:${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
     implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
+
+    implementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
+
+    implementation "org.apache.logging.log4j:log4j-core:$LIB_LOG4J_VERSION"
+    implementation "org.apache.logging.log4j:log4j-iostreams:$LIB_LOG4J_VERSION"
+    implementation 'com.lmax:disruptor:3.4.2'
+
+    implementation 'net.minecrell:terminalconsoleappender:1.2.0'
+    implementation "org.jline:jline:$LIB_JLINE_VERSION"
+    implementation "org.jline:jline-terminal:$LIB_JLINE_VERSION"
+    implementation "org.jline:jline-reader:$LIB_JLINE_VERSION"
+    implementation "org.jline:jline-terminal-jansi:$LIB_JLINE_VERSION"
 }
