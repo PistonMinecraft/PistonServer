@@ -11,5 +11,6 @@ public interface PlayerEntity extends Entity {
     String getIP();
     void unBanIP();
     float getExp();
+    void setExp(float exp);
     Inventory getArmor();
 }

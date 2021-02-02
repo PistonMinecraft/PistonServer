@@ -3,10 +3,10 @@ package org.pistonmc.pluginapi.event.block;
 import org.pistonmc.pluginapi.block.Block;
 import org.pistonmc.pluginapi.entity.Entity;
 
-public class BlockBrokenEvent extends BlockEvent {
+public class BlockBreakEvent extends BlockEvent {
     private Entity brokenEntity;
     private boolean breakable;
-    BlockBrokenEvent(Entity brokenEntity, Block block, boolean isAsync) {
+    BlockBreakEvent(Entity brokenEntity, Block block, boolean isAsync) {
         super(block, isAsync);
         this.brokenEntity = brokenEntity;
         this.breakable = true;

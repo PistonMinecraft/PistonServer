@@ -8,4 +8,5 @@ public interface Block {
     Location getBlockLocation();
     boolean hasColor();
     DyeColor getColor();
+
 }
