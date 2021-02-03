@@ -3,7 +3,10 @@ plugins {
     id 'maven-publish'
 }
 java {
-    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+        vendor = JvmVendorSpec.ADOPTOPENJDK
+    }
 }
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-Xplugin:Manifold'
@@ -20,11 +23,18 @@ repositories {
         }
     }
 }
+configurations {
+    noCache {
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+    implementation.extendsFrom noCache
+
+}
 dependencies {
     implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.9'
-    implementation 'cn.maxpixel:minecraft-decompiler:2.1-SNAPSHOT'
+    noCache 'cn.maxpixel:minecraft-decompiler:2.1-SNAPSHOT'
 
     annotationProcessor "systems.manifold:manifold-exceptions:$LIB_MANIFOLD_VERSION"
 }

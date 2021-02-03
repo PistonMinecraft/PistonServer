@@ -1,6 +1,7 @@
 package org.pistonmc.build.task
 
-
+import cn.maxpixel.mcdecompiler.Deobfuscator
+import cn.maxpixel.mcdecompiler.Info
 import cn.maxpixel.mcdecompiler.Properties
 import cn.maxpixel.mcdecompiler.deobfuscator.ProguardDeobfuscator
 import cn.maxpixel.mcdecompiler.util.FileUtil
@@ -8,9 +9,7 @@ import cn.maxpixel.mcdecompiler.util.NetworkUtil
 import cn.maxpixel.mcdecompiler.util.VersionManifest
 import com.google.gson.JsonObject
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.OutputFile
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -18,6 +17,14 @@ import java.nio.file.StandardCopyOption
 
 class GenProcessedVanillaServerJarTask extends DefaultTask {
     private final Path PISTON_DIR = project.buildDir.toPath().resolve('pistonmc')
+    @InputFile
+    Path getInputPath() {
+        return PISTON_DIR.resolve('server.jar')
+    }
+    @InputFile
+    Path getMappingPath() {
+        return PISTON_DIR.resolve('mappings.txt')
+    }
     @Input
     boolean forceProcess
 
@@ -29,9 +36,8 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
     @TaskAction
     void execute() {
         String mcVersion = project.rootProject.ext.MC_VERSION
-        Properties.put(Properties.Key.TEMP_DIR, PISTON_DIR.resolve('md-temp'))
-        Path inputPath = PISTON_DIR.resolve('server.jar')
-        Path mappingPath = PISTON_DIR.resolve('mappings.txt')
+        Path tempPath = PISTON_DIR.resolve('md-temp')
+        Properties.put(Properties.Key.TEMP_DIR, tempPath)
         FileUtil.ensureDirectoryExist(mappingPath.getParent())
         if(!forceProcess && Files.exists(outputPath)) return
         checkFile(inputPath, VersionManifest.getVersion(mcVersion).get('downloads').asJsonObject.get('server').asJsonObject)
@@ -43,9 +49,9 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
             logger.info('Process failed. Maybe your IDE locked the previously processed jar')
             return
         }
-        FileUtil.deleteDirectory(Properties.get(Properties.Key.TEMP_DIR))
-        ProguardDeobfuscator deobfuscator = new ProguardDeobfuscator(mappingPath.toString())
-        deobfuscator.deobfuscate(inputPath, outputPath)
+        FileUtil.deleteDirectory(tempPath);
+        FileUtil.ensureDirectoryExist(tempPath);
+        new ProguardDeobfuscator(mappingPath.toString()).deobfuscate(inputPath, outputPath)
         logger.info('Processed complete.')
     }
     void checkFile(Path inputPath, JsonObject obj) {
@@ -62,5 +68,21 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
                 Files.copy(it.asStream(), inputPath, StandardCopyOption.REPLACE_EXISTING);
             }
         }
+    }
+}
+class GenDecompiledSourcesTask extends DefaultTask {
+    private final Path PISTON_DIR = project.buildDir.toPath().resolve('pistonmc')
+    @OutputDirectory
+    Path getOutput() {
+        return PISTON_DIR.resolve('mc-sources')
+    }
+    @TaskAction
+    void execute() {
+        Properties.put(Properties.Key.TEMP_DIR, PISTON_DIR.resolve('md-temp'))
+        Properties.put(Properties.Key.OUTPUT_DIR, PISTON_DIR)
+        Properties.put(Properties.Key.OUTPUT_DECOMPILED_NAME, 'mc-sources')
+        Deobfuscator deobfuscator = new Deobfuscator(new ProguardDeobfuscator(PISTON_DIR.resolve('mappings.txt').toString()))
+        deobfuscator.decompile(Info.DecompilerType.FERNFLOWER)
+        FileUtil.deleteDirectory(Properties.get(Properties.Key.TEMP_DIR))
     }
 }
