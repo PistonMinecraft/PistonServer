@@ -18,7 +18,14 @@ class ApplyPatchesTask extends DefaultTask {
         GenDecompiledSourcesTask task = new GenDecompiledSourcesTask()
         dependsOn task
         project.exec {
-
+            workingDir task.output
+            executable 'git'
+            args 'am', 'abort'
+        }
+        project.exec {
+            workingDir task.output
+            executable 'git'
+            args 'am', "$inputPatchesDir/*.patch"
         }
     }
 }

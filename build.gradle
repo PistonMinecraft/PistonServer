@@ -10,7 +10,14 @@ allprojects {
 subprojects {
     repositories {
         mavenCentral()
-        maven { url = "https://libraries.minecraft.net" }
+        maven {
+            name 'Minecraft Libraries'
+            url "https://libraries.minecraft.net"
+        }
+        maven {
+            name 'Spigot Public Repo'
+            url 'https://hub.spigotmc.org/nexus/content/groups/public'
+        }
     }
     configurations {
         testImplementation.extendsFrom annotationProcessor

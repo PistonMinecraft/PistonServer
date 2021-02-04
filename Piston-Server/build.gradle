@@ -1,6 +1,7 @@
 import org.pistonmc.build.task.GenProcessedVanillaServerJarTask
 
 import java.nio.file.Files
+import java.util.jar.Attributes.Name
 
 plugins {
     id 'java'
@@ -46,4 +47,13 @@ dependencies {
     implementation "org.jline:jline-terminal:$LIB_JLINE_VERSION"
     implementation "org.jline:jline-reader:$LIB_JLINE_VERSION"
     implementation "org.jline:jline-terminal-jansi:$LIB_JLINE_VERSION"
+}
+
+jar {
+    manifest {
+        attributes([
+                Name.IMPLEMENTATION_VENDOR: 'PistonMC',
+                Name.IMPLEMENTATION_VERSION: rootProject.ext.VERSION,
+        ])
+    }
 }
