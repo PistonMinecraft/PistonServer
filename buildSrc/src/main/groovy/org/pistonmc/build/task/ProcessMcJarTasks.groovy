@@ -72,12 +72,19 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
 }
 class GenDecompiledSourcesTask extends DefaultTask {
     private final Path PISTON_DIR = project.buildDir.toPath().resolve('pistonmc')
+    @Input
+    boolean forceGen
     @OutputDirectory
     Path getOutput() {
         return PISTON_DIR.resolve('mc-sources')
     }
     @TaskAction
     void execute() {
+        if(forceGen) {
+            Files.deleteIfExists(output)
+        } else if(Files.exists(output) && Files.list(output).withCloseable {it.count() > 0}) {
+            return
+        }
         Properties.put(Properties.Key.TEMP_DIR, PISTON_DIR.resolve('md-temp'))
         Properties.put(Properties.Key.OUTPUT_DIR, PISTON_DIR)
         Properties.put(Properties.Key.OUTPUT_DECOMPILED_NAME, 'mc-sources')

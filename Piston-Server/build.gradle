@@ -1,3 +1,5 @@
+import org.pistonmc.build.task.ApplyPatchesTask
+import org.pistonmc.build.task.GenDecompiledSourcesTask
 import org.pistonmc.build.task.GenProcessedVanillaServerJarTask
 
 import java.nio.file.Files
@@ -11,6 +13,14 @@ apply from: '../buildScripts/shared.gradle'
 
 task genProcessedJar(type: GenProcessedVanillaServerJarTask) {
     forceProcess = false
+}
+
+task genDecompiledSources(type: GenDecompiledSourcesTask)
+
+task applyPatches(type: ApplyPatchesTask) {
+    dependsOn genDecompiledSources
+    inputPatchesDir = projectDir.toPath().resolve('MC-Patches')
+    outputSourceDir = sourceSets.main.java.srcDirs.iterator().next().toPath()
 }
 
 archivesBaseName = 'piston-server'
@@ -52,8 +62,8 @@ dependencies {
 jar {
     manifest {
         attributes([
-                Name.IMPLEMENTATION_VENDOR: 'PistonMC',
-                Name.IMPLEMENTATION_VERSION: rootProject.ext.VERSION,
+                (Name.IMPLEMENTATION_VENDOR.toString()): 'PistonMC',
+                (Name.IMPLEMENTATION_VERSION.toString()): rootProject.ext.VERSION,
         ])
     }
 }
