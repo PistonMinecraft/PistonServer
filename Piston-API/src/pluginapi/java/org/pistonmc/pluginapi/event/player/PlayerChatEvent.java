@@ -4,7 +4,7 @@ import org.pistonmc.pluginapi.entity.PlayerEntity;
 
 public class PlayerChatEvent extends PlayerEvent {
     private String message;
-    public PlayerChatEvent(String message,PlayerEntity triggerPlayer) {
+    public PlayerChatEvent(String message, PlayerEntity triggerPlayer) {
         super(triggerPlayer);
         this.message = message;
     }

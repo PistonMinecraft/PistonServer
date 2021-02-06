@@ -9,7 +9,10 @@ import cn.maxpixel.mcdecompiler.util.NetworkUtil
 import cn.maxpixel.mcdecompiler.util.VersionManifest
 import com.google.gson.JsonObject
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.*
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.TaskAction
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -49,8 +52,8 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
             logger.info('Process failed. Maybe your IDE locked the previously processed jar')
             return
         }
-        FileUtil.deleteDirectory(tempPath);
-        FileUtil.ensureDirectoryExist(tempPath);
+        FileUtil.deleteDirectory(tempPath)
+        FileUtil.ensureDirectoryExist(tempPath)
         new ProguardDeobfuscator(mappingPath.toString()).deobfuscate(inputPath, outputPath)
         logger.info('Processed complete.')
     }
@@ -65,7 +68,7 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
         if(Files.notExists(inputPath)) {
             NetworkUtil.newBuilder(obj.get("url").getAsString()).connect().withCloseable {
                 logger.info('Downloading...')
-                Files.copy(it.asStream(), inputPath, StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(it.asStream(), inputPath, StandardCopyOption.REPLACE_EXISTING)
             }
         }
     }
@@ -73,8 +76,7 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
 class GenDecompiledSourcesTask extends DefaultTask {
     private final Path PISTON_DIR = project.buildDir.toPath().resolve('pistonmc')
     @Input
-    boolean forceGen
-    @OutputDirectory
+    boolean forceGen = false
     Path getOutput() {
         return PISTON_DIR.resolve('mc-sources')
     }
@@ -82,7 +84,7 @@ class GenDecompiledSourcesTask extends DefaultTask {
     void execute() {
         if(forceGen) {
             Files.deleteIfExists(output)
-        } else if(Files.exists(output) && Files.list(output).withCloseable {it.count() > 0}) {
+        } else if(Files.exists(output) && Files.list(output).withCloseable {it.count() > 1}) {
             return
         }
         Properties.put(Properties.Key.TEMP_DIR, PISTON_DIR.resolve('md-temp'))

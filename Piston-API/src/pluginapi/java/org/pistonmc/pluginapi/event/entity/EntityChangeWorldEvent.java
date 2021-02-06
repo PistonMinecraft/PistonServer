@@ -2,30 +2,30 @@ package org.pistonmc.pluginapi.event.entity;
 
 import org.pistonmc.pluginapi.entity.Entity;
 import org.pistonmc.pluginapi.event.Cancelable;
-import org.pistonmc.pluginapi.world.WorldType;
+import org.pistonmc.pluginapi.world.World;
 
 public class EntityChangeWorldEvent extends EntityEvent implements Cancelable {
-    private final WorldType from;
-    private final WorldType to;
+    private final World from;
+    private final World to;
     private boolean cancelled;
 
-    public EntityChangeWorldEvent(Entity triggerEntity, WorldType from, WorldType to) {
-        super(triggerEntity);
+    public EntityChangeWorldEvent(Entity entity, World from, World to) {
+        super(entity);
         this.from = from;
         this.to = to;
     }
 
-    public EntityChangeWorldEvent(Entity triggerEntity, boolean isAsync, WorldType from, WorldType to) {
-        super(triggerEntity, isAsync);
+    public EntityChangeWorldEvent(Entity entity, boolean async, World from, World to) {
+        super(entity, async);
         this.from = from;
         this.to = to;
     }
 
-    public WorldType getFrom() {
+    public World getFrom() {
         return from;
     }
 
-    public WorldType getTo() {
+    public World getTo() {
         return to;
     }
 

@@ -4,23 +4,25 @@ import org.pistonmc.pluginapi.entity.Entity;
 import org.pistonmc.pluginapi.event.Event;
 
 public abstract class EntityEvent extends Event {
-    private final Entity triggerEntity;
+    private final Entity entity;
 
-    public EntityEvent(Entity triggerEntity) {
+    public EntityEvent(Entity entity) {
         super();
-        this.triggerEntity = triggerEntity;
+        this.entity = entity;
     }
 
-    public EntityEvent(Entity triggerEntity, boolean isAsync) {
-        super(isAsync);
-        this.triggerEntity = triggerEntity;
+    public EntityEvent(Entity entity, boolean async) {
+        super(async);
+        this.entity = entity;
     }
 
     /**
      * 返回触发该事件的实体
+     * <br><br>
+     * Return the entity that triggered this event
      * @return  触发事件实体
      */
-    public Entity getTriggerEntity() {
-        return triggerEntity;
+    public Entity getEntity() {
+        return entity;
     }
 }

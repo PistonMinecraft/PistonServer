@@ -1,0 +1,42 @@
+--- a/net.minecraft.server.players.PlayerList.java
++++ b/net.minecraft.server.players.PlayerList.java
+@@ -108,11 +108,11 @@
+     private final Map<UUID, ServerStatsCounter> stats;
+     private final Map<UUID, PlayerAdvancements> advancements;
+     private final PlayerDataStorage playerIo;
+     private boolean doWhiteList;
+     private final RegistryAccess.RegistryHolder registryHolder;
+-    protected final int maxPlayers;
++    protected int maxPlayers; // PistonMC - Remove final modifier
+     private int viewDistance;
+     private GameType overrideGameMode;
+     private boolean allowCheatsForAllPlayers;
+     private int sendAllPlayerInfoIn;
+ 
+@@ -658,11 +658,11 @@
+         }
+ 
+     }
+ 
+     public void deop(GameProfile gameprofile) {
+-        this.ops.remove((Object) gameprofile);
++        this.ops.remove(gameprofile); // PistonMC - fix decompile error
+         ServerPlayer serverplayer = this.getPlayer(gameprofile.getId());
+ 
+         if (serverplayer != null) {
+             this.sendPlayerPermissionLevel(serverplayer);
+         }
+@@ -779,10 +779,13 @@
+     }
+ 
+     public int getMaxPlayers() {
+         return this.maxPlayers;
+     }
++    public void setMaxPlayers(int maxPlayers) { // PistonMC - Add setter
++        this.maxPlayers = maxPlayers;
++    }
+ 
+     public boolean isUsingWhitelist() {
+         return this.doWhiteList;
+     }
+ 

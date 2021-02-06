@@ -3,6 +3,9 @@ package org.pistonmc.server.main;
 import joptsimple.*;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Main;
+import org.pistonmc.server.RuntimeProperties;
+
+import java.net.Proxy;
 
 public class PistonMain {
     public static void main(String[] args) {
@@ -23,6 +26,9 @@ public class PistonMain {
         ArgumentAcceptingOptionSpec<String> serverIdO = parser.accepts("serverId").withRequiredArg(); // All vanilla options
 
         OptionSpecBuilder versionO = parser.accepts("version", "Prints server version");
+        ArgumentAcceptingOptionSpec<Proxy> proxyO = parser.accepts("proxy", "The network proxy to use").withRequiredArg().ofType(Proxy.class).defaultsTo(Proxy.NO_PROXY);
+        OptionSpecBuilder nojlineO = parser.accepts("nojline", "Disable jline");
+        OptionSpecBuilder noconsoleO = parser.accepts("noconsole");
         NonOptionArgumentSpec<String> nonOptions = parser.nonOptions();
 
         OptionSet options = parser.parse(args);
@@ -32,9 +38,18 @@ public class PistonMain {
             System.out.println("Piston Minecraft Server v" + SharedConstants.getCurrentVersion().getName() + " - " +
                     PistonMain.class.getPackage().getImplementationVersion());
         } else {
-            Main.main(null);
+            RuntimeProperties.put(RuntimeProperties.Key.GLOBAL_PROXY, options.valueOf(proxyO));
+            if(options.has(nojlineO)) {
+                RuntimeProperties.setSystemProperty(RuntimeProperties.SystemPropKey.BooleanPropKey.TERMINAL_JLINE, false);
+            }
+            if(options.has(noconsoleO)) {
+                RuntimeProperties.setSystemProperty(RuntimeProperties.SystemPropKey.BooleanPropKey.TERMINAL_JLINE, false);
+                RuntimeProperties.put(RuntimeProperties.Key.CONSOLE, false);
+            }
+            Main.main(options.has(noguiO), options.has(initSettingsO), options.has(demoO), options.has(bonusChestO),
+                    options.has(forceUpgradeO), options.has(eraseCacheO), options.has(safeModeO), options.valueOf(singleplayerO),
+                    options.valueOf(universeO), options.valueOf(worldO), options.valueOf(portO), options.valueOf(serverIdO),
+                    options.valuesOf(nonOptions));
         }
-    }
-    private static void initLog4jProperties() {
     }
 }

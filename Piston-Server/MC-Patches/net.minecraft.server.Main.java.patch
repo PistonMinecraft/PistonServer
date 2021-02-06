@@ -1,5 +1,5 @@
---- a/net/minecraft/server/Main.java
-+++ b/net/minecraft/server/Main.java
+--- a/net.minecraft.server.Main.java
++++ b/net.minecraft.server.Main.java
 @@ -58,34 +58,34 @@
  
      private static final Logger LOGGER = LogManager.getLogger();
@@ -22,7 +22,7 @@
 -        ArgumentAcceptingOptionSpec argumentacceptingoptionspec3 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(-1, new Integer[0]);
 -        ArgumentAcceptingOptionSpec argumentacceptingoptionspec4 = optionparser.accepts("serverId").withRequiredArg();
 -        NonOptionArgumentSpec nonoptionargumentspec = optionparser.nonOptions();
-+    public static void main(boolean nogui, boolean initSettings, boolean demo, boolean bonusChest, boolean forceUpgrade, boolean eraseCache, boolean safeMode, boolean help, String singleplayer, String universe, String world, int port, String serverId, java.util.List<String> nonOptions, Proxy proxy) { // PistonMC - Replace with actual option values
++    public static void main(boolean nogui, boolean initSettings, boolean demo, boolean bonusChest, boolean forceUpgrade, boolean eraseCache, boolean safeMode, String singleplayer, String universe, String world, int port, String serverId, java.util.List<String> nonOptions) { // PistonMC - Replace with actual option values
 +        /*OptionParser optionparser = new OptionParser();
 +            OptionSpecBuilder optionspecbuilder = optionparser.accepts("nogui");
 +            OptionSpecBuilder optionspecbuilder1 = optionparser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
@@ -53,7 +53,7 @@
              Bootstrap.bootStrap();
              Bootstrap.validate();
              Util.startTimerHackThread();
-@@ -95,87 +95,86 @@
+@@ -95,87 +95,85 @@
  
              dedicatedserversettings.forceSave();
              Path path1 = Paths.get("eula.txt");
@@ -73,7 +73,7 @@
 -            File file = new File((String) optionset.valueOf(argumentacceptingoptionspec1));
 -            YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
 +            File file = new File(universe);
-+            YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(proxy);
++            YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(org.pistonmc.server.RuntimeProperties.get(org.pistonmc.server.RuntimeProperties.Key.GLOBAL_PROXY, Proxy.NO_PROXY));
              MinecraftSessionService minecraftsessionservice = yggdrasilauthenticationservice.createMinecraftSessionService();
              GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
              GameProfileCache gameprofilecache = new GameProfileCache(gameprofilerepository, new File(file, MinecraftServer.USERID_CACHE_FILE.getName()));
@@ -85,7 +85,6 @@
              MinecraftServer.convertFromRegionFormatIfNeeded(levelstoragesource_levelstorageaccess);
              DataPackConfig datapackconfig = levelstoragesource_levelstorageaccess.getDataPacks();
 -            boolean flag = optionset.has(optionspecbuilder6);
-+//            boolean flag = optionset.has(optionspecbuilder6);
  
 -            if (flag) {
 +            if (safeMode) {

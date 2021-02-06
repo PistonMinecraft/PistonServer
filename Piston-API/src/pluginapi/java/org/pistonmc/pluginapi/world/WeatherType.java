@@ -1,7 +1,7 @@
 package org.pistonmc.pluginapi.world;
 
-public enum Weathers {
-    RAIN,
+public enum WeatherType {
+    RAINY,
     SUNNY,
     THUNDER,
 }

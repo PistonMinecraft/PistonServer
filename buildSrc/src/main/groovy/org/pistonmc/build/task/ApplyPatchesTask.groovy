@@ -21,8 +21,10 @@ class ApplyPatchesTask extends DefaultTask {
         GenDecompiledSourcesTask task = dependsOn.find { it instanceof GenDecompiledSourcesTask } as GenDecompiledSourcesTask
         if(task == null) throw new Exception("Must depend on a GenDecompiledSourcesTask to be sure that decompiled sources are generated")
         Path originalBase = task.output
+        logger.info('Applying patches')
         Files.list(inputPatchesDir).filter {it.toString().endsWith('.patch')}.withCloseable {
             it.forEach {
+                logger.info('Applying ' + it + '...')
                 Path p = inputPatchesDir.relativize(it)
                 String path = p.toString().substring(0, p.toString().lastIndexOf('.java.patch')).replace('.', '/') + '.java'
                 FileUtil.ensureDirectoryExist(outputSourceDir.resolve(path).getParent())

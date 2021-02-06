@@ -18,4 +18,4 @@ sourceSets {
 }
 
 archivesBaseName = 'piston-api'
-version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD_NUMBER}"
+version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"

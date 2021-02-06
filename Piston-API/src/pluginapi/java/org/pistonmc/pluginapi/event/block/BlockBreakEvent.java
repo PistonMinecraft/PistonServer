@@ -2,37 +2,31 @@ package org.pistonmc.pluginapi.event.block;
 
 import org.pistonmc.pluginapi.block.Block;
 import org.pistonmc.pluginapi.entity.Entity;
+import org.pistonmc.pluginapi.event.Cancelable;
 
-public class BlockBreakEvent extends BlockEvent {
-    private Entity brokenEntity;
-    private boolean breakable;
-    BlockBreakEvent(Entity brokenEntity, Block block, boolean isAsync) {
+public class BlockBreakEvent extends BlockEvent implements Cancelable {
+    private final Entity who;
+    private boolean cancelled;
+    public BlockBreakEvent(Entity who, Block block, boolean isAsync) {
         super(block, isAsync);
-        this.brokenEntity = brokenEntity;
-        this.breakable = true;
+        this.who = who;
     }
 
     /**
      * 返回破坏方块的实体
      * @return  破坏方块的实体
      */
-    public Entity getBrokenEntity() {
-        return brokenEntity;
+    public Entity getBreaker() {
+        return who;
     }
 
-    /**
-     * 设置是否允许破坏
-     * @param breakable
-     */
-    public void setBreakable(boolean breakable) {
-        this.breakable = breakable;
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
     }
 
-    /**
-     * 返回是否允许破坏
-     * @return  是否允许破坏
-     */
-    public boolean isBreakable() {
-        return breakable;
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

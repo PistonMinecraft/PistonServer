@@ -5,8 +5,8 @@ import org.pistonmc.pluginapi.world.Portal;
 
 public class EntityCreatePortalEvent extends EntityEvent {
     private Portal portal;
-    public EntityCreatePortalEvent(Portal portal, Entity triggerEntity) {
-        super(triggerEntity);
+    public EntityCreatePortalEvent(Portal portal, Entity entity) {
+        super(entity);
         this.portal = portal;
     }
 }
