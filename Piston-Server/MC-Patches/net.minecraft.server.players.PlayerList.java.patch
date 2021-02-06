@@ -1,5 +1,5 @@
---- a/net.minecraft.server.players.PlayerList.java
-+++ b/net.minecraft.server.players.PlayerList.java
+--- a/net/minecraft/server/players/PlayerList.java
++++ b/net/minecraft/server/players/PlayerList.java
 @@ -108,11 +108,11 @@
      private final Map<UUID, ServerStatsCounter> stats;
      private final Map<UUID, PlayerAdvancements> advancements;

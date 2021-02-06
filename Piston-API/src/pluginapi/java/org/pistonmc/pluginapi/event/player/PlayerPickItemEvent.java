@@ -4,9 +4,10 @@ import org.pistonmc.pluginapi.entity.PlayerEntity;
 import org.pistonmc.pluginapi.item.Item;
 
 public class PlayerPickItemEvent extends PlayerEvent {
-    private Item item;
-    public PlayerPickItemEvent(Item item, PlayerEntity triggerPlayer, boolean isAsync) {
-        super(triggerPlayer, isAsync);
+    private final Item item;
+
+    public PlayerPickItemEvent(PlayerEntity player, Item item) {
+        super(player);
         this.item = item;
     }
 

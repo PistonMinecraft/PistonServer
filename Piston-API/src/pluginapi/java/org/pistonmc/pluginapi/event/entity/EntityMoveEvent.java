@@ -9,11 +9,13 @@ import org.pistonmc.pluginapi.location.Location;
 public class EntityMoveEvent extends EntityEvent {
     private final Location from;
     private final Location to;
-    public EntityMoveEvent(Entity entity, boolean async, Location from, Location to) {
-        super(entity, async);
+
+    public EntityMoveEvent(Entity entity, Location from, Location to) {
+        super(entity);
         this.from = from;
         this.to = to;
     }
+
     /**
      * 返回实体从哪个位置移动
      * @return 实体从哪个位置移动

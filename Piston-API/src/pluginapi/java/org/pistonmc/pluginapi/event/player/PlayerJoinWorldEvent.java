@@ -4,9 +4,10 @@ import org.pistonmc.pluginapi.entity.PlayerEntity;
 import org.pistonmc.pluginapi.world.World;
 
 public class PlayerJoinWorldEvent extends PlayerEvent {
-    private World world;
-    public PlayerJoinWorldEvent(PlayerEntity player, World world, boolean isAsync) {
-        super(player, isAsync);
+    private final World world;
+
+    public PlayerJoinWorldEvent(PlayerEntity player, World world, boolean async) {
+        super(player, async);
         this.world = world;
     }
     /**

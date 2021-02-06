@@ -2,34 +2,31 @@ package org.pistonmc.pluginapi.event.player;
 
 import org.pistonmc.pluginapi.entity.MushroomEntity;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.event.Cancelable;
 
-public class PlayerShearMushroomEvent extends PlayerEvent {
-    private MushroomEntity mushroomEntity;
-    private boolean agreeShearMushroom;
-    public PlayerShearMushroomEvent(MushroomEntity mushroomEntity, PlayerEntity triggerPlayer, boolean isAsync) {
-        super(triggerPlayer, isAsync);
-        this.mushroomEntity = mushroomEntity;
-        agreeShearMushroom = true;
+public class PlayerShearMushroomEvent extends PlayerEvent implements Cancelable {
+    private MushroomEntity target;
+    private boolean cancelled;
+
+    public PlayerShearMushroomEvent(MushroomEntity target, PlayerEntity player) {
+        super(player);
+        this.target = target;
     }
     /**
      * 获取 将要被剪掉蘑菇的Mushroom实体
      * @return 将要被剪掉蘑菇的Mushroom实体
      */
-    public MushroomEntity getMushroomEntity() {
-        return mushroomEntity;
+    public MushroomEntity getMushroom() {
+        return target;
     }
-    /**
-     * 设置是否允许剪掉蘑菇
-     * @param agreeShearMushroom
-     */
-    public void setShearable(boolean agreeShearMushroom) {
-        this.agreeShearMushroom = agreeShearMushroom;
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
     }
-    /**
-     * 获取是否允许剪掉蘑菇
-     * @return 是否允许剪掉蘑菇
-     */
-    public boolean isShearable(){
-        return agreeShearMushroom;
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

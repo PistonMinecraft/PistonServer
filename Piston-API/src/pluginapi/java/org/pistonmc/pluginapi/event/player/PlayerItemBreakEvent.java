@@ -4,9 +4,10 @@ import org.pistonmc.pluginapi.entity.PlayerEntity;
 import org.pistonmc.pluginapi.item.Item;
 
 public class PlayerItemBreakEvent extends PlayerEvent {
-    private Item item;
-    public PlayerItemBreakEvent(Item item, PlayerEntity triggerPlayer, boolean isAsync) {
-        super(triggerPlayer, isAsync);
+    private final Item item;
+
+    public PlayerItemBreakEvent(PlayerEntity player, Item item) {
+        super(player);
         this.item = item;
     }
 

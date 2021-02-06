@@ -7,8 +7,9 @@ import org.pistonmc.pluginapi.entity.Entity;
  */
 public class EntityDeathEvent extends EntityEvent {
     private final Entity killer;
-    public EntityDeathEvent(Entity killer, Entity who, boolean async) {
-        super(who, async);
+
+    public EntityDeathEvent(Entity who, Entity killer) {
+        super(who);
         this.killer = killer;
     }
 

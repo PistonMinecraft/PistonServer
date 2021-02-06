@@ -4,23 +4,23 @@ import org.pistonmc.pluginapi.entity.PlayerEntity;
 import org.pistonmc.pluginapi.event.Event;
 
 public abstract class PlayerEvent extends Event {
-    private final PlayerEntity triggerPlayer;
+    private final PlayerEntity player;
 
-    public PlayerEvent(PlayerEntity triggerPlayer) {
+    public PlayerEvent(PlayerEntity player) {
         super();
-        this.triggerPlayer = triggerPlayer;
+        this.player = player;
     }
 
-    public PlayerEvent(PlayerEntity triggerPlayer, boolean isAsync) {
-        super(isAsync);
-        this.triggerPlayer = triggerPlayer;
+    public PlayerEvent(PlayerEntity player, boolean async) {
+        super(async);
+        this.player = player;
     }
 
     /**
      * 返回触发该事件的玩家实体
      * @return 触发该事件的玩家实体
      */
-    public PlayerEntity getTriggerPlayer() {
-        return triggerPlayer;
+    public PlayerEntity getPlayer() {
+        return player;
     }
 }

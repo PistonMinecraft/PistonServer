@@ -5,9 +5,9 @@ import org.pistonmc.pluginapi.entity.ItemEntity;
 
 public class EntityThrowItemEvent extends EntityEvent {
     private final ItemEntity item;
-    public EntityThrowItemEvent(Entity entity, boolean async, ItemEntity itemEntity) {
-        super(entity, async);
-        this.item = itemEntity;
+    public EntityThrowItemEvent(Entity entity, ItemEntity item) {
+        super(entity);
+        this.item = item;
     }
 
     /**

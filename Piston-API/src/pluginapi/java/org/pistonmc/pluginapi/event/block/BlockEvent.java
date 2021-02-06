@@ -5,10 +5,11 @@ import org.pistonmc.pluginapi.event.Event;
 
 public abstract class BlockEvent extends Event {
     private final Block block;
+
     public BlockEvent(Block block) {
         this.block = block;
     }
-    public BlockEvent(Block block,boolean isAsync) {
+    public BlockEvent(Block block, boolean isAsync) {
         super(isAsync);
         this.block = block;
     }

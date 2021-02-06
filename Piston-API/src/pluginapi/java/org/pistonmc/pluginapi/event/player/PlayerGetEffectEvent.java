@@ -4,9 +4,10 @@ import org.pistonmc.pluginapi.effect.Effect;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
 
 public class PlayerGetEffectEvent extends PlayerEvent {
-    private Effect effect;
-    public PlayerGetEffectEvent(Effect effect, PlayerEntity triggerPlayer, boolean isAsync) {
-        super(triggerPlayer, isAsync);
+    private final Effect effect;
+
+    public PlayerGetEffectEvent(PlayerEntity player, Effect effect) {
+        super(player);
         this.effect = effect;
     }
 

@@ -2,39 +2,34 @@ package org.pistonmc.pluginapi.event.player;
 
 import org.pistonmc.pluginapi.entity.Entity;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.event.Cancelable;
 
 /**
  *  Cow/Mushroom 被挤奶的事件
  */
-public class PlayerMilkEvent extends PlayerEvent {
-    private Entity milkEntity;
-    private boolean milkable;
-    public PlayerMilkEvent(Entity milkEntity, PlayerEntity triggerPlayer, boolean isAsync) {
-        super(triggerPlayer, isAsync);
-        this.milkEntity = milkEntity;
-        milkable = true;
+public class PlayerMilkEvent extends PlayerEvent implements Cancelable {
+    private final Entity target;
+    private boolean cancelled;
+    public PlayerMilkEvent(PlayerEntity player, Entity target, boolean isAsync) {
+        super(player, isAsync);
+        this.target = target;
     }
 
     /**
      * 返回被挤奶的Cow/Mushroom实体
      * @return  被挤奶的Cow/Mushroom实体
      */
-    public Entity getMilkEntity() {
-        return milkEntity;
-    }
-    /**
-     * 返回是否允许挤奶
-     * @return  是否允许挤奶
-     */
-    public boolean isMilkable() {
-        return milkable;
+    public Entity getTarget() {
+        return target;
     }
 
-    /**
-     * 设置是否允许挤奶
-     * @param milkable
-     */
-    public void setMilkable(boolean milkable){
-        this.milkable = milkable;
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

@@ -15,12 +15,6 @@ public class EntityChangeWorldEvent extends EntityEvent implements Cancelable {
         this.to = to;
     }
 
-    public EntityChangeWorldEvent(Entity entity, boolean async, World from, World to) {
-        super(entity, async);
-        this.from = from;
-        this.to = to;
-    }
-
     public World getFrom() {
         return from;
     }

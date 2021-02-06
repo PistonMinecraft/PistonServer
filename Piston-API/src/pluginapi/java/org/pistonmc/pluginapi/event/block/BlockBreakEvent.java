@@ -7,8 +7,9 @@ import org.pistonmc.pluginapi.event.Cancelable;
 public class BlockBreakEvent extends BlockEvent implements Cancelable {
     private final Entity who;
     private boolean cancelled;
-    public BlockBreakEvent(Entity who, Block block, boolean isAsync) {
-        super(block, isAsync);
+
+    public BlockBreakEvent(Block block, Entity who) {
+        super(block);
         this.who = who;
     }
 

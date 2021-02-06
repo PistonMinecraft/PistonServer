@@ -3,26 +3,27 @@ package org.pistonmc.pluginapi.event.player;
 import org.pistonmc.pluginapi.entity.PlayerEntity;
 
 public class PlayerJoinServerEvent extends PlayerEvent {
-    private String playerJoinMessage;
-    public PlayerJoinServerEvent(PlayerEntity player, boolean isAsync, String playerJoinMessage) {
-        super(player, isAsync);
-        this.playerJoinMessage = playerJoinMessage;
+    private String joinMessage;
+
+    public PlayerJoinServerEvent(PlayerEntity player, String joinMessage) {
+        super(player);
+        this.joinMessage = joinMessage;
     }
 
     /**
      * 设置进入服务器的广播消息
-     * @param playerJoinMessage 进入服务器的广播消息
+     * @param joinMessage 进入服务器的广播消息
      */
-    public void setPlayerJoinMessage(String playerJoinMessage) {
-        this.playerJoinMessage = playerJoinMessage;
+    public void setJoinMessage(String joinMessage) {
+        this.joinMessage = joinMessage;
     }
 
     /**
      * 获取进入服务器的广播消息
      * @return 进入服务器的广播消息
      */
-    public String getPlayerJoinMessage() {
-        return playerJoinMessage;
+    public String getJoinMessage() {
+        return joinMessage;
     }
 
 }
