@@ -17,5 +17,25 @@ sourceSets {
     }
 }
 
+task pluginApiJar(type: Jar) {
+    archiveClassifier = 'pluginapi'
+    from sourceSets.pluginApi.output
+    from sourceSets.common.output
+}
+
+task moddingApiJar(type: Jar) {
+    archiveClassifier = 'moddingapi'
+    from sourceSets.moddingApi.output
+    from sourceSets.common.output
+}
+
+jar {
+    dependsOn pluginApiJar, moddingApiJar
+    archiveClassifier = 'uber'
+    from sourceSets.pluginApi.output
+    from sourceSets.moddingApi.output
+    from sourceSets.common.output
+}
+
 archivesBaseName = 'piston-api'
 version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"

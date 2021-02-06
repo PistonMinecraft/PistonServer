@@ -7,3 +7,5 @@
 # Ignore Gradle build output directory
 /build/
 /*/build/
+# MC patched java files
+/Piston-Server/src/main/java/net/minecraft/

@@ -3,7 +3,6 @@ java {
         languageVersion = JavaLanguageVersion.of(8)
         vendor = JvmVendorSpec.ADOPTOPENJDK
     }
-    withSourcesJar()
 }
 tasks.withType(JavaCompile) {
     options.compilerArgs.addAll(['-Xplugin:Manifold', '-encoding', 'UTF-8'])
