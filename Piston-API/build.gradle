@@ -1,41 +1,63 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'idea'
 }
 apply from: '../buildScripts/shared.gradle'
 
+archivesBaseName = 'piston-api'
+version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
+
 sourceSets {
-    pluginApi.java {
-        srcDir "src/pluginapi/java"
+    pluginApi {
+        java.srcDirs =  ['src/pluginapi/java']
+        resources.srcDirs =  ['src/pluginapi/resources']
     }
-    main.java { srcDirs = [] }
-    common.java {
-        srcDir "src/common/java"
+    moddingApi {
+        java.srcDirs =  ['src/moddingapi/java']
+        resources.srcDirs =  ['src/moddingapi/resources']
     }
-    moddingApi.java {
-        srcDir "src/moddingapi/java"
+    main {
+        java.srcDirs = ['src/common/java']
+        resources.srcDirs = ['src/common/resources']
     }
+}
+
+configurations {
+    expose {
+        canBeConsumed = true
+        canBeResolved = false
+        extendsFrom api
+    }
+}
+
+dependencies {
+    api 'net.md-5:bungeecord-chat:1.16-R0.5-SNAPSHOT'
+
+    api "org.apache.logging.log4j:log4j-api:$LIB_LOG4J_VERSION"
+
+    implementation 'org.snakeyaml:snakeyaml-engine:2.2.1'
 }
 
 task pluginApiJar(type: Jar) {
     archiveClassifier = 'pluginapi'
     from sourceSets.pluginApi.output
-    from sourceSets.common.output
+    from sourceSets.main.output
 }
 
 task moddingApiJar(type: Jar) {
     archiveClassifier = 'moddingapi'
     from sourceSets.moddingApi.output
-    from sourceSets.common.output
+    from sourceSets.main.output
 }
 
-jar {
-    dependsOn pluginApiJar, moddingApiJar
-    archiveClassifier = 'uber'
+jar { // This will gen uber jar
+    archiveClassifier = 'all'
     from sourceSets.pluginApi.output
     from sourceSets.moddingApi.output
-    from sourceSets.common.output
 }
 
-archivesBaseName = 'piston-api'
-version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
+artifacts {
+    expose pluginApiJar
+    expose moddingApiJar
+    expose jar
+}

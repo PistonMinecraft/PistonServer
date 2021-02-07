@@ -2,21 +2,17 @@ import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
 import org.pistonmc.build.task.ApplyPatchesTask
 import org.pistonmc.build.task.GenDecompiledSourcesTask
+import org.pistonmc.build.task.GenPatchesTask
 import org.pistonmc.build.task.GenProcessedVanillaServerJarTask
 
 import java.nio.file.Files
 import java.util.jar.Attributes.Name
 
-buildscript {
-    dependencies {
-        classpath 'io.github.java-diff-utils:java-diff-utils:4.9'
-    }
-}
-
 plugins {
     id 'java'
     id 'idea'
 }
+
 apply from: '../buildScripts/shared.gradle'
 
 task genProcessedJar(type: GenProcessedVanillaServerJarTask) {
@@ -28,23 +24,10 @@ task genDecompiledSources(type: GenDecompiledSourcesTask) {
     forceGen = false
 }
 
-task genPatches {
+task genPatches(type: GenPatchesTask) {
     dependsOn genDecompiledSources
-    java.nio.file.Path decompiledSources = tasks.withType(GenDecompiledSourcesTask).iterator().next().output
-    java.nio.file.Path patchDir = projectDir.toPath().resolve('MC-Patches')
-    Files.createDirectories(patchDir)
-    java.nio.file.Path start = sourceSets.main.java.srcDirs.iterator().next().toPath()
-    if(Files.exists(start.resolve('net/minecraft'))) {
-        Files.walk(start.resolve('net/minecraft')).filter{Files.isRegularFile(it) }.withCloseable {
-            it.forEach {
-                java.nio.file.Path relativizePath = start.relativize(it)
-                List<String> originalLines = Files.readAllLines(decompiledSources.resolve(relativizePath))
-                String fileName = relativizePath.toString().replace(System.getProperty('file.separator'), '.')
-                Files.write(patchDir.resolve(fileName + '.patch'), UnifiedDiffUtils.generateUnifiedDiff('a/' + relativizePath.toString().replace('\\', '/'),
-                        'b/' + relativizePath.toString().replace('\\', '/'), originalLines, DiffUtils.diff(originalLines, Files.readAllLines(it)), 5))
-            }
-        }
-    }
+    inputSourcesDir = sourceSets.main.java.srcDirs.iterator().next().toPath()
+    outputPatchesDir = project.projectDir.toPath().resolve('MC-Patches')
 }
 
 task applyPatches(type: ApplyPatchesTask) {
@@ -72,20 +55,18 @@ java.nio.file.Path p = genProcessedJar.outputPath
 String bukkitVersion = "${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
 
 configurations {
-    minecraft
     implementation {
         canBeResolved = true
-        extendsFrom minecraft
     }
 }
 
 dependencies {
     if(Files.exists(p)) {
-        minecraft files(p)
+        implementation files(p)
     }
     implementation "com.destroystokyo.paper:paper-api:$bukkitVersion"
     implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
-    implementation project(':Piston-API')
+    implementation project(path: ':Piston-API', configuration: 'expose')
 
     implementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
 

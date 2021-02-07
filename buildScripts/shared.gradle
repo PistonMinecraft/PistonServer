@@ -5,14 +5,10 @@ java {
     }
 }
 tasks.withType(JavaCompile) {
-    options.compilerArgs.addAll(['-Xplugin:Manifold', '-encoding', 'UTF-8'])
+    options.encoding 'UTF-8'
+    options.compilerArgs.addAll(['-Xplugin:Manifold'])
 }
 dependencies {
-    implementation 'org.snakeyaml:snakeyaml-engine:2.2.1'
-    implementation 'net.md-5:bungeecord-chat:1.16-R0.5-SNAPSHOT'
-
-    implementation "org.apache.logging.log4j:log4j-api:$LIB_LOG4J_VERSION"
-
     implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
     implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
 
