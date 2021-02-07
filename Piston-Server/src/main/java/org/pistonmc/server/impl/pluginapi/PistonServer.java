@@ -35,18 +35,19 @@ import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 
-public abstract class PistonServer {
+public class PistonServer {
     private final DedicatedServer server;
     private final DedicatedPlayerList playerList;
 
     public PistonServer(DedicatedServer server) {
         this.server = server;
         this.playerList = server.getPlayerList();
+        new PistonImpl();
+        new BukkitImpl();
     }
 
-    public class PistonImpl extends PistonServer implements org.pistonmc.pluginapi.Server {
-        public PistonImpl(DedicatedServer server) {
-            super(server);
+    private class PistonImpl implements org.pistonmc.pluginapi.Server {
+        public PistonImpl() {
             Piston.setServer(this);
         }
 
@@ -54,22 +55,24 @@ public abstract class PistonServer {
         public String getServerVersion() {
             return RuntimeProperties.get(RuntimeProperties.Key.SERVER_VERSION);
         }
+
         @Override
         public PlayerEntity getPlayer(String playerName) {
             return null;
         }
+
         @Override
         public PlayerEntity getPlayer(UUID playerUUID) {
             return null;
         }
+
         public org.pistonmc.pluginapi.world.World getWorld(String worldName) {
             return null;
         }
     }
 
-    public class BukkitImpl extends PistonServer implements org.bukkit.Server {
-        public BukkitImpl(DedicatedServer server) {
-            super(server);
+    private class BukkitImpl implements org.bukkit.Server {
+        public BukkitImpl() {
             Bukkit.setServer(this);
         }
 
