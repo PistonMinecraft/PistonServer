@@ -72,6 +72,7 @@ java.nio.file.Path p = genProcessedJar.outputPath
 String bukkitVersion = "${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
 
 configurations {
+    minecraft
     implementation {
         canBeResolved = true
     }
@@ -79,7 +80,7 @@ configurations {
 
 dependencies {
     if(Files.exists(p)) {
-        implementation files(p)
+        minecraft files(p)
     }
     implementation "com.destroystokyo.paper:paper-api:$bukkitVersion"
     implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
@@ -109,13 +110,13 @@ jar {
                 (Name.IMPLEMENTATION_VERSION.toString()): rootProject.ext.VERSION,
                 'Bukkit-Version': bukkitVersion
         ])
-        configurations.implementation.each { dep ->
-            from(project.zipTree(dep)) {
-                exclude 'module-info.class'
-                if(dep.name.contains('server_processed')) {
-                    exclude 'log4j2.xml', 'org/apache/logging/', 'joptsimple/', 'META-INF/', 'io/netty', 'it/unimi/dsi/fastutil/', 'javax/annotation'
-                }
-            }
-        }
+//        configurations.implementation.each { dep ->
+//            from(project.zipTree(dep)) {
+//                exclude 'module-info.class'
+//                if(dep.name.contains('server_processed')) {
+//                    exclude 'log4j2.xml', 'org/apache/logging/', 'joptsimple/', 'META-INF/', 'io/netty', 'it/unimi/dsi/fastutil/', 'javax/annotation'
+//                }
+//            }
+//        }
     }
 }
