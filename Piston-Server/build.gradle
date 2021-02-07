@@ -75,6 +75,7 @@ configurations {
     minecraft
     implementation {
         canBeResolved = true
+        extendsFrom minecraft
     }
 }
 
