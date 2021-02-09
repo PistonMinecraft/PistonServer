@@ -2,8 +2,10 @@ package org.pistonmc.server.impl.pluginapi;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import com.destroystokyo.paper.profile.PlayerProfile;
+import com.google.common.collect.Lists;
 import net.minecraft.server.dedicated.DedicatedPlayerList;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.block.data.BlockData;
@@ -35,44 +37,45 @@ import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class PistonServer {
+public class PistonServer implements org.pistonmc.pluginapi.Server {
     private final DedicatedServer server;
     private final DedicatedPlayerList playerList;
+
+    private final BukkitImpl bukkitImpl;
 
     public PistonServer(DedicatedServer server) {
         this.server = server;
         this.playerList = server.getPlayerList();
-        new PistonImpl();
-        new BukkitImpl();
+        Piston.setServer(this);
+        this.bukkitImpl = new BukkitImpl();
     }
 
-    private class PistonImpl implements org.pistonmc.pluginapi.Server {
-        public PistonImpl() {
-            Piston.setServer(this);
-        }
-
-        @Override
-        public String getServerVersion() {
-            return RuntimeProperties.get(RuntimeProperties.Key.SERVER_VERSION);
-        }
-
-        @Override
-        public PlayerEntity getPlayer(String playerName) {
-            return null;
-        }
-
-        @Override
-        public PlayerEntity getPlayer(UUID playerUUID) {
-            return null;
-        }
-
-        public org.pistonmc.pluginapi.world.World getWorld(String worldName) {
-            return null;
-        }
+    @Override
+    public String getServerVersion() {
+        return RuntimeProperties.get(RuntimeProperties.Key.SERVER_VERSION);
     }
 
-    private class BukkitImpl implements org.bukkit.Server {
-        public BukkitImpl() {
+    @Override
+    public PlayerEntity getPlayer(String playerName) {
+        return null;
+    }
+
+    @Override
+    public PlayerEntity getPlayer(UUID playerUUID) {
+        return null;
+    }
+
+    public org.pistonmc.pluginapi.world.World getWorld(String worldName) {
+        return null;
+    }
+
+    public BukkitImpl getBukkitImpl() {
+        return bukkitImpl;
+    }
+
+    public class BukkitImpl implements org.bukkit.Server {
+        private final List<org.bukkit.entity.Player> onlinePlayers = Lists.transform(playerList.getPlayers(), ServerPlayer::getBukkitEntity);
+        private BukkitImpl() {
             Bukkit.setServer(this);
         }
 
@@ -102,7 +105,7 @@ public class PistonServer {
 
         @NotNull
         @Override
-        public Collection<? extends Player> getOnlinePlayers() {
+        public Collection<? extends org.bukkit.entity.Player> getOnlinePlayers() {
             return null;
         }
 

@@ -1,5 +1,3 @@
-import com.github.difflib.DiffUtils
-import com.github.difflib.UnifiedDiffUtils
 import org.pistonmc.build.task.ApplyPatchesTask
 import org.pistonmc.build.task.GenDecompiledSourcesTask
 import org.pistonmc.build.task.GenPatchesTask
