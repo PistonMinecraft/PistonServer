@@ -1,6 +1,22 @@
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -315,11 +315,11 @@
+@@ -177,10 +177,15 @@
+     private int containerCounter;
+     public boolean ignoreSlotUpdateHack;
+     public int latency;
+     public boolean wonGame;
+ 
++    public org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity getPistonPluginEntityImpl() { // PistonMC - Add pistonEntity getter
++        if(pistonEntity == null) pistonEntity = new org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity(this);
++        return (org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity) pistonEntity;
++    }
++
+     public ServerPlayer(MinecraftServer minecraftserver, ServerLevel serverlevel, GameProfile gameprofile, ServerPlayerGameMode serverplayergamemode) {
+         super(serverlevel, serverlevel.getSharedSpawnPos(), serverlevel.getSharedSpawnAngle(), gameprofile);
+         this.respawnDimension = Level.OVERWORLD;
+         serverplayergamemode.player = this;
+         this.gameMode = serverplayergamemode;
+@@ -315,11 +320,11 @@
              compoundtag.putInt("SpawnX", this.respawnPosition.getX());
              compoundtag.putInt("SpawnY", this.respawnPosition.getY());
              compoundtag.putInt("SpawnZ", this.respawnPosition.getZ());

@@ -15,6 +15,21 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
+    public boolean isSpectator() {
+        return entity.isSpectator();
+    }
+
+    @Override
+    public void unRide() {
+        entity.unRide();
+    }
+
+    @Override
+    public org.pistonmc.pluginapi.entity.EntityType getEntityType() {
+        return null;
+    }
+
+    @Override
     public UUID getUUID() {
         return entity.getUUID();
     }
@@ -32,11 +47,6 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     @Override
     public void setDisplayName(String displayName) {
 
-    }
-
-    @Override
-    public org.pistonmc.pluginapi.entity.EntityType getEntityType() {
-        return null;
     }
 
     @Override

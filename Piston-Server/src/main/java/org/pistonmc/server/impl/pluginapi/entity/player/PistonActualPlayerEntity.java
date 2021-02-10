@@ -1,4 +1,4 @@
-package org.pistonmc.server.impl.pluginapi.entity;
+package org.pistonmc.server.impl.pluginapi.entity.player;
 
 import com.destroystokyo.paper.ClientOption;
 import com.destroystokyo.paper.Title;
@@ -42,15 +42,14 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.pistonmc.server.impl.pluginapi.entity.player.AbstractPistonPlayer;
 
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class PistonPlayer extends AbstractPistonPlayer implements org.pistonmc.pluginapi.entity.PlayerEntity {
+public class PistonActualPlayerEntity extends PistonPlayerEntity implements org.pistonmc.pluginapi.entity.ActualPlayerEntity {
     private final ServerPlayer player;
 
-    public PistonPlayer(ServerPlayer player) {
+    public PistonActualPlayerEntity(ServerPlayer player) {
         this.player = player;
     }
 
@@ -177,12 +176,12 @@ public class PistonPlayer extends AbstractPistonPlayer implements org.pistonmc.p
         @NotNull
         @Override
         public String getDisplayName() {
-            return PistonPlayer.this.getDisplayName();
+            return PistonActualPlayerEntity.this.getDisplayName();
         }
 
         @Override
         public void setDisplayName(@Nullable String name) {
-            PistonPlayer.this.setDisplayName(name);
+            PistonActualPlayerEntity.this.setDisplayName(name);
         }
 
         @NotNull

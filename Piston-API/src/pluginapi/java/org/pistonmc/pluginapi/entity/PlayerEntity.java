@@ -2,7 +2,7 @@ package org.pistonmc.pluginapi.entity;
 
 import org.pistonmc.pluginapi.inventory.Inventory;
 
-public interface PlayerEntity extends Entity {
+public interface PlayerEntity extends LivingEntity {
     float getHunger();
     Inventory getInventory();
     void ban();
