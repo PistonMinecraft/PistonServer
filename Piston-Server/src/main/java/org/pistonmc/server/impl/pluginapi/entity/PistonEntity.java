@@ -4,6 +4,7 @@ import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -25,8 +26,38 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
-    public org.pistonmc.pluginapi.entity.EntityType getEntityType() {
-        return null;
+    public int getEntityId() {
+        return entity.getId();
+    }
+
+    @Override
+    public void setEntityId(int id) {
+        entity.setId(id);
+    }
+
+    @Override
+    public Set<String> getTags() {
+        return Collections.unmodifiableSet(entity.getTags());
+    }
+
+    @Override
+    public boolean addTag(String tag) {
+        return entity.addTag(tag);
+    }
+
+    @Override
+    public boolean removeTag(String tag) {
+        return entity.removeTag(tag);
+    }
+
+    @Override
+    public void kill() {
+        entity.kill();
+    }
+
+    @Override
+    public void remove() {
+        entity.remove();
     }
 
     @Override
