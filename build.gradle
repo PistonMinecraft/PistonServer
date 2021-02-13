@@ -21,9 +21,18 @@ subprojects {
             vendor = JvmVendorSpec.ADOPTOPENJDK
         }
     }
+
     tasks.withType(JavaCompile) {
         options.encoding 'UTF-8'
         options.compilerArgs.addAll(['-Xplugin:Manifold'])
+    }
+
+    checkerFramework {
+        excludeTests = true
+        checkers = [
+            'org.checkerframework.checker.nullness.NullnessChecker',
+            'org.checkerframework.checker.units.UnitsChecker'
+        ]
     }
 
     repositories {
@@ -41,9 +50,6 @@ subprojects {
         testImplementation.extendsFrom annotationProcessor
     }
     dependencies {
-        checkerFramework 'org.checkerframework:checker:3.10.0'
-        implementation 'org.checkerframework:checker-qual:3.10.0'
-
         implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
         implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
 

@@ -1,9 +1,13 @@
 package org.pistonmc.server.impl.pluginapi.entity;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.pistonmc.pluginapi.Sound;
 import org.pistonmc.pluginapi.entity.EntityPose;
 
 import java.util.Collections;
@@ -91,6 +95,36 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     @Override
     public int getPortalWaitTime() {
         return entity.portalWaitTime < 0 ? entity.getPortalWaitTime() : entity.portalWaitTime;
+    }
+
+    @Override
+    public void setRemainingFireTicks(int remainingFireTicks) {
+        entity.setRemainingFireTicks(remainingFireTicks);
+    }
+
+    @Override
+    public int getRemainingFireTicks() {
+        return entity.getRemainingFireTicks();
+    }
+
+    @Override
+    public boolean isOnGround() {
+        return entity.isOnGround();
+    }
+
+    @Override
+    public void playSound(@NonNull Sound sound, float volume, float pitch) {
+        entity.playSound(Registry.SOUND_EVENT.get(new ResourceLocation("minecraft", sound.getId())), volume, pitch);
+    }
+
+    @Override
+    public boolean isSilent() {
+        return entity.isSilent();
+    }
+
+    @Override
+    public void setSilent(boolean silent) {
+        entity.setSilent(silent);
     }
 
     @Override

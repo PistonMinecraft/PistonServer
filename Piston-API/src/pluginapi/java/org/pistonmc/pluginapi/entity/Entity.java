@@ -1,8 +1,8 @@
 package org.pistonmc.pluginapi.entity;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.Range;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.common.value.qual.IntRange;
+import org.pistonmc.pluginapi.Sound;
 import org.pistonmc.pluginapi.effect.Effect;
 import org.pistonmc.pluginapi.location.Location;
 
@@ -31,21 +31,21 @@ public interface Entity {
      * Returns the type of this entity
      * @return the type of this entity
      */
-    @NotNull
+    @NonNull
     EntityType getEntityType();
 
     /**
      * Returns the id of this entity
      * @return the id of this entity
      */
-    @Range(from = 1, to = Integer.MAX_VALUE)
+    @IntRange(from = 1, to = Integer.MAX_VALUE)
     int getEntityId();
 
     /**
      * Returns the tags that added by /tag command
      * @return the tags of this entity
      */
-    @NotNull
+    @NonNull
     Set<String> getTags();
 
     /**
@@ -53,14 +53,14 @@ public interface Entity {
      * @param tag the tag to be added
      * @return true if the tag had been added successfully
      */
-    boolean addTag(@Nullable String tag);
+    boolean addTag(@NonNull String tag);
 
     /**
      * Removes the tag of this entity
      * @param tag the tag to be removed
      * @return true if the tag had been removed successfully
      */
-    boolean removeTag(@Nullable String tag);
+    boolean removeTag(@NonNull String tag);
 
     /**
      * Kills this entity
@@ -96,13 +96,13 @@ public interface Entity {
      * Sets the portal cooldown time of this entity.
      * @param dimensionChangingDelay cooldown time
      */
-    void setPortalCooldownTime(@Range(from = 0, to = Integer.MAX_VALUE) int dimensionChangingDelay);
+    void setPortalCooldownTime(@IntRange(from = 0, to = Integer.MAX_VALUE) int dimensionChangingDelay);
 
     /**
      * Returns the portal cooldown time of this entity.
      * @return the portal cooldown time of this entity.
      */
-    @Range(from = 0, to = Integer.MAX_VALUE)
+    @IntRange(from = 0, to = Integer.MAX_VALUE)
     int getPortalCooldownTime();
 
     /**
@@ -115,7 +115,7 @@ public interface Entity {
      * Returns the ticks the entity will wait for before teleporting
      * @return the ticks the entity will wait for before teleporting. 0 for all entities, 1 for creative player, 80 for survival player
      */
-    @Range(from = 0, to = Integer.MAX_VALUE)
+    @IntRange(from = 0, to = Integer.MAX_VALUE)
     int getPortalWaitTime();
 
     /**
@@ -137,6 +137,22 @@ public interface Entity {
     default void clearFire() {
         setRemainingFireTicks(0);
     }
+
+    /**
+     * Returns true if this entity is on ground
+     * @return true if this entity is on ground
+     */
+    boolean isOnGround();
+
+    /**
+     * Plays the sound from this entity if this entity is not silent.({@link Entity#isSilent()} returns false)
+     * @param sound the sound to play
+     * @param volume volume of the sound
+     * @param pitch pitch of the sound
+     */
+    void playSound(@NonNull Sound sound, float volume, float pitch);
+    boolean isSilent();
+    void setSilent(boolean silent);
     UUID getUUID();
     String getName();
     String getDisplayName();
