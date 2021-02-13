@@ -1,8 +1,10 @@
 package org.pistonmc.server.impl.pluginapi.entity;
 
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.pistonmc.pluginapi.entity.EntityPose;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,11 +33,6 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
-    public void setEntityId(int id) {
-        entity.setId(id);
-    }
-
-    @Override
     public Set<String> getTags() {
         return Collections.unmodifiableSet(entity.getTags());
     }
@@ -61,6 +58,52 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
+    public void setEntityPose(EntityPose pose) {
+        Pose mcPos;
+        switch(pose) {
+            case DYING:
+                mcPos = Pose.DYING;
+                break;
+            case SLEEPING:
+                mcPos = Pose.SLEEPING;
+                break;
+            case STANDING:
+                mcPos = Pose.STANDING;
+                break;
+            case SWIMMING:
+                mcPos = Pose.SWIMMING;
+                break;
+            case CROUCHING:
+                mcPos = Pose.CROUCHING;
+                break;
+            case FALL_FLYING:
+                mcPos = Pose.FALL_FLYING;
+                break;
+            case SPIN_ATTACK:
+                mcPos = Pose.SPIN_ATTACK;
+                break;
+            default:
+                throw new IllegalArgumentException("Unexpected value: " + pose);
+        }
+        entity.setPose(mcPos);
+    }
+
+    @Override
+    public EntityPose getEntityPose() {
+        return entity.getPose().getPistonImpl();
+    }
+
+    @Override
+    public void setPos(double x, double y, double z) {
+        entity.setPos(x, y, z);
+    }
+
+    @Override
+    public boolean isOnPortalCooldown() {
+        return entity.isOnPortalCooldown();
+    }
+
+    @Override
     public UUID getUUID() {
         return entity.getUUID();
     }
@@ -77,11 +120,6 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
 
     @Override
     public void setDisplayName(String displayName) {
-
-    }
-
-    @Override
-    public void killEntity() {
 
     }
 

@@ -37,14 +37,6 @@ public interface Entity {
     int getEntityId();
 
     /**
-     * Sets the id of this entity
-     * @param id the id to be set
-     * @deprecated UNSAFE METHOD. WARNING: Call this method may cause unknown issues or server crash.
-     */
-    @Deprecated
-    void setEntityId(int id);
-
-    /**
      * Returns the tags that added by /tag command
      * @return the tags of this entity
      */
@@ -85,11 +77,30 @@ public interface Entity {
      * @return the pose of this entity
      */
     EntityPose getEntityPose();
+
+    /**
+     * Sets the position of this entity
+     * @param x X pos
+     * @param y Y pos
+     * @param z Z pos
+     */
+    void setPos(double x, double y, double z);
+
+    /**
+     * Returns true if this entity is on portal cooldown
+     * @return true if this entity is on portal cooldown
+     */
+    boolean isOnPortalCooldown();
+
+    /**
+     * Returns the ticks the entity will wait for before teleporting
+     * @return the ticks the entity will wait for before teleporting. 0 for all entities, 1 for creative player, 80 for survival player
+     */
+    int getPortalWaitTime();
     UUID getUUID();
     String getName();
     String getDisplayName();
     void setDisplayName(String displayName);
-    void killEntity();
     double getHealth();
     void setHealth(double health);
     boolean hasPermission(String permission);
