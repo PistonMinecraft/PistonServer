@@ -4,6 +4,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.common.value.qual.IntRange;
 import org.pistonmc.pluginapi.Sound;
 import org.pistonmc.pluginapi.effect.Effect;
+import org.pistonmc.pluginapi.fluid.FluidType;
 import org.pistonmc.pluginapi.location.Location;
 
 import java.util.List;
@@ -230,6 +231,19 @@ public interface Entity {
     default boolean isInWaterOrBubble() {
         return isInWater() || isInBubbleColumn();
     }
+
+    /**
+     * Returns whether this entity's eye is in the type of the fluid or not
+     * @param fluid the type of the fluid to be detected
+     * @return if this entity's eye is in the type of the fluid
+     */
+    boolean isEyeInFluid(@NonNull FluidType fluid);
+
+    /**
+     * Returns whether this entity is in lava or not
+     * @return if this entity is in lava
+     */
+    boolean isInLava();
     UUID getUUID();
     String getName();
     String getDisplayName();

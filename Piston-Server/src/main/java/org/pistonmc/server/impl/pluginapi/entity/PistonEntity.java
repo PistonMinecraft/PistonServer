@@ -2,14 +2,18 @@ package org.pistonmc.server.impl.pluginapi.entity;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.Tag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.material.Fluid;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.pistonmc.pluginapi.Sound;
 import org.pistonmc.pluginapi.entity.EntityPose;
+import org.pistonmc.pluginapi.fluid.FluidType;
 
 import java.util.Collections;
 import java.util.List;
@@ -163,6 +167,28 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     @Override
     public boolean isInBubbleColumn() {
         return entity.isInBubbleColumn();
+    }
+
+    @Override
+    public boolean isEyeInFluid(@NonNull FluidType fluid) {
+        if(fluid == null) return false;
+        Tag<Fluid> mcTagFluid = null;
+        switch(fluid) {
+            case WATER:
+            case FLOWING_WATER:
+                mcTagFluid = FluidTags.WATER;
+                break;
+            case LAVA:
+            case FLOWING_LAVA:
+                mcTagFluid = FluidTags.LAVA;
+                break;
+        }
+        return entity.isEyeInFluid(mcTagFluid);
+    }
+
+    @Override
+    public boolean isInLava() {
+        return entity.isInLava();
     }
 
     @Override
