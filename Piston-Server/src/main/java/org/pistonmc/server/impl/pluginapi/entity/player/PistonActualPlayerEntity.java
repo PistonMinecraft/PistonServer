@@ -79,12 +79,7 @@ public class PistonActualPlayerEntity extends PistonPlayerEntity implements org.
 
     @Override
     public org.pistonmc.pluginapi.entity.EntityType getEntityType() {
-        return null;
-    }
-
-    @Override
-    public void killEntity() {
-
+        return org.pistonmc.pluginapi.entity.EntityType.PLAYER;
     }
 
     @Override

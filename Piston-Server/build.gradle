@@ -6,13 +6,6 @@ import org.pistonmc.build.task.GenProcessedVanillaServerJarTask
 import java.nio.file.Files
 import java.util.jar.Attributes.Name
 
-plugins {
-    id 'java'
-    id 'idea'
-}
-
-apply from: '../buildScripts/shared.gradle'
-
 task genProcessedJar(type: GenProcessedVanillaServerJarTask) {
     forceProcess = false
 }

@@ -5,7 +5,6 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.google.common.collect.Lists;
 import net.minecraft.server.dedicated.DedicatedPlayerList;
 import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.server.level.ServerPlayer;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.block.data.BlockData;
@@ -74,7 +73,7 @@ public class PistonServer implements org.pistonmc.pluginapi.Server {
     }
 
     public class BukkitImpl implements org.bukkit.Server {
-        private final List<org.bukkit.entity.Player> onlinePlayers = Lists.transform(playerList.getPlayers(), ServerPlayer::getBukkitEntity);
+        private final List<org.bukkit.entity.Player> onlinePlayers = Lists.transform(playerList.getPlayers(), e->e.getPistonPluginEntityImpl().getBukkitImpl());
         private BukkitImpl() {
             Bukkit.setServer(this);
         }

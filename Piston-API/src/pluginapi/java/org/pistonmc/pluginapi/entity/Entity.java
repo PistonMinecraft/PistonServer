@@ -1,5 +1,8 @@
 package org.pistonmc.pluginapi.entity;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Range;
 import org.pistonmc.pluginapi.effect.Effect;
 import org.pistonmc.pluginapi.location.Location;
 
@@ -28,18 +31,21 @@ public interface Entity {
      * Returns the type of this entity
      * @return the type of this entity
      */
+    @NotNull
     EntityType getEntityType();
 
     /**
      * Returns the id of this entity
      * @return the id of this entity
      */
+    @Range(from = 1, to = Integer.MAX_VALUE)
     int getEntityId();
 
     /**
      * Returns the tags that added by /tag command
      * @return the tags of this entity
      */
+    @NotNull
     Set<String> getTags();
 
     /**
@@ -47,14 +53,14 @@ public interface Entity {
      * @param tag the tag to be added
      * @return true if the tag had been added successfully
      */
-    boolean addTag(String tag);
+    boolean addTag(@Nullable String tag);
 
     /**
      * Removes the tag of this entity
      * @param tag the tag to be removed
      * @return true if the tag had been removed successfully
      */
-    boolean removeTag(String tag);
+    boolean removeTag(@Nullable String tag);
 
     /**
      * Kills this entity
@@ -87,6 +93,19 @@ public interface Entity {
     void setPos(double x, double y, double z);
 
     /**
+     * Sets the portal cooldown time of this entity.
+     * @param dimensionChangingDelay cooldown time
+     */
+    void setPortalCooldownTime(@Range(from = 0, to = Integer.MAX_VALUE) int dimensionChangingDelay);
+
+    /**
+     * Returns the portal cooldown time of this entity.
+     * @return the portal cooldown time of this entity.
+     */
+    @Range(from = 0, to = Integer.MAX_VALUE)
+    int getPortalCooldownTime();
+
+    /**
      * Returns true if this entity is on portal cooldown
      * @return true if this entity is on portal cooldown
      */
@@ -96,7 +115,28 @@ public interface Entity {
      * Returns the ticks the entity will wait for before teleporting
      * @return the ticks the entity will wait for before teleporting. 0 for all entities, 1 for creative player, 80 for survival player
      */
+    @Range(from = 0, to = Integer.MAX_VALUE)
     int getPortalWaitTime();
+
+    /**
+     * Sets the remaining ticks of this entity on fire<br>
+     * <b>For creative players, remainingFireTicks is always 1 or less than 1, even if you set a larger value</b>
+     * @param remainingFireTicks the remaining ticks of this entity on fire
+     */
+    void setRemainingFireTicks(int remainingFireTicks);
+
+    /**
+     * Returns the remaining ticks of this entity on fire
+     * @return the remaining ticks of this entity on fire
+     */
+    int getRemainingFireTicks();
+
+    /**
+     * Clear the fire of this entity.
+     */
+    default void clearFire() {
+        setRemainingFireTicks(0);
+    }
     UUID getUUID();
     String getName();
     String getDisplayName();

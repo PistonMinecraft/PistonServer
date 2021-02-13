@@ -59,38 +59,12 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
 
     @Override
     public void setEntityPose(EntityPose pose) {
-        Pose mcPos;
-        switch(pose) {
-            case DYING:
-                mcPos = Pose.DYING;
-                break;
-            case SLEEPING:
-                mcPos = Pose.SLEEPING;
-                break;
-            case STANDING:
-                mcPos = Pose.STANDING;
-                break;
-            case SWIMMING:
-                mcPos = Pose.SWIMMING;
-                break;
-            case CROUCHING:
-                mcPos = Pose.CROUCHING;
-                break;
-            case FALL_FLYING:
-                mcPos = Pose.FALL_FLYING;
-                break;
-            case SPIN_ATTACK:
-                mcPos = Pose.SPIN_ATTACK;
-                break;
-            default:
-                throw new IllegalArgumentException("Unexpected value: " + pose);
-        }
-        entity.setPose(mcPos);
+        entity.setPose(Pose.values()[pose.ordinal()]);
     }
 
     @Override
     public EntityPose getEntityPose() {
-        return entity.getPose().getPistonImpl();
+        return EntityPose.values()[entity.getPose().ordinal()];
     }
 
     @Override
@@ -99,8 +73,24 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
+    public void setPortalCooldownTime(int dimensionChangingDelay) {
+        if(dimensionChangingDelay < 0) return;
+        entity.dimensionChangingDelay = dimensionChangingDelay;
+    }
+
+    @Override
+    public int getPortalCooldownTime() {
+        return entity.dimensionChangingDelay;
+    }
+
+    @Override
     public boolean isOnPortalCooldown() {
         return entity.isOnPortalCooldown();
+    }
+
+    @Override
+    public int getPortalWaitTime() {
+        return entity.portalWaitTime < 0 ? entity.getPortalWaitTime() : entity.portalWaitTime;
     }
 
     @Override

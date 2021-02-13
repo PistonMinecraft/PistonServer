@@ -1,8 +1,6 @@
 plugins {
     id 'java-library'
-    id 'idea'
 }
-apply from: '../buildScripts/shared.gradle'
 
 archivesBaseName = 'piston-api'
 version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
@@ -11,10 +9,12 @@ sourceSets {
     pluginApi {
         java.srcDirs =  ['src/pluginapi/java']
         resources.srcDirs =  ['src/pluginapi/resources']
+        compileClasspath += main.compileClasspath
     }
     moddingApi {
         java.srcDirs =  ['src/moddingapi/java']
         resources.srcDirs =  ['src/moddingapi/resources']
+        compileClasspath += main.compileClasspath
     }
     main {
         java.srcDirs = ['src/common/java']

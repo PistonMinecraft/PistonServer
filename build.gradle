@@ -1,3 +1,6 @@
+plugins {
+    id 'org.checkerframework' version '0.5.16' apply false
+}
 ext {
     ENV = System.getenv()
     MC_VERSION = '1.16.5'
@@ -8,6 +11,21 @@ allprojects {
     group = 'io.github.pistonmc'
 }
 subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'org.checkerframework'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(8)
+            vendor = JvmVendorSpec.ADOPTOPENJDK
+        }
+    }
+    tasks.withType(JavaCompile) {
+        options.encoding 'UTF-8'
+        options.compilerArgs.addAll(['-Xplugin:Manifold'])
+    }
+
     repositories {
         mavenCentral()
         maven {
@@ -21,5 +39,18 @@ subprojects {
     }
     configurations {
         testImplementation.extendsFrom annotationProcessor
+    }
+    dependencies {
+        checkerFramework 'org.checkerframework:checker:3.10.0'
+        implementation 'org.checkerframework:checker-qual:3.10.0'
+
+        implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
+        implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
+
+        annotationProcessor "systems.manifold:manifold:$LIB_MANIFOLD_VERSION"
+        annotationProcessor "systems.manifold:manifold-preprocessor:$LIB_MANIFOLD_VERSION"
+        annotationProcessor "systems.manifold:manifold-exceptions:$LIB_MANIFOLD_VERSION"
+        annotationProcessor "systems.manifold:manifold-strings:$LIB_MANIFOLD_VERSION"
+        annotationProcessor "systems.manifold:manifold-ext:$LIB_MANIFOLD_VERSION"
     }
 }
