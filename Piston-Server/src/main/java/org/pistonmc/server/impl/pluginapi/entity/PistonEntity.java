@@ -136,6 +136,36 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
+    public boolean isNoGravity() {
+        return entity.isNoGravity();
+    }
+
+    @Override
+    public void setNoGravity(boolean noGravity) {
+        entity.setNoGravity(noGravity);
+    }
+
+    @Override
+    public boolean isFireImmune() {
+        return entity.fireImmune();
+    }
+
+    @Override
+    public boolean isInWater() {
+        return entity.isInWater();
+    }
+
+    @Override
+    public boolean isInRain() {
+        return entity.isInRain();
+    }
+
+    @Override
+    public boolean isInBubbleColumn() {
+        return entity.isInBubbleColumn();
+    }
+
+    @Override
     public UUID getUUID() {
         return entity.getUUID();
     }

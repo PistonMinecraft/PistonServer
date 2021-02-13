@@ -64,6 +64,26 @@
          if (!this.fireImmune()) {
              this.setSecondsOnFire(15);
              this.hurt(DamageSource.LAVA, 4.0F);
+@@ -912,17 +934,17 @@
+ 
+     public boolean isInWater() {
+         return this.wasTouchingWater;
+     }
+ 
+-    private boolean isInRain() {
++    public boolean isInRain() { // PistonMC - change access modifier
+         BlockPos blockpos = this.blockPosition();
+ 
+         return this.level.isRainingAt(blockpos) || this.level.isRainingAt(new BlockPos((double) blockpos.getX(), this.getBoundingBox().maxY, (double) blockpos.getZ()));
+     }
+ 
+-    private boolean isInBubbleColumn() {
++    public boolean isInBubbleColumn() { // PistonMC - change access modifier
+         return this.level.getBlockState(this.blockPosition()).is(Blocks.BUBBLE_COLUMN);
+     }
+ 
+     public boolean isInWaterOrRain() {
+         return this.isInWater() || this.isInRain();
 @@ -1724,11 +1746,11 @@
          }
      }

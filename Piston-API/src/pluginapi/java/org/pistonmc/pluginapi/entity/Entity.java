@@ -18,7 +18,7 @@ import java.util.UUID;
 public interface Entity {
     /**
      * Returns whether this entity is in spectator mode or not.
-     * @return true if this entity is in spectator mode.
+     * @return if this entity is in spectator mode.
      */
     boolean isSpectator();
 
@@ -52,14 +52,14 @@ public interface Entity {
     /**
      * Adds the tag to this entity
      * @param tag the tag to be added
-     * @return true if the tag had been added successfully
+     * @return if the tag had been added successfully
      */
     boolean addTag(@NonNull String tag);
 
     /**
      * Removes the tag of this entity
      * @param tag the tag to be removed
-     * @return true if the tag had been removed successfully
+     * @return if the tag had been removed successfully
      */
     boolean removeTag(@NonNull String tag);
 
@@ -69,7 +69,7 @@ public interface Entity {
     void kill();
 
     /**
-     * Removes this entity
+     * Mark this entity as removed
      */
     void remove();
 
@@ -107,8 +107,8 @@ public interface Entity {
     int getPortalCooldownTime();
 
     /**
-     * Returns true if this entity is on portal cooldown
-     * @return true if this entity is on portal cooldown
+     * Returns whether this entity is on portal cooldown or not
+     * @return if this entity is on portal cooldown
      */
     boolean isOnPortalCooldown();
 
@@ -146,8 +146,8 @@ public interface Entity {
     }
 
     /**
-     * Returns true if this entity is on ground
-     * @return true if this entity is on ground
+     * Returns whether this entity is on ground or not
+     * @return if this entity is on ground
      */
     boolean isOnGround();
 
@@ -160,16 +160,76 @@ public interface Entity {
     void playSound(@NonNull Sound sound, float volume, float pitch);
 
     /**
-     * Returns true if this entity is on silent
-     * @return true if this entity is on silent
+     * Returns whether this entity is silent or not
+     * @return if this entity is silent
      */
     boolean isSilent();
 
     /**
-     * Sets whether the entity is silent or not.
-     * @param silent if the entity is silent
+     * Sets whether this entity is silent or not.
+     * @param silent if this entity is silent
      */
     void setSilent(boolean silent);
+
+    /**
+     * Returns whether this entity is no gravity or not
+     * @return if this entity is no gravity
+     */
+    boolean isNoGravity();
+
+    /**
+     * Sets whether this entity is no gravity or not
+     * @param noGravity if this entity is no gravity
+     */
+    void setNoGravity(boolean noGravity);
+
+    /**
+     * Returns whether this entity is immune to fire or not
+     * @return if this entity is immune to fire
+     */
+    boolean isFireImmune();
+
+    /**
+     * Returns whether this entity is in water or not
+     * @return if this entity is in water
+     */
+    boolean isInWater();
+
+    /**
+     * Returns whether this entity is in rain or not
+     * @return if this entity is in rain
+     */
+    boolean isInRain();
+
+    /**
+     * Returns whether this entity is in bubble column or not
+     * @return if this entity is in bubble column
+     */
+    boolean isInBubbleColumn();
+
+    /**
+     * Returns whether this entity is in water or rain or not
+     * @return if this entity is in water or rain
+     */
+    default boolean isInWaterOrRain() {
+        return isInWater() || isInRain();
+    }
+
+    /**
+     * Returns whether this entity is in water or rain or bubble column or not
+     * @return if this entity is in water or rain or bubble column
+     */
+    default boolean isInWaterRainOrBubble() {
+        return isInWater() || isInRain() || isInBubbleColumn();
+    }
+
+    /**
+     * Returns whether this entity is in water or bubble column or not
+     * @return if this entity is in water or bubble column
+     */
+    default boolean isInWaterOrBubble() {
+        return isInWater() || isInBubbleColumn();
+    }
     UUID getUUID();
     String getName();
     String getDisplayName();
