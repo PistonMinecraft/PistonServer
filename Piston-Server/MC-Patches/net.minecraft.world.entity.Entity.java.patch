@@ -14,3 +14,66 @@
          this.passengers = Lists.newArrayList();
          this.deltaMovement = Vec3.ZERO;
          this.bb = Entity.INITIAL_AABB;
+@@ -387,13 +390,23 @@
+ 
+         this.firstTick = false;
+         this.level.getProfiler().pop();
+     }
+ 
++    // PistonMC - start
++    private int dimensionChangingDelay = this.getDimensionChangingDelay();
+     public void setPortalCooldown() {
+-        this.portalCooldown = this.getDimensionChangingDelay();
++        this.portalCooldown = dimensionChangingDelay < 0 ? this.getDimensionChangingDelay() : dimensionChangingDelay;
+     }
++    public void setDimensionChangingDelay(int dimensionChangingDelay) {
++        if(dimensionChangingDelay < 0) return;
++        this.dimensionChangingDelay = dimensionChangingDelay;
++    }
++    public int getCustomDimensionChangingDelay() {
++        return dimensionChangingDelay;
++    }
++    // PistonMC - end
+ 
+     public boolean isOnPortalCooldown() {
+         return this.portalCooldown > 0;
+     }
+ 
+@@ -401,14 +414,23 @@
+         if (this.isOnPortalCooldown()) {
+             --this.portalCooldown;
+         }
+ 
+     }
+-
++    // PistonMC - start
++    private int portalWaitTime = getPortalWaitTime();
+     public int getPortalWaitTime() {
+         return 0;
+     }
++    public void setPortalWaitTime(int portalWaitTime) {
++        if(portalWaitTime < 0) return;
++        this.portalWaitTime = portalWaitTime;
++    }
++    public int getCustomPortalWaitTime() {
++        return portalWaitTime;
++    }
++    //PistonMC - end
+ 
+     protected void lavaHurt() {
+         if (!this.fireImmune()) {
+             this.setSecondsOnFire(15);
+             this.hurt(DamageSource.LAVA, 4.0F);
+@@ -1724,11 +1746,11 @@
+         }
+     }
+ 
+     protected void handleNetherPortal() {
+         if (this.level instanceof ServerLevel) {
+-            int i = this.getPortalWaitTime();
++            int i = this.portalWaitTime < 0 ? this.getPortalWaitTime() : this.portalWaitTime; // PistonMC
+             ServerLevel serverlevel = (ServerLevel) this.level;
+ 
+             if (this.isInsidePortal) {
+                 MinecraftServer minecraftserver = serverlevel.getServer();
+                 ResourceKey resourcekey = this.level.dimension() == Level.NETHER ? Level.OVERWORLD : Level.NETHER;

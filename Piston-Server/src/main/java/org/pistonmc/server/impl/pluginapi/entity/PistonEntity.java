@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.pistonmc.pluginapi.Sound;
@@ -37,17 +38,18 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
+    @NonNull
     public Set<String> getTags() {
         return Collections.unmodifiableSet(entity.getTags());
     }
 
     @Override
-    public boolean addTag(String tag) {
+    public boolean addTag(@NonNull String tag) {
         return entity.addTag(tag);
     }
 
     @Override
-    public boolean removeTag(String tag) {
+    public boolean removeTag(@NonNull String tag) {
         return entity.removeTag(tag);
     }
 
@@ -78,13 +80,13 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
 
     @Override
     public void setPortalCooldownTime(int dimensionChangingDelay) {
-        if(dimensionChangingDelay < 0) return;
-        entity.dimensionChangingDelay = dimensionChangingDelay;
+        entity.setDimensionChangingDelay(dimensionChangingDelay);
     }
 
     @Override
     public int getPortalCooldownTime() {
-        return entity.dimensionChangingDelay;
+        int i = entity.getCustomDimensionChangingDelay();
+        return i < 0 ? entity.getDimensionChangingDelay() : i;
     }
 
     @Override
@@ -93,8 +95,14 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
+    public void setPortalWaitTime(@IntRange(from = 0, to = Integer.MAX_VALUE) int portalWaitTime) {
+        entity.setPortalWaitTime(portalWaitTime);
+    }
+
+    @Override
     public int getPortalWaitTime() {
-        return entity.portalWaitTime < 0 ? entity.getPortalWaitTime() : entity.portalWaitTime;
+        int i = entity.getCustomPortalWaitTime();
+        return i < 0 ? entity.getPortalWaitTime() : i;
     }
 
     @Override

@@ -17,10 +17,11 @@ import java.util.UUID;
  */
 public interface Entity {
     /**
-     * Returns true if this entity is in spectator mode.
-     * @return true this entity is in spectator mode.
+     * Returns whether this entity is in spectator mode or not.
+     * @return true if this entity is in spectator mode.
      */
     boolean isSpectator();
+
     /**
      * Eject all passengers if this entity is a vehicle.<br>
      * Stop riding if this entity is a passenger.
@@ -36,7 +37,7 @@ public interface Entity {
 
     /**
      * Returns the id of this entity
-     * @return the id of this entity
+     * @return the unique id of this entity
      */
     @IntRange(from = 1, to = Integer.MAX_VALUE)
     int getEntityId();
@@ -112,7 +113,13 @@ public interface Entity {
     boolean isOnPortalCooldown();
 
     /**
-     * Returns the ticks the entity will wait for before teleporting
+     * Sets the ticks after the portal cooldown the entity will wait for before teleporting
+     * @param portalWaitTime the ticks the entity will wait for before teleporting
+     */
+    void setPortalWaitTime(@IntRange(from = 0, to = Integer.MAX_VALUE) int portalWaitTime);
+
+    /**
+     * Returns the ticks after the portal cooldown the entity will wait for before teleporting
      * @return the ticks the entity will wait for before teleporting. 0 for all entities, 1 for creative player, 80 for survival player
      */
     @IntRange(from = 0, to = Integer.MAX_VALUE)
@@ -151,7 +158,17 @@ public interface Entity {
      * @param pitch pitch of the sound
      */
     void playSound(@NonNull Sound sound, float volume, float pitch);
+
+    /**
+     * Returns true if this entity is on silent
+     * @return true if this entity is on silent
+     */
     boolean isSilent();
+
+    /**
+     * Sets whether the entity is silent or not.
+     * @param silent if the entity is silent
+     */
     void setSilent(boolean silent);
     UUID getUUID();
     String getName();
