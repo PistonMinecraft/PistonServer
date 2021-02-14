@@ -9,4 +9,5 @@ public interface Types {
     interface EntityType {}
     interface ItemType {}
     interface WorldType {}
+    interface FoodType {}
 }

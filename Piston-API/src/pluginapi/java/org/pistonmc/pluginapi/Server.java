@@ -17,6 +17,23 @@ public interface Server {
      * @return 玩家实体
      */
     PlayerEntity getPlayer(String playerName);
+    /**
+     * 通过玩家UUID获取玩家实体
+     * @param playerUUID UUID
+     * @return 玩家实体
+     */
     PlayerEntity getPlayer(UUID playerUUID);
+
+    /**
+     * 通过名称获取世界
+     * @param worldName
+     * @return 世界
+     */
     World getWorld(String worldName);
+    /**
+     * 获取服务器最大人数
+     * @return
+     */
+    int getMaxPlayer();
+
 }

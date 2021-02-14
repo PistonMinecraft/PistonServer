@@ -1,8 +1,9 @@
 package org.pistonmc.pluginapi.world;
 
-import org.pistonmc.pluginapi.util.PortalRect;
+import org.pistonmc.pluginapi.location.Location;
 
 public interface Portal {
     PortalType getPortalType();
-    PortalRect getPortalRect();
+    Location getPortalLocation();
+    Location getDeliveryLocation();
 }
