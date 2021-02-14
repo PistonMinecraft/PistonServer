@@ -2,8 +2,6 @@ package org.pistonmc.pluginapi.block;
 
 import org.pistonmc.pluginapi.Types;
 
-import java.util.function.Supplier;
-
 public enum BlockType implements Types.BlockType {
     AIR,
     STONE,
@@ -854,12 +852,12 @@ public enum BlockType implements Types.BlockType {
         PISTON,
         FABRIC,
         UNKNOWN;
-        private Supplier<Block> specificBlock;
-        public void setSpecificBlock(Supplier<Block> specificBlock) {
+        private Block specificBlock;
+        public void setSpecificBlock(Block specificBlock) {
             this.specificBlock = specificBlock;
         }
         public Block getSpecificBlock() {
-            return specificBlock.get();
+            return specificBlock;
         }
     }
 }

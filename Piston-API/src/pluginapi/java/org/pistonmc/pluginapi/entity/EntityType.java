@@ -2,8 +2,6 @@ package org.pistonmc.pluginapi.entity;
 
 import org.pistonmc.pluginapi.Types;
 
-import java.util.function.Supplier;
-
 public enum EntityType implements Types.EntityType {
     AREA_EFFECT_CLOUD,
     ARMOR_STAND,
@@ -121,12 +119,12 @@ public enum EntityType implements Types.EntityType {
         PISTON,
         FABRIC,
         UNKNOWN;
-        private Supplier<Entity> specificEntity;
-        public void setSpecificEntity(Supplier<Entity> specificEntity) {
+        private Entity specificEntity;
+        public void setSpecificEntity(Entity specificEntity) {
             this.specificEntity = specificEntity;
         }
         public Entity getSpecificEntity() {
-            return specificEntity.get();
+            return specificEntity;
         }
     }
 }

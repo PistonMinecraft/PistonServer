@@ -2,8 +2,6 @@ package org.pistonmc.pluginapi.effect;
 
 import org.pistonmc.pluginapi.Types;
 
-import java.util.function.Supplier;
-
 public enum EffectType implements Types.EffectType {
     MOVEMENT_SPEED,
     MOVEMENT_SLOWDOWN,
@@ -41,12 +39,12 @@ public enum EffectType implements Types.EffectType {
         PISTON,
         FABRIC,
         UNKNOWN;
-        private Supplier<Effect> specificEffect;
-        public void setSpecificEffect(Supplier<Effect> specificEffect) {
+        private Effect specificEffect;
+        public void setSpecificEffect(Effect specificEffect) {
             this.specificEffect = specificEffect;
         }
         public Effect getSpecificEffect() {
-            return specificEffect.get();
+            return specificEffect;
         }
     }
 }

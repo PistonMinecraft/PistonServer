@@ -1,6 +1,10 @@
 package org.pistonmc.pluginapi;
 
-public enum Sound {
+import org.pistonmc.pluginapi.fluid.Fluid;
+
+import java.util.function.Supplier;
+
+public enum Sound implements Types.SoundType {
     AMBIENT_CAVE("ambient.cave"),
     AMBIENT_BASALT_DELTAS_ADDITIONS("ambient.basalt_deltas.additions"),
     AMBIENT_BASALT_DELTAS_LOOP("ambient.basalt_deltas.loop"),
@@ -993,11 +997,24 @@ public enum Sound {
     ZOMBIE_VILLAGER_DEATH("entity.zombie_villager.death"),
     ZOMBIE_VILLAGER_HURT("entity.zombie_villager.hurt"),
     ZOMBIE_VILLAGER_STEP("entity.zombie_villager.step");
-    private final String id;
+    private final ResourceName id;
     Sound(String id) {
-        this.id = id;
+        this.id = ResourceName.minecraft(id);
     }
-    public String getId() {
+    public ResourceName getId() {
         return id;
+    }
+    public enum ModFluidType implements Types.FluidType {
+        FORGE,
+        PISTON,
+        FABRIC,
+        UNKNOWN;
+        private Supplier<Fluid> specificFluid;
+        public void setSpecificFluid(Supplier<Fluid> specificFluid) {
+            this.specificFluid = specificFluid;
+        }
+        public Fluid getSpecificFluid() {
+            return specificFluid.get();
+        }
     }
 }
