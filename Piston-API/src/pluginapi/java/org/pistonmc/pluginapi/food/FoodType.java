@@ -1,10 +1,6 @@
 package org.pistonmc.pluginapi.food;
 
-import org.pistonmc.pluginapi.Types;
-
-import java.util.function.Supplier;
-
-public enum FoodType implements Types.FoodType {
+public enum FoodType {
     APPLE,
     BAKED_POTATO,
     BEEF,
@@ -43,18 +39,27 @@ public enum FoodType implements Types.FoodType {
     SPIDER_EYE,
     SUSPICIOUS_STEW,
     SWEET_BERRIES,
-    TROPICAL_FISH;
-    public enum ModFoodType implements Types.FoodType {
-        FORGE,
-        PISTON,
-        FABRIC,
-        UNKNOWN;
-        private Supplier<Food> specificFood;
-        public void setSpecificItem(Supplier<Food> specificItem) {
+    TROPICAL_FISH,
+    MOD {
+        private Food specificFood;
+
+        @Override
+        public void setSpecificFood(Food specificFood) {
             this.specificFood = specificFood;
         }
-        public Food getSpecificItem() {
-            return specificFood.get();
+
+        @Override
+        public Food getSpecificFood() {
+            return specificFood;
         }
+    },
+    UNKNOWN;
+
+    public void setSpecificFood(Food specificFood) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Food getSpecificFood() {
+        throw new UnsupportedOperationException();
     }
 }

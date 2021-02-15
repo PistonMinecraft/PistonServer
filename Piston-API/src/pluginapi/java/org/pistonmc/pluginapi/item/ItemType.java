@@ -1,10 +1,6 @@
 package org.pistonmc.pluginapi.item;
 
-import org.pistonmc.pluginapi.Types;
-
-import java.util.function.Supplier;
-
-public enum ItemType implements Types.ItemType {
+public enum ItemType {
     AIR,
     STONE,
     GRANITE,
@@ -1050,18 +1046,27 @@ public enum ItemType implements Types.ItemType {
     DRIPSTONE_BLOCK,
     SCULK_SENSOR,
     GLOW_LICHEN,
-    GLOW_INK_SAC;
-    public enum ModItemType implements Types.ItemType {
-        FORGE,
-        PISTON,
-        FABRIC,
-        UNKNOWN;
-        private Supplier<Item> specificItem;
-        public void setSpecificItem(Supplier<Item> specificItem) {
+    GLOW_INK_SAC,
+    MOD {
+        private Item specificItem;
+
+        @Override
+        public void setSpecificItem(Item specificItem) {
             this.specificItem = specificItem;
         }
+
+        @Override
         public Item getSpecificItem() {
-            return specificItem.get();
+            return specificItem;
         }
+    },
+    UNKNOWN;
+
+    public void setSpecificItem(Item specificItem) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Item getSpecificItem() {
+        throw new UnsupportedOperationException();
     }
 }

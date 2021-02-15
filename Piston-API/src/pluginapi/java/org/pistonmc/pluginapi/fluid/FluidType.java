@@ -1,10 +1,8 @@
 package org.pistonmc.pluginapi.fluid;
 
-import org.pistonmc.pluginapi.Types;
+import org.pistonmc.pluginapi.entity.Entity;
 
-import java.util.function.Supplier;
-
-public enum FluidType implements Types.FluidType {
+public enum FluidType {
     /**
      * Water source
      */
@@ -15,18 +13,26 @@ public enum FluidType implements Types.FluidType {
      */
     LAVA,
     FLOWING_LAVA,
-    UNKNOWN {public void setSpecificFluid(){}};
-    public enum ModFluidType implements Types.FluidType {
-        FORGE,
-        PISTON,
-        FABRIC,
-        UNKNOWN;
-        private Supplier<Fluid> specificFluid;
-        public void setSpecificFluid(Supplier<Fluid> specificFluid) {
+    MOD {
+        private Entity specificFluid;
+
+        @Override
+        public void setSpecificFluid(Entity specificFluid) {
             this.specificFluid = specificFluid;
         }
-        public Fluid getSpecificFluid() {
-            return specificFluid.get();
+
+        @Override
+        public Entity getSpecificFluid() {
+            return specificFluid;
         }
+    },
+    UNKNOWN;
+
+    public void setSpecificFluid(Entity specificFluid) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Entity getSpecificFluid() {
+        throw new UnsupportedOperationException();
     }
 }

@@ -1,5 +1,5 @@
 package org.pistonmc.pluginapi.map;
 
-public class Map {
+public interface Map {
     int getSize();
 }

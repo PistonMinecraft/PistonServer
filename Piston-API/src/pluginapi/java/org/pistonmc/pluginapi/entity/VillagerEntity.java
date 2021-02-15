@@ -1,5 +1,4 @@
 package org.pistonmc.pluginapi.entity;
 
-public interface VillagerEntity extends Entity{
-
+public interface VillagerEntity extends Entity {
 }

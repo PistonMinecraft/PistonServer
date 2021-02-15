@@ -4,6 +4,8 @@ import org.pistonmc.pluginapi.location.Location;
 
 public interface Portal {
     PortalType getPortalType();
+
     Location getPortalLocation();
-    Location getDeliveryLocation();
+
+    Location getDestinationLocation();
 }

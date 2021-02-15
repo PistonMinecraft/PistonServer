@@ -1,10 +1,8 @@
 package org.pistonmc.pluginapi;
 
-import org.pistonmc.pluginapi.fluid.Fluid;
+import org.pistonmc.pluginapi.entity.Entity;
 
-import java.util.function.Supplier;
-
-public enum Sound implements Types.SoundType {
+public enum Sound {
     AMBIENT_CAVE("ambient.cave"),
     AMBIENT_BASALT_DELTAS_ADDITIONS("ambient.basalt_deltas.additions"),
     AMBIENT_BASALT_DELTAS_LOOP("ambient.basalt_deltas.loop"),
@@ -996,25 +994,47 @@ public enum Sound implements Types.SoundType {
     ZOMBIE_VILLAGER_CURE("entity.zombie_villager.cure"),
     ZOMBIE_VILLAGER_DEATH("entity.zombie_villager.death"),
     ZOMBIE_VILLAGER_HURT("entity.zombie_villager.hurt"),
-    ZOMBIE_VILLAGER_STEP("entity.zombie_villager.step");
+    ZOMBIE_VILLAGER_STEP("entity.zombie_villager.step"),
+    MOD {
+        private ResourceName specificSoundId;
+
+        @Override
+        public void setSpecificSoundId(ResourceName specificSoundId) {
+            this.specificSoundId = specificSoundId;
+        }
+
+        @Override
+        public ResourceName getSpecificSoundId() {
+            return specificSoundId;
+        }
+    },
+    UNKNOWN {
+        private ResourceName specificSoundId;
+
+        @Override
+        public void setSpecificSoundId(ResourceName specificSoundId) {
+            this.specificSoundId = specificSoundId;
+        }
+
+        @Override
+        public ResourceName getSpecificSoundId() {
+            return specificSoundId;
+        }
+    };
+
+    public void setSpecificSoundId(ResourceName specificSoundId) {
+        throw new UnsupportedOperationException();
+    }
+
+    public ResourceName getSpecificSoundId() {
+        throw new UnsupportedOperationException();
+    }
     private final ResourceName id;
+    Sound() { id = null; }
     Sound(String id) {
         this.id = ResourceName.minecraft(id);
     }
     public ResourceName getId() {
-        return id;
-    }
-    public enum ModSoundType implements Types.SoundType {
-        FORGE,
-        PISTON,
-        FABRIC,
-        UNKNOWN;
-        private ResourceName specificSoundId;
-        public void setId(ResourceName specificSoundId) {
-            this.specificSoundId = specificSoundId;
-        }
-        public ResourceName getId() {
-            return specificSoundId;
-        }
+        return id == null ? getSpecificSoundId() : id;
     }
 }

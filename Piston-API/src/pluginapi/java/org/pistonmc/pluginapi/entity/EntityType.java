@@ -1,8 +1,6 @@
 package org.pistonmc.pluginapi.entity;
 
-import org.pistonmc.pluginapi.Types;
-
-public enum EntityType implements Types.EntityType {
+public enum EntityType {
     AREA_EFFECT_CLOUD,
     ARMOR_STAND,
     ARROW,
@@ -114,17 +112,26 @@ public enum EntityType implements Types.EntityType {
     ZOMBIFIED_PIGLIN,
     PLAYER,
     FISHING_BOBBER,
-    UNKNOWN;
-    public enum ModEntityType implements Types.EntityType {
-        FORGE,
-        PISTON,
-        FABRIC;
+    MOD {
         private Entity specificEntity;
+
+        @Override
         public void setSpecificEntity(Entity specificEntity) {
             this.specificEntity = specificEntity;
         }
+
+        @Override
         public Entity getSpecificEntity() {
             return specificEntity;
         }
+    },
+    UNKNOWN;
+
+    public void setSpecificEntity(Entity specificEntity) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Entity getSpecificEntity() {
+        throw new UnsupportedOperationException();
     }
 }

@@ -9,6 +9,7 @@ public abstract class BlockEvent extends Event {
     public BlockEvent(Block block) {
         this.block = block;
     }
+
     public BlockEvent(Block block, boolean isAsync) {
         super(isAsync);
         this.block = block;

@@ -11,12 +11,14 @@ public interface Server {
      * @return Piston服务端版本
      */
     String getServerVersion();
+
     /**
      * 通过玩家名称获取玩家实体
      * @param playerName 玩家的名字
      * @return 玩家实体
      */
     PlayerEntity getPlayer(String playerName);
+
     /**
      * 通过玩家UUID获取玩家实体
      * @param playerUUID UUID
@@ -30,10 +32,10 @@ public interface Server {
      * @return 世界
      */
     World getWorld(String worldName);
+
     /**
      * 获取服务器最大人数
      * @return
      */
     int getMaxPlayer();
-
 }

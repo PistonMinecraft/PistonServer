@@ -25,5 +25,4 @@ public class PlayerJoinServerEvent extends PlayerEvent {
     public String getJoinMessage() {
         return joinMessage;
     }
-
 }

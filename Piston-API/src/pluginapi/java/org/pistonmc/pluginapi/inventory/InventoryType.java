@@ -8,5 +8,26 @@ public enum InventoryType {
     CUSTOM_CHEST,
     BAG,
     ARMOR,
-    OTHER,
+    MOD {
+        private Inventory specificInventory;
+
+        @Override
+        public void setSpecificInventory(Inventory specificInventory) {
+            this.specificInventory = specificInventory;
+        }
+
+        @Override
+        public Inventory getSpecificInventory() {
+            return specificInventory;
+        }
+    },
+    UNKNOWN;
+
+    public void setSpecificInventory(Inventory specificInventory) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Inventory getSpecificInventory() {
+        throw new UnsupportedOperationException();
+    }
 }

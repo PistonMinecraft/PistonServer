@@ -1,8 +1,6 @@
 package org.pistonmc.pluginapi.effect;
 
-import org.pistonmc.pluginapi.Types;
-
-public enum EffectType implements Types.EffectType {
+public enum EffectType {
     MOVEMENT_SPEED,
     MOVEMENT_SLOWDOWN,
     DIG_SPEED,
@@ -34,17 +32,26 @@ public enum EffectType implements Types.EffectType {
     CONDUIT_POWER,
     DOLPHINS_GRACE,
     BAD_OMEN,
-    UNKNOWN;
-    public enum ModEffectType implements Types.EffectType {
-        FORGE,
-        PISTON,
-        FABRIC;
+    MOD {
         private Effect specificEffect;
+
+        @Override
         public void setSpecificEffect(Effect specificEffect) {
             this.specificEffect = specificEffect;
         }
+
+        @Override
         public Effect getSpecificEffect() {
             return specificEffect;
         }
+    },
+    UNKNOWN;
+
+    public void setSpecificEffect(Effect specificEffect) {
+        throw new UnsupportedOperationException();
+    }
+
+    public Effect getSpecificEffect() {
+        throw new UnsupportedOperationException();
     }
 }

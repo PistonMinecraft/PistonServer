@@ -1,8 +1,6 @@
 package org.pistonmc.pluginapi.block;
 
-import org.pistonmc.pluginapi.Types;
-
-public enum BlockType implements Types.BlockType {
+public enum BlockType {
     AIR,
     STONE,
     GRANITE,
@@ -849,17 +847,23 @@ public enum BlockType implements Types.BlockType {
     GLOW_LICHEN,
     MOD {
         private Block specificBlock;
+
+        @Override
         public void setSpecificBlock(Block specificBlock) {
             this.specificBlock = specificBlock;
         }
+
+        @Override
         public Block getSpecificBlock() {
             return specificBlock;
         }
     },
     UNKNOWN;
+
     public void setSpecificBlock(Block specificBlock) {
         throw new UnsupportedOperationException();
     }
+
     public Block getSpecificBlock() {
         throw new UnsupportedOperationException();
     }
