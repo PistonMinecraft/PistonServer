@@ -1004,17 +1004,17 @@ public enum Sound implements Types.SoundType {
     public ResourceName getId() {
         return id;
     }
-    public enum ModFluidType implements Types.FluidType {
+    public enum ModSoundType implements Types.SoundType {
         FORGE,
         PISTON,
         FABRIC,
         UNKNOWN;
-        private Supplier<Fluid> specificFluid;
-        public void setSpecificFluid(Supplier<Fluid> specificFluid) {
-            this.specificFluid = specificFluid;
+        private ResourceName specificSoundId;
+        public void setId(ResourceName specificSoundId) {
+            this.specificSoundId = specificSoundId;
         }
-        public Fluid getSpecificFluid() {
-            return specificFluid.get();
+        public ResourceName getId() {
+            return specificSoundId;
         }
     }
 }

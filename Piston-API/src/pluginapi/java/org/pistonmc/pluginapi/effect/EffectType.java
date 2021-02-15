@@ -33,12 +33,12 @@ public enum EffectType implements Types.EffectType {
     SLOW_FALLING,
     CONDUIT_POWER,
     DOLPHINS_GRACE,
-    BAD_OMEN;
+    BAD_OMEN,
+    UNKNOWN;
     public enum ModEffectType implements Types.EffectType {
         FORGE,
         PISTON,
-        FABRIC,
-        UNKNOWN;
+        FABRIC;
         private Effect specificEffect;
         public void setSpecificEffect(Effect specificEffect) {
             this.specificEffect = specificEffect;

@@ -228,7 +228,7 @@ public interface Entity {
      * Returns whether this entity is in water or bubble column or not
      * @return if this entity is in water or bubble column
      */
-    default boolean isInWaterOrBubble() {
+    default boolean isInWaterOrBubble() {FluidType.UNKNOWN.set
         return isInWater() || isInBubbleColumn();
     }
 

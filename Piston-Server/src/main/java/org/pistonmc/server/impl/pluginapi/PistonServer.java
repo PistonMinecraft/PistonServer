@@ -35,7 +35,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class PistonServer implements org.pistonmc.pluginapi.Server {
     private final DedicatedServer server;
@@ -74,7 +73,7 @@ public class PistonServer implements org.pistonmc.pluginapi.Server {
     }
 
     public class BukkitImpl implements org.bukkit.Server {
-        private final List<org.bukkit.entity.Player> onlinePlayers = playerList.getPlayers().stream().map(e -> e.getPistonPluginEntityImpl().getBukkitImpl()).collect(Collectors.toList());
+        private final List<org.bukkit.entity.Player> onlinePlayers = Lists.transform(playerList.getPlayers(), e->e.getPistonPluginEntityImpl().getBukkitImpl());
         private BukkitImpl() {
             Bukkit.setServer(this);
         }

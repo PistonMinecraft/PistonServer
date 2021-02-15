@@ -6,12 +6,13 @@ package org.pistonmc.pluginapi;
 public interface Types {
     interface BlockType {}
     interface EffectType {}
+    interface EntityType {}
     interface FluidType { }
     interface FoodType {}
-    interface EntityType {}
     interface ItemType {}
-    interface WorldType {}
-    interface SoundType {
+    interface ResourceType {
         ResourceName getId();
     }
+    interface SoundType extends ResourceType {}
+    interface WorldType {}
 }

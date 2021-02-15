@@ -14,7 +14,8 @@ public enum FluidType implements Types.FluidType {
      * Lava source
      */
     LAVA,
-    FLOWING_LAVA;
+    FLOWING_LAVA,
+    UNKNOWN {public void setSpecificFluid(){}};
     public enum ModFluidType implements Types.FluidType {
         FORGE,
         PISTON,

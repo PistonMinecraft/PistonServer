@@ -113,12 +113,12 @@ public enum EntityType implements Types.EntityType {
     ZOMBIE_VILLAGER,
     ZOMBIFIED_PIGLIN,
     PLAYER,
-    FISHING_BOBBER;
+    FISHING_BOBBER,
+    UNKNOWN;
     public enum ModEntityType implements Types.EntityType {
         FORGE,
         PISTON,
-        FABRIC,
-        UNKNOWN;
+        FABRIC;
         private Entity specificEntity;
         public void setSpecificEntity(Entity specificEntity) {
             this.specificEntity = specificEntity;

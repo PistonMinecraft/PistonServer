@@ -846,12 +846,8 @@ public enum BlockType implements Types.BlockType {
     LIGHTNING_ROD,
     POINTED_DRIPSTONE,
     DRIPSTONE_BLOCK,
-    GLOW_LICHEN;
-    public enum ModBlockType implements Types.BlockType {
-        FORGE,
-        PISTON,
-        FABRIC,
-        UNKNOWN;
+    GLOW_LICHEN,
+    MOD {
         private Block specificBlock;
         public void setSpecificBlock(Block specificBlock) {
             this.specificBlock = specificBlock;
@@ -859,5 +855,12 @@ public enum BlockType implements Types.BlockType {
         public Block getSpecificBlock() {
             return specificBlock;
         }
+    },
+    UNKNOWN;
+    public void setSpecificBlock(Block specificBlock) {
+        throw new UnsupportedOperationException();
+    }
+    public Block getSpecificBlock() {
+        throw new UnsupportedOperationException();
     }
 }
