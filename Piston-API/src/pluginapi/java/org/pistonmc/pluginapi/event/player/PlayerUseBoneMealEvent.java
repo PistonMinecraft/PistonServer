@@ -1,7 +1,7 @@
 package org.pistonmc.pluginapi.event.player;
 
 import org.pistonmc.pluginapi.block.Block;
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 
 public class PlayerUseBoneMealEvent extends PlayerEvent {
     private final Block target;

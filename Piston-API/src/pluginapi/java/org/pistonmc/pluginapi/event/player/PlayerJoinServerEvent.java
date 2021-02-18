@@ -1,6 +1,6 @@
 package org.pistonmc.pluginapi.event.player;
 
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 
 public class PlayerJoinServerEvent extends PlayerEvent {
     private String joinMessage;

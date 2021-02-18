@@ -1,6 +1,6 @@
 package org.pistonmc.pluginapi;
 
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 import org.pistonmc.pluginapi.world.World;
 
 import java.util.UUID;

@@ -42,11 +42,12 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.pistonmc.pluginapi.entity.player.ActualPlayerEntity;
 
 import java.net.InetSocketAddress;
 import java.util.*;
 
-public class PistonActualPlayerEntity extends PistonPlayerEntity implements org.pistonmc.pluginapi.entity.ActualPlayerEntity {
+public class PistonActualPlayerEntity extends PistonPlayerEntity implements ActualPlayerEntity {
     private final ServerPlayer player;
 
     public PistonActualPlayerEntity(ServerPlayer player) {

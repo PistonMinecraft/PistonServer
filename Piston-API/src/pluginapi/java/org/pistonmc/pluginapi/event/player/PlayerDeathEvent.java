@@ -1,7 +1,7 @@
 package org.pistonmc.pluginapi.event.player;
 
 import org.pistonmc.pluginapi.entity.Entity;
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 
 public class PlayerDeathEvent extends PlayerEvent {
     private String deathMessage;

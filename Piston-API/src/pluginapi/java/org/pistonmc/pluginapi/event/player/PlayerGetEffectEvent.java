@@ -1,7 +1,7 @@
 package org.pistonmc.pluginapi.event.player;
 
 import org.pistonmc.pluginapi.effect.Effect;
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 
 public class PlayerGetEffectEvent extends PlayerEvent {
     private final Effect effect;

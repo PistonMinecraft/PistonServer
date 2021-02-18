@@ -4,6 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.material.Fluid;
@@ -12,6 +13,7 @@ import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.pistonmc.pluginapi.Sound;
+import org.pistonmc.pluginapi.entity.EntityDamageSource;
 import org.pistonmc.pluginapi.entity.EntityPose;
 import org.pistonmc.pluginapi.fluid.FluidType;
 
@@ -189,6 +191,77 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     @Override
     public boolean isInLava() {
         return entity.isInLava();
+    }
+
+    @Override
+    public boolean hurt(@NonNull EntityDamageSource damageSource, float hurtDamage) {
+        DamageSource ds;
+        switch(damageSource.getId()) {
+            case "inFire":
+                ds = DamageSource.IN_FIRE;
+                break;
+            case "lightningBolt":
+                ds = DamageSource.LIGHTNING_BOLT;
+                break;
+            case "onFire":
+                ds = DamageSource.ON_FIRE;
+                break;
+            case "lava":
+                ds = DamageSource.LAVA;
+                break;
+            case "hotFloor":
+                ds = DamageSource.HOT_FLOOR;
+                break;
+            case "inWall":
+                ds = DamageSource.IN_WALL;
+                break;
+            case "cramming":
+                ds = DamageSource.CRAMMING;
+                break;
+            case "drown":
+                ds = DamageSource.DROWN;
+                break;
+            case "starve":
+                ds = DamageSource.STARVE;
+                break;
+            case "cactus":
+                ds = DamageSource.CACTUS;
+                break;
+            case "fall":
+                ds = DamageSource.FALL;
+                break;
+            case "flyIntoWall":
+                ds = DamageSource.FLY_INTO_WALL;
+                break;
+            case "outOfWorld":
+                ds = DamageSource.OUT_OF_WORLD;
+                break;
+            case "magic":
+                ds = DamageSource.MAGIC;
+                break;
+            case "wither":
+                ds = DamageSource.WITHER;
+                break;
+            case "anvil":
+                ds = DamageSource.ANVIL;
+                break;
+            case "fallingBlock":
+                ds = DamageSource.FALLING_BLOCK;
+                break;
+            case "dragonBreath":
+                ds = DamageSource.DRAGON_BREATH;
+                break;
+            case "dryout":
+                ds = DamageSource.DRY_OUT;
+                break;
+            case "sweetBerryBush":
+                ds = DamageSource.SWEET_BERRY_BUSH;
+                break;
+            case "generic":
+            default:
+                ds = DamageSource.GENERIC;
+        }
+        return entity.hurt(ds, hurtDamage);
     }
 
     @Override

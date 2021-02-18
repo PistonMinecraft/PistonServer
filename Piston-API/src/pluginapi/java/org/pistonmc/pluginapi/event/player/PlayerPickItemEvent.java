@@ -1,6 +1,6 @@
 package org.pistonmc.pluginapi.event.player;
 
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 import org.pistonmc.pluginapi.item.Item;
 
 public class PlayerPickItemEvent extends PlayerEvent {

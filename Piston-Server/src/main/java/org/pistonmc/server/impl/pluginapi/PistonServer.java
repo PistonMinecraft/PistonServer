@@ -28,7 +28,7 @@ import org.bukkit.util.CachedServerIcon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.pistonmc.pluginapi.Piston;
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 import org.pistonmc.server.RuntimeProperties;
 
 import java.awt.image.BufferedImage;

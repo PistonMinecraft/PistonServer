@@ -1,5 +1,6 @@
-package org.pistonmc.pluginapi.entity;
+package org.pistonmc.pluginapi.entity.player;
 
+import org.pistonmc.pluginapi.entity.LivingEntity;
 import org.pistonmc.pluginapi.inventory.Inventory;
 
 public interface PlayerEntity extends LivingEntity {

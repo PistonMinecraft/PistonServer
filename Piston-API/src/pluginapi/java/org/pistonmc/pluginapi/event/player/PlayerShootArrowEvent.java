@@ -1,7 +1,7 @@
 package org.pistonmc.pluginapi.event.player;
 
 import org.pistonmc.pluginapi.entity.ArrowEntity;
-import org.pistonmc.pluginapi.entity.PlayerEntity;
+import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 
 /**
  * 箭被射出

@@ -78,12 +78,13 @@ public interface Entity {
      * Sets the pose of this entity
      * @param pose the pose to be set
      */
-    void setEntityPose(EntityPose pose);
+    void setEntityPose(@NonNull EntityPose pose);
 
     /**
      * Returns the pose of this entity
      * @return the pose of this entity
      */
+    @NonNull
     EntityPose getEntityPose();
 
     /**
@@ -244,6 +245,14 @@ public interface Entity {
      * @return if this entity is in lava
      */
     boolean isInLava();
+
+    /**
+     * Try hurting this entity with specific damage source and damage.
+     * @param damageSource Source of the damage
+     * @param hurtDamage Damage to hurt
+     * @return if entity have been hurt successfully
+     */
+    boolean hurt(@NonNull EntityDamageSource damageSource, float hurtDamage);
     UUID getUUID();
     String getName();
     String getDisplayName();
