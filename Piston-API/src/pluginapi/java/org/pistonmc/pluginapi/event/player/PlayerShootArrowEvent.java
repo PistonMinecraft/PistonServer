@@ -1,6 +1,6 @@
 package org.pistonmc.pluginapi.event.player;
 
-import org.pistonmc.pluginapi.entity.ArrowEntity;
+import org.pistonmc.pluginapi.entity.projectile.ArrowEntity;
 import org.pistonmc.pluginapi.entity.player.PlayerEntity;
 
 /**
