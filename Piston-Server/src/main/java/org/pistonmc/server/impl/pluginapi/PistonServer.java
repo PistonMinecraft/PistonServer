@@ -27,8 +27,8 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.CachedServerIcon;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.pistonmc.pluginapi.Piston;
-import org.pistonmc.pluginapi.entity.player.PlayerEntity;
+import org.pistonmc.api.plugin.Piston;
+import org.pistonmc.api.plugin.entity.player.PlayerEntity;
 import org.pistonmc.server.RuntimeProperties;
 
 import java.awt.image.BufferedImage;
@@ -36,7 +36,7 @@ import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class PistonServer implements org.pistonmc.pluginapi.Server {
+public class PistonServer implements org.pistonmc.api.plugin.Server {
     private final DedicatedServer server;
     private final DedicatedPlayerList playerList;
 
@@ -64,7 +64,7 @@ public class PistonServer implements org.pistonmc.pluginapi.Server {
         return null;
     }
 
-    public org.pistonmc.pluginapi.world.World getWorld(String worldName) {
+    public org.pistonmc.api.plugin.world.World getWorld(String worldName) {
         return null;
     }
 

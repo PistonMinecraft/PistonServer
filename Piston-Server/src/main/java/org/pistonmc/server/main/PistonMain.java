@@ -8,6 +8,9 @@ import org.pistonmc.server.RuntimeProperties;
 import java.net.Proxy;
 
 public class PistonMain {
+    static {
+       System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
+    }
     public static void main(String[] args) {
         OptionParser parser = new OptionParser();
 

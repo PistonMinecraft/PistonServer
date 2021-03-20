@@ -42,7 +42,7 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.pistonmc.pluginapi.entity.player.ActualPlayerEntity;
+import org.pistonmc.api.plugin.entity.player.ActualPlayerEntity;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -79,8 +79,8 @@ public class PistonActualPlayerEntity extends PistonPlayerEntity implements Actu
     }
 
     @Override
-    public org.pistonmc.pluginapi.entity.EntityType getEntityType() {
-        return org.pistonmc.pluginapi.entity.EntityType.PLAYER;
+    public org.pistonmc.api.plugin.entity.EntityType getEntityType() {
+        return org.pistonmc.api.plugin.entity.EntityType.PLAYER;
     }
 
     @Override
@@ -99,17 +99,17 @@ public class PistonActualPlayerEntity extends PistonPlayerEntity implements Actu
     }
 
     @Override
-    public org.pistonmc.pluginapi.location.Location getLocation() {
+    public org.pistonmc.api.plugin.location.Location getLocation() {
         return null;
     }
 
     @Override
-    public void setLocation(org.pistonmc.pluginapi.location.Location location) {
+    public void setLocation(org.pistonmc.api.plugin.location.Location location) {
 
     }
 
     @Override
-    public List<org.pistonmc.pluginapi.effect.Effect> getEffects() {
+    public List<org.pistonmc.api.plugin.effect.Effect> getEffects() {
         return null;
     }
 
@@ -124,7 +124,7 @@ public class PistonActualPlayerEntity extends PistonPlayerEntity implements Actu
     }
 
     @Override
-    public org.pistonmc.pluginapi.inventory.Inventory getInventory() {
+    public org.pistonmc.api.plugin.inventory.Inventory getInventory() {
         return null;
     }
 
@@ -164,7 +164,7 @@ public class PistonActualPlayerEntity extends PistonPlayerEntity implements Actu
     }
 
     @Override
-    public org.pistonmc.pluginapi.inventory.Inventory getArmor() {
+    public org.pistonmc.api.plugin.inventory.Inventory getArmor() {
         return null;
     }
 

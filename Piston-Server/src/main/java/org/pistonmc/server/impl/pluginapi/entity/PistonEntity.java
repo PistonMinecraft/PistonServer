@@ -12,17 +12,19 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.pistonmc.pluginapi.Sound;
-import org.pistonmc.pluginapi.entity.EntityDamageSource;
-import org.pistonmc.pluginapi.entity.EntityPose;
-import org.pistonmc.pluginapi.fluid.FluidType;
+import org.pistonmc.api.plugin.effect.Effect;
+import org.pistonmc.api.plugin.location.Location;
+import org.pistonmc.api.plugin.Sound;
+import org.pistonmc.api.plugin.entity.EntityDamageSource;
+import org.pistonmc.api.plugin.entity.EntityPose;
+import org.pistonmc.api.plugin.fluid.FluidType;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
+public class PistonEntity implements org.pistonmc.api.plugin.entity.Entity {
     protected final Entity entity;
     public PistonEntity(Entity entity) {
         this.entity = entity;
@@ -300,17 +302,17 @@ public class PistonEntity implements org.pistonmc.pluginapi.entity.Entity {
     }
 
     @Override
-    public org.pistonmc.pluginapi.location.Location getLocation() {
+    public Location getLocation() {
         return null;
     }
 
     @Override
-    public void setLocation(org.pistonmc.pluginapi.location.Location location) {
+    public void setLocation(Location location) {
 
     }
 
     @Override
-    public List<org.pistonmc.pluginapi.effect.Effect> getEffects() {
+    public List<Effect> getEffects() {
         return null;
     }
 

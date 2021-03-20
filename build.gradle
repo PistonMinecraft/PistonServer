@@ -8,7 +8,7 @@ ext {
     BUILD = "${ENV.GITHUB_RUN_NUMBER ? 'build' : 'INTERNAL_BUILD'}${ENV.GITHUB_RUN_NUMBER ?: ''}"
 }
 allprojects {
-    group = 'io.github.pistonmc'
+    group = 'org.pistonmc'
 }
 subprojects {
     apply plugin: 'java'
@@ -51,6 +51,9 @@ subprojects {
         testImplementation.extendsFrom annotationProcessor
     }
     dependencies {
+        compileOnly 'org.checkerframework:checker:3.11.0'
+        compileOnly 'org.checkerframework:checker-qual:3.11.0'
+
         implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
         implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
 
