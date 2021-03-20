@@ -1,5 +1,5 @@
 plugins {
-    id 'org.checkerframework' version '0.5.16' apply false
+    id 'org.checkerframework' version '0.5.17' apply false
 }
 ext {
     ENV = System.getenv()
@@ -29,6 +29,7 @@ subprojects {
 
     checkerFramework {
         excludeTests = true
+        skipCheckerFramework = true
         checkers = [
             'org.checkerframework.checker.nullness.NullnessChecker',
             'org.checkerframework.checker.units.UnitsChecker'
@@ -38,12 +39,12 @@ subprojects {
     repositories {
         mavenCentral()
         maven {
-            name 'Minecraft Libraries'
-            url "https://libraries.minecraft.net"
-        }
-        maven {
             name 'Spigot Public Repo'
             url 'https://hub.spigotmc.org/nexus/content/groups/public'
+        }
+        maven {
+            name 'forge-repo'
+            url 'https://files.minecraftforge.net/maven/'
         }
     }
     configurations {

@@ -32,6 +32,10 @@ version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProjec
 
 repositories {
     maven {
+        name 'Minecraft Libraries'
+        url "https://libraries.minecraft.net"
+    }
+    maven {
         name 'paper-repo'
         url 'https://papermc.io/repo/repository/maven-public/'
     }
@@ -62,10 +66,15 @@ dependencies {
     implementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
 
     implementation "org.apache.logging.log4j:log4j-core:$LIB_LOG4J_VERSION"
+    implementation "org.apache.logging.log4j:log4j-api:$LIB_LOG4J_VERSION"
+    implementation "org.apache.logging.log4j:log4j-slf4j18-impl:$LIB_LOG4J_VERSION"
+    implementation "org.apache.logging.log4j:log4j-jul:$LIB_LOG4J_VERSION"
     implementation "org.apache.logging.log4j:log4j-iostreams:$LIB_LOG4J_VERSION"
     implementation 'com.lmax:disruptor:3.4.2'
 
-    implementation 'io.netty:netty-all:4.1.58.Final'
+    implementation 'io.netty:netty-all:4.1.60.Final'
+
+    implementation 'cpw.mods:modlauncher:8.0.9'
 
     implementation 'net.minecrell:terminalconsoleappender:1.2.0'
     implementation "org.jline:jline:$LIB_JLINE_VERSION"

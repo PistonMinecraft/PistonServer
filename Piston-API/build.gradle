@@ -28,12 +28,17 @@ configurations {
         canBeResolved = false
         extendsFrom api
     }
+    pluginApi
+    moddingApi
+    api.extendsFrom pluginApi, moddingApi
 }
 
 dependencies {
-    api 'net.md-5:bungeecord-chat:1.16-R0.5-SNAPSHOT'
+    pluginApi 'net.md-5:bungeecord-chat:1.16-R0.5-SNAPSHOT'
 
-    api "org.apache.logging.log4j:log4j-api:$LIB_LOG4J_VERSION"
+    moddingApi 'cpw.mods:modlauncher:8.0.9:api'
+
+    api 'org.slf4j:slf4j-api:2.0.0-alpha1'
 
     implementation 'org.snakeyaml:snakeyaml-engine:2.2.1'
 }
@@ -42,18 +47,21 @@ task pluginApiJar(type: Jar) {
     archiveClassifier = 'pluginapi'
     from sourceSets.pluginApi.output
     from sourceSets.main.output
+    from configurations.pluginApi.collect {zipTree(it) }
 }
 
 task moddingApiJar(type: Jar) {
     archiveClassifier = 'moddingapi'
     from sourceSets.moddingApi.output
     from sourceSets.main.output
+    from configurations.moddingApi.collect {zipTree(it) }
 }
 
 jar { // This will gen uber jar
     archiveClassifier = 'all'
     from sourceSets.pluginApi.output
     from sourceSets.moddingApi.output
+//    from configurations.collect {}
 }
 
 artifacts {
