@@ -2,19 +2,19 @@ plugins {
     id 'java'
     id 'maven-publish'
 }
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-        vendor = JvmVendorSpec.ADOPTOPENJDK
-    }
-}
+
+ext.LIB_MANIFOLD_VERSION = '2021.1.10'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
 tasks.withType(JavaCompile) {
     options.compilerArgs.add '-Xplugin:Manifold'
 }
+
 repositories {
     mavenCentral()
     maven { url = 'https://dl.bintray.com/lxgaming/maven' }  // MD repo
-    maven { url = 'https://files.minecraftforge.net/maven' } // MD repo
+    maven { url = 'https://files.minecraftforge.net/maven' }
     maven {
         url = 'https://maven.pkg.github.com/MaxPixelStudios/MinecraftDecompiler'
         credentials {
@@ -23,18 +23,15 @@ repositories {
         }
     }
 }
-configurations {
-    noCache {
-        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
-    }
-    implementation.extendsFrom noCache
 
-}
 dependencies {
     implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.9'
-    noCache 'cn.maxpixel:minecraft-decompiler:2.1.1-SNAPSHOT'
+    implementation('net.minecraftforge:accesstransformers:3.0.1') {
+        exclude module: 'modlauncher'
+    }
+    implementation 'cn.maxpixel:minecraft-decompiler:2.2-SNAPSHOT'
 
     annotationProcessor "systems.manifold:manifold-exceptions:$LIB_MANIFOLD_VERSION"
 }

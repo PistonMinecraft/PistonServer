@@ -1,99 +1,77 @@
 --- a/net/minecraft/world/entity/Entity.java
 +++ b/net/minecraft/world/entity/Entity.java
-@@ -190,10 +190,13 @@
-     private final double[] pistonDeltas;
-     private long pistonDeltasGameTime;
-     private EntityDimensions dimensions;
-     private float eyeHeight;
+@@ -187,10 +187,13 @@
+    private final double[] pistonDeltas = new double[]{0.0D, 0.0D, 0.0D};
+    private long pistonDeltasGameTime;
+    private EntityDimensions dimensions;
+    private float eyeHeight;
  
-+    protected org.pistonmc.server.impl.pluginapi.entity.PistonEntity pistonEntity; // PistonMC - Add pistonEntity field
-+    public abstract org.pistonmc.server.impl.pluginapi.entity.PistonEntity getPistonPluginEntityImpl(); // PistonMC - Add pistonEntity getter
++   protected org.pistonmc.server.impl.pluginapi.entity.PistonEntity pistonEntity; // PistonMC - Add pistonEntity field
++   public abstract org.pistonmc.server.impl.pluginapi.entity.PistonEntity getPistonPluginEntityImpl(); // PistonMC - Add pistonEntity getter
 +
-     public Entity(EntityType<?> entitytype, Level level) {
-         this.id = Entity.ENTITY_COUNTER.incrementAndGet();
-         this.passengers = Lists.newArrayList();
-         this.deltaMovement = Vec3.ZERO;
-         this.bb = Entity.INITIAL_AABB;
-@@ -387,13 +390,23 @@
+    public Entity(EntityType<?> entitytype, Level level) {
+       this.type = entitytype;
+       this.level = level;
+       this.dimensions = entitytype.getDimensions();
+       this.position = Vec3.ZERO;
+@@ -372,13 +375,23 @@
  
-         this.firstTick = false;
-         this.level.getProfiler().pop();
-     }
+       this.firstTick = false;
+       this.level.getProfiler().pop();
+    }
  
-+    // PistonMC - start
-+    private int dimensionChangingDelay = this.getDimensionChangingDelay();
-     public void setPortalCooldown() {
--        this.portalCooldown = this.getDimensionChangingDelay();
-+        this.portalCooldown = dimensionChangingDelay < 0 ? this.getDimensionChangingDelay() : dimensionChangingDelay;
-     }
-+    public void setDimensionChangingDelay(int dimensionChangingDelay) {
-+        if(dimensionChangingDelay < 0) return;
-+        this.dimensionChangingDelay = dimensionChangingDelay;
-+    }
-+    public int getCustomDimensionChangingDelay() {
-+        return dimensionChangingDelay;
-+    }
-+    // PistonMC - end
++   // PistonMC - start
++   private int dimensionChangingDelay = this.getDimensionChangingDelay();
+    public void setPortalCooldown() {
+       this.portalCooldown = this.getDimensionChangingDelay();
+    }
++   public void setDimensionChangingDelay(int dimensionChangingDelay) {
++      if(dimensionChangingDelay < 0) return;
++      this.dimensionChangingDelay = dimensionChangingDelay;
++   }
++   public int getCustomDimensionChangingDelay() {
++      return dimensionChangingDelay;
++   }
++   // PistonMC - end
  
-     public boolean isOnPortalCooldown() {
-         return this.portalCooldown > 0;
-     }
+    public boolean isOnPortalCooldown() {
+       return this.portalCooldown > 0;
+    }
  
-@@ -401,14 +414,23 @@
-         if (this.isOnPortalCooldown()) {
-             --this.portalCooldown;
-         }
+@@ -387,13 +400,23 @@
+          --this.portalCooldown;
+       }
  
-     }
--
-+    // PistonMC - start
-+    private int portalWaitTime = getPortalWaitTime();
-     public int getPortalWaitTime() {
-         return 0;
-     }
-+    public void setPortalWaitTime(int portalWaitTime) {
-+        if(portalWaitTime < 0) return;
-+        this.portalWaitTime = portalWaitTime;
-+    }
-+    public int getCustomPortalWaitTime() {
-+        return portalWaitTime;
-+    }
-+    //PistonMC - end
+    }
  
-     protected void lavaHurt() {
-         if (!this.fireImmune()) {
-             this.setSecondsOnFire(15);
-             this.hurt(DamageSource.LAVA, 4.0F);
-@@ -912,17 +934,17 @@
++   // PistonMC - start
++   private int portalWaitTime = getPortalWaitTime();
+    public int getPortalWaitTime() {
+       return 0;
+    }
++   public void setPortalWaitTime(int portalWaitTime) {
++      if(portalWaitTime < 0) return;
++      this.portalWaitTime = portalWaitTime;
++   }
++   public int getCustomPortalWaitTime() {
++      return portalWaitTime;
++   }
++   // PistonMC - end
  
-     public boolean isInWater() {
-         return this.wasTouchingWater;
-     }
+    protected void lavaHurt() {
+       if (!this.fireImmune()) {
+          this.setSecondsOnFire(15);
+          this.hurt(DamageSource.LAVA, 4.0F);
+@@ -1617,11 +1640,11 @@
+       }
+    }
  
--    private boolean isInRain() {
-+    public boolean isInRain() { // PistonMC - change access modifier
-         BlockPos blockpos = this.blockPosition();
- 
-         return this.level.isRainingAt(blockpos) || this.level.isRainingAt(new BlockPos((double) blockpos.getX(), this.getBoundingBox().maxY, (double) blockpos.getZ()));
-     }
- 
--    private boolean isInBubbleColumn() {
-+    public boolean isInBubbleColumn() { // PistonMC - change access modifier
-         return this.level.getBlockState(this.blockPosition()).is(Blocks.BUBBLE_COLUMN);
-     }
- 
-     public boolean isInWaterOrRain() {
-         return this.isInWater() || this.isInRain();
-@@ -1724,11 +1746,11 @@
-         }
-     }
- 
-     protected void handleNetherPortal() {
-         if (this.level instanceof ServerLevel) {
--            int i = this.getPortalWaitTime();
-+            int i = this.portalWaitTime < 0 ? this.getPortalWaitTime() : this.portalWaitTime; // PistonMC
-             ServerLevel serverlevel = (ServerLevel) this.level;
- 
-             if (this.isInsidePortal) {
-                 MinecraftServer minecraftserver = serverlevel.getServer();
-                 ResourceKey resourcekey = this.level.dimension() == Level.NETHER ? Level.OVERWORLD : Level.NETHER;
+    protected void handleNetherPortal() {
+       if (this.level instanceof ServerLevel) {
+-         int i = this.getPortalWaitTime();
++         int i = this.portalWaitTime < 0 ? this.getPortalWaitTime() : this.portalWaitTime; // PistonMC
+          ServerLevel serverlevel = (ServerLevel)this.level;
+          if (this.isInsidePortal) {
+             MinecraftServer minecraftserver = serverlevel.getServer();
+             ResourceKey<Level> resourcekey = this.level.dimension() == Level.NETHER ? Level.OVERWORLD : Level.NETHER;
+             ServerLevel serverlevel1 = minecraftserver.getLevel(resourcekey);

@@ -1,31 +1,19 @@
 --- a/net/minecraft/server/level/ServerPlayer.java
 +++ b/net/minecraft/server/level/ServerPlayer.java
-@@ -177,10 +177,15 @@
-     private int containerCounter;
-     public boolean ignoreSlotUpdateHack;
-     public int latency;
-     public boolean wonGame;
+@@ -173,10 +173,16 @@
+    private int containerCounter;
+    public boolean ignoreSlotUpdateHack;
+    public int latency;
+    public boolean wonGame;
  
-+    public org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity getPistonPluginEntityImpl() { // PistonMC - Add pistonEntity getter
-+        if(pistonEntity == null) pistonEntity = new org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity(this);
-+        return (org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity) pistonEntity;
-+    }
++   @Override
++   public org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity getPistonPluginImpl() { // PistonMC - Add pistonEntity getter
++      if(pistonEntity == null) pistonEntity = new org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity(this);
++      return (org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity) pistonEntity;
++   }
 +
-     public ServerPlayer(MinecraftServer minecraftserver, ServerLevel serverlevel, GameProfile gameprofile, ServerPlayerGameMode serverplayergamemode) {
-         super(serverlevel, serverlevel.getSharedSpawnPos(), serverlevel.getSharedSpawnAngle(), gameprofile);
-         this.respawnDimension = Level.OVERWORLD;
-         serverplayergamemode.player = this;
-         this.gameMode = serverplayergamemode;
-@@ -315,11 +320,11 @@
-             compoundtag.putInt("SpawnX", this.respawnPosition.getX());
-             compoundtag.putInt("SpawnY", this.respawnPosition.getY());
-             compoundtag.putInt("SpawnZ", this.respawnPosition.getZ());
-             compoundtag.putBoolean("SpawnForced", this.respawnForced);
-             compoundtag.putFloat("SpawnAngle", this.respawnAngle);
--            DataResult dataresult = ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.respawnDimension.location());
-+            DataResult<net.minecraft.nbt.Tag> dataresult = ResourceLocation.CODEC.encodeStart(NbtOps.INSTANCE, this.respawnDimension.location()); // PistonMC - decompile error fix
-             Logger logger = ServerPlayer.LOGGER;
- 
-             logger.getClass();
-             dataresult.resultOrPartial(logger::error).ifPresent((tag) -> {
-                 compoundtag.put("SpawnDimension", tag);
+    public ServerPlayer(MinecraftServer minecraftserver, ServerLevel serverlevel, GameProfile gameprofile, ServerPlayerGameMode serverplayergamemode) {
+       super(serverlevel, serverlevel.getSharedSpawnPos(), serverlevel.getSharedSpawnAngle(), gameprofile);
+       serverplayergamemode.player = this;
+       this.gameMode = serverplayergamemode;
+       this.server = minecraftserver;

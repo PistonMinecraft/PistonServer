@@ -7,11 +7,15 @@ import java.nio.file.Files
 import java.util.jar.Attributes.Name
 
 task genProcessedJar(type: GenProcessedVanillaServerJarTask) {
+    accessTransformers = [
+            file('src/main/resources/access.at').toPath()
+    ]
     forceProcess = false
 }
 
 task genDecompiledSources(type: GenDecompiledSourcesTask) {
     dependsOn genProcessedJar
+    inputJar = genProcessedJar.outputPath
     forceGen = false
 }
 
@@ -45,9 +49,7 @@ repositories {
     }
 }
 
-java.nio.file.Path p = genProcessedJar.outputPath
-
-String bukkitVersion = "${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
+def bukkitVersion = "${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
 
 configurations {
     implementation {
@@ -56,8 +58,8 @@ configurations {
 }
 
 dependencies {
-    if(Files.exists(p)) {
-        implementation files(p)
+    if(Files.exists(genProcessedJar.outputPath)) {
+        implementation files(genProcessedJar.outputPath)
     }
     implementation "com.destroystokyo.paper:paper-api:$bukkitVersion"
     implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'

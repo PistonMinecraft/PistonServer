@@ -1,169 +1,137 @@
 --- a/net/minecraft/server/Main.java
 +++ b/net/minecraft/server/Main.java
-@@ -58,34 +58,34 @@
+@@ -52,12 +52,12 @@
+ import org.apache.logging.log4j.Logger;
  
-     private static final Logger LOGGER = LogManager.getLogger();
+ public class Main {
+    private static final Logger LOGGER = LogManager.getLogger();
  
-     public Main() {}
+-   public static void main(String[] astring) {
+-      OptionParser optionparser = new OptionParser();
++   public static void main(boolean nogui, boolean initSettings, boolean demo, boolean bonusChest, boolean forceUpgrade, boolean eraseCache, boolean safeMode, String singleplayer, String universe, String world, int port, String serverId, java.util.List<String> nonOptions) { // PistonMC - Replace with actual option values
++      /*OptionParser optionparser = new OptionParser();
+       OptionSpec<Void> optionspec = optionparser.accepts("nogui");
+       OptionSpec<Void> optionspec1 = optionparser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
+       OptionSpec<Void> optionspec2 = optionparser.accepts("demo");
+       OptionSpec<Void> optionspec3 = optionparser.accepts("bonusChest");
+       OptionSpec<Void> optionspec4 = optionparser.accepts("forceUpgrade");
+@@ -67,18 +67,18 @@
+       OptionSpec<String> optionspec8 = optionparser.accepts("singleplayer").withRequiredArg();
+       OptionSpec<String> optionspec9 = optionparser.accepts("universe").withRequiredArg().defaultsTo(".");
+       OptionSpec<String> optionspec10 = optionparser.accepts("world").withRequiredArg();
+       OptionSpec<Integer> optionspec11 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(-1);
+       OptionSpec<String> optionspec12 = optionparser.accepts("serverId").withRequiredArg();
+-      OptionSpec<String> optionspec13 = optionparser.nonOptions();
++      OptionSpec<String> optionspec13 = optionparser.nonOptions();*/ // PistonMC
  
--    public static void main(String[] astring) {
--        OptionParser optionparser = new OptionParser();
--        OptionSpecBuilder optionspecbuilder = optionparser.accepts("nogui");
--        OptionSpecBuilder optionspecbuilder1 = optionparser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
--        OptionSpecBuilder optionspecbuilder2 = optionparser.accepts("demo");
--        OptionSpecBuilder optionspecbuilder3 = optionparser.accepts("bonusChest");
--        OptionSpecBuilder optionspecbuilder4 = optionparser.accepts("forceUpgrade");
--        OptionSpecBuilder optionspecbuilder5 = optionparser.accepts("eraseCache");
--        OptionSpecBuilder optionspecbuilder6 = optionparser.accepts("safeMode", "Loads level with vanilla datapack only");
--        AbstractOptionSpec abstractoptionspec = optionparser.accepts("help").forHelp();
--        ArgumentAcceptingOptionSpec argumentacceptingoptionspec = optionparser.accepts("singleplayer").withRequiredArg();
--        ArgumentAcceptingOptionSpec argumentacceptingoptionspec1 = optionparser.accepts("universe").withRequiredArg().defaultsTo(".", new String[0]);
--        ArgumentAcceptingOptionSpec argumentacceptingoptionspec2 = optionparser.accepts("world").withRequiredArg();
--        ArgumentAcceptingOptionSpec argumentacceptingoptionspec3 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(-1, new Integer[0]);
--        ArgumentAcceptingOptionSpec argumentacceptingoptionspec4 = optionparser.accepts("serverId").withRequiredArg();
--        NonOptionArgumentSpec nonoptionargumentspec = optionparser.nonOptions();
-+    public static void main(boolean nogui, boolean initSettings, boolean demo, boolean bonusChest, boolean forceUpgrade, boolean eraseCache, boolean safeMode, String singleplayer, String universe, String world, int port, String serverId, java.util.List<String> nonOptions) { // PistonMC - Replace with actual option values
-+        /*OptionParser optionparser = new OptionParser();
-+            OptionSpecBuilder optionspecbuilder = optionparser.accepts("nogui");
-+            OptionSpecBuilder optionspecbuilder1 = optionparser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
-+            OptionSpecBuilder optionspecbuilder2 = optionparser.accepts("demo");
-+            OptionSpecBuilder optionspecbuilder3 = optionparser.accepts("bonusChest");
-+            OptionSpecBuilder optionspecbuilder4 = optionparser.accepts("forceUpgrade");
-+            OptionSpecBuilder optionspecbuilder5 = optionparser.accepts("eraseCache");
-+            OptionSpecBuilder optionspecbuilder6 = optionparser.accepts("safeMode", "Loads level with vanilla datapack only");
-+            AbstractOptionSpec abstractoptionspec = optionparser.accepts("help").forHelp();
-+            ArgumentAcceptingOptionSpec argumentacceptingoptionspec = optionparser.accepts("singleplayer").withRequiredArg();
-+            ArgumentAcceptingOptionSpec argumentacceptingoptionspec1 = optionparser.accepts("universe").withRequiredArg().defaultsTo(".", new String[0]);
-+            ArgumentAcceptingOptionSpec argumentacceptingoptionspec2 = optionparser.accepts("world").withRequiredArg();
-+            ArgumentAcceptingOptionSpec argumentacceptingoptionspec3 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(-1, new Integer[0]);
-+            ArgumentAcceptingOptionSpec argumentacceptingoptionspec4 = optionparser.accepts("serverId").withRequiredArg();
-+            NonOptionArgumentSpec nonoptionargumentspec = optionparser.nonOptions();*/ // PistonMC
+       try {
+-         OptionSet optionset = optionparser.parse(astring);
++         /*OptionSet optionset = optionparser.parse(astring);
+          if (optionset.has(optionspec7)) {
+             optionparser.printHelpOn(System.err);
+             return;
+-         }
++         }*/ // PistonMC
  
-         try {
--            OptionSet optionset = optionparser.parse(astring);
-+            /*OptionSet optionset = optionparser.parse(astring);
+          CrashReport.preload();
+          Bootstrap.bootStrap();
+          Bootstrap.validate();
+          Util.startTimerHackThread();
+@@ -86,37 +86,36 @@
+          Path path = Paths.get("server.properties");
+          DedicatedServerSettings dedicatedserversettings = new DedicatedServerSettings(registryaccess_registryholder, path);
+          dedicatedserversettings.forceSave();
+          Path path1 = Paths.get("eula.txt");
+          Eula eula = new Eula(path1);
+-         if (optionset.has(optionspec1)) {
++         if (initSettings) {
+             LOGGER.info("Initialized '{}' and '{}'", path.toAbsolutePath(), path1.toAbsolutePath());
+             return;
+          }
  
-             if (optionset.has(abstractoptionspec)) {
-                 optionparser.printHelpOn(System.err);
-                 return;
--            }
-+            }*/ // PistonMC
+          if (!eula.hasAgreedToEULA()) {
+             LOGGER.info("You need to agree to the EULA in order to run the server. Go to eula.txt for more info.");
+             return;
+          }
  
-             CrashReport.preload();
-             Bootstrap.bootStrap();
-             Bootstrap.validate();
-             Util.startTimerHackThread();
-@@ -95,87 +95,85 @@
+-         File file1 = new File(optionset.valueOf(optionspec9));
+-         YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
++         File file1 = new File(universe);
++         YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(org.pistonmc.server.RuntimeProperties.get(org.pistonmc.server.RuntimeProperties.Key.GLOBAL_PROXY, Proxy.NO_PROXY));
+          MinecraftSessionService minecraftsessionservice = yggdrasilauthenticationservice.createMinecraftSessionService();
+          GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
+          GameProfileCache gameprofilecache = new GameProfileCache(gameprofilerepository, new File(file1, MinecraftServer.USERID_CACHE_FILE.getName()));
+-         String s = Optional.ofNullable(optionset.valueOf(optionspec10)).orElse(dedicatedserversettings.getProperties().levelName);
++         String s = Optional.ofNullable(world).orElse(dedicatedserversettings.getProperties().levelName);
+          LevelStorageSource levelstoragesource = LevelStorageSource.createDefault(file1.toPath());
+          LevelStorageSource.LevelStorageAccess levelstoragesource_levelstorageaccess = levelstoragesource.createAccess(s);
+          MinecraftServer.convertFromRegionFormatIfNeeded(levelstoragesource_levelstorageaccess);
+          DataPackConfig datapackconfig = levelstoragesource_levelstorageaccess.getDataPacks();
+-         boolean flag = optionset.has(optionspec6);
+-         if (flag) {
++         if (safeMode) {
+             LOGGER.warn("Safe mode active, only vanilla datapack will be loaded");
+          }
  
-             dedicatedserversettings.forceSave();
-             Path path1 = Paths.get("eula.txt");
-             Eula eula = new Eula(path1);
+          PackRepository packrepository = new PackRepository(new ServerPacksSource(), new FolderRepositorySource(levelstoragesource_levelstorageaccess.getLevelPath(LevelResource.DATAPACK_DIR).toFile(), PackSource.WORLD));
+-         DataPackConfig datapackconfig1 = MinecraftServer.configurePackRepository(packrepository, datapackconfig == null ? DataPackConfig.DEFAULT : datapackconfig, flag);
++         DataPackConfig datapackconfig1 = MinecraftServer.configurePackRepository(packrepository, datapackconfig == null ? DataPackConfig.DEFAULT : datapackconfig, safeMode);
+          CompletableFuture<ServerResources> completablefuture = ServerResources.loadResources(packrepository.openAllSelected(), Commands.CommandSelection.DEDICATED, dedicatedserversettings.getProperties().functionPermissionLevel, Util.backgroundExecutor(), Runnable::run);
  
--            if (optionset.has(optionspecbuilder1)) {
-+            if (initSettings) {
-                 Main.LOGGER.info("Initialized '{}' and '{}'", path.toAbsolutePath(), path1.toAbsolutePath());
-                 return;
+          ServerResources serverresources;
+          try {
+             serverresources = completablefuture.get();
+@@ -130,40 +129,40 @@
+          RegistryReadOps<Tag> registryreadops = RegistryReadOps.create(NbtOps.INSTANCE, serverresources.getResourceManager(), registryaccess_registryholder);
+          WorldData worlddata = levelstoragesource_levelstorageaccess.getDataTag(registryreadops, datapackconfig1);
+          if (worlddata == null) {
+             LevelSettings levelsettings;
+             WorldGenSettings worldgensettings;
+-            if (optionset.has(optionspec2)) {
++            if (demo) {
+                levelsettings = MinecraftServer.DEMO_SETTINGS;
+                worldgensettings = WorldGenSettings.demoSettings(registryaccess_registryholder);
+             } else {
+                DedicatedServerProperties dedicatedserverproperties = dedicatedserversettings.getProperties();
+                levelsettings = new LevelSettings(dedicatedserverproperties.levelName, dedicatedserverproperties.gamemode, dedicatedserverproperties.hardcore, dedicatedserverproperties.difficulty, false, new GameRules(), datapackconfig1);
+-               worldgensettings = optionset.has(optionspec3) ? dedicatedserverproperties.worldGenSettings.withBonusChest() : dedicatedserverproperties.worldGenSettings;
++               worldgensettings = bonusChest ? dedicatedserverproperties.worldGenSettings.withBonusChest() : dedicatedserverproperties.worldGenSettings;
              }
  
-             if (!eula.hasAgreedToEULA()) {
-                 Main.LOGGER.info("You need to agree to the EULA in order to run the server. Go to eula.txt for more info.");
-                 return;
+             worlddata = new PrimaryLevelData(levelsettings, worldgensettings, Lifecycle.stable());
+          }
+ 
+-         if (optionset.has(optionspec4)) {
+-            forceUpgrade(levelstoragesource_levelstorageaccess, DataFixers.getDataFixer(), optionset.has(optionspec5), () -> true, worlddata.worldGenSettings().levels());
++         if (forceUpgrade) {
++            forceUpgrade(levelstoragesource_levelstorageaccess, DataFixers.getDataFixer(), eraseCache, () -> true, worlddata.worldGenSettings().levels());
+          }
+ 
+          levelstoragesource_levelstorageaccess.saveDataTag(registryaccess_registryholder, worlddata);
+          WorldData worlddata1 = worlddata;
+-         final DedicatedServer dedicatedserver = MinecraftServer.spin((threadx) -> {
+-            DedicatedServer dedicatedserver = new DedicatedServer(threadx, registryaccess_registryholder, levelstoragesource_levelstorageaccess, packrepository, serverresources, worlddata1, dedicatedserversettings, DataFixers.getDataFixer(), minecraftsessionservice, gameprofilerepository, gameprofilecache, LoggerChunkProgressListener::new);
+-            dedicatedserver.setSingleplayerName(optionset.valueOf(optionspec8));
+-            dedicatedserver.setPort(optionset.valueOf(optionspec11));
+-            dedicatedserver.setDemo(optionset.has(optionspec2));
+-            dedicatedserver.setId(optionset.valueOf(optionspec12));
+-            boolean flag = !optionset.has(optionspec) && !optionset.valuesOf(optionspec13).contains("nogui");
++         final DedicatedServer dedicatedserver = MinecraftServer.spin((threadx) -> { // PistonMC - decompile error fix
++            DedicatedServer dedicatedserver1 = new DedicatedServer(threadx, registryaccess_registryholder, levelstoragesource_levelstorageaccess, packrepository, serverresources, worlddata1, dedicatedserversettings, DataFixers.getDataFixer(), minecraftsessionservice, gameprofilerepository, gameprofilecache, LoggerChunkProgressListener::new);
++            dedicatedserver1.setSingleplayerName(singleplayer);
++            dedicatedserver1.setPort(port);
++            dedicatedserver1.setDemo(demo);
++            dedicatedserver1.setId(serverId);
++            boolean flag = !nogui && !nonOptions.contains("nogui");
+             if (flag && !GraphicsEnvironment.isHeadless()) {
+-               dedicatedserver.showGui();
++               dedicatedserver1.showGui();
              }
  
--            File file = new File((String) optionset.valueOf(argumentacceptingoptionspec1));
--            YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(Proxy.NO_PROXY);
-+            File file = new File(universe);
-+            YggdrasilAuthenticationService yggdrasilauthenticationservice = new YggdrasilAuthenticationService(org.pistonmc.server.RuntimeProperties.get(org.pistonmc.server.RuntimeProperties.Key.GLOBAL_PROXY, Proxy.NO_PROXY));
-             MinecraftSessionService minecraftsessionservice = yggdrasilauthenticationservice.createMinecraftSessionService();
-             GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
-             GameProfileCache gameprofilecache = new GameProfileCache(gameprofilerepository, new File(file, MinecraftServer.USERID_CACHE_FILE.getName()));
--            String s = (String) Optional.ofNullable(optionset.valueOf(argumentacceptingoptionspec2)).orElse(dedicatedserversettings.getProperties().levelName);
-+            String s = Optional.ofNullable(world).orElse(dedicatedserversettings.getProperties().levelName);
-             LevelStorageSource levelstoragesource = LevelStorageSource.createDefault(file.toPath());
-             LevelStorageSource.LevelStorageAccess levelstoragesource_levelstorageaccess = levelstoragesource.createAccess(s);
- 
-             MinecraftServer.convertFromRegionFormatIfNeeded(levelstoragesource_levelstorageaccess);
-             DataPackConfig datapackconfig = levelstoragesource_levelstorageaccess.getDataPacks();
--            boolean flag = optionset.has(optionspecbuilder6);
- 
--            if (flag) {
-+            if (safeMode) {
-                 Main.LOGGER.warn("Safe mode active, only vanilla datapack will be loaded");
+-            return dedicatedserver;
++            return dedicatedserver1;
+          });
+          Thread thread = new Thread("Server Shutdown Thread") {
+             public void run() {
+                dedicatedserver.halt(true);
              }
- 
--            PackRepository packrepository = new PackRepository(new RepositorySource[]{new ServerPacksSource(), new FolderRepositorySource(levelstoragesource_levelstorageaccess.getLevelPath(LevelResource.DATAPACK_DIR).toFile(), PackSource.WORLD)});
--            DataPackConfig datapackconfig1 = MinecraftServer.configurePackRepository(packrepository, datapackconfig == null ? DataPackConfig.DEFAULT : datapackconfig, flag);
--            CompletableFuture completablefuture = ServerResources.loadResources(packrepository.openAllSelected(), Commands.CommandSelection.DEDICATED, dedicatedserversettings.getProperties().functionPermissionLevel, Util.backgroundExecutor(), Runnable::run);
-+            PackRepository packrepository = new PackRepository(new ServerPacksSource(), new FolderRepositorySource(levelstoragesource_levelstorageaccess.getLevelPath(LevelResource.DATAPACK_DIR).toFile(), PackSource.WORLD));
-+            DataPackConfig datapackconfig1 = MinecraftServer.configurePackRepository(packrepository, datapackconfig == null ? DataPackConfig.DEFAULT : datapackconfig, safeMode);
-+            CompletableFuture<ServerResources> completablefuture = ServerResources.loadResources(packrepository.openAllSelected(), Commands.CommandSelection.DEDICATED, dedicatedserversettings.getProperties().functionPermissionLevel, Util.backgroundExecutor(), Runnable::run);
- 
-             ServerResources serverresources;
- 
-             try {
--                serverresources = (ServerResources) completablefuture.get();
-+                serverresources = completablefuture.get();
-             } catch (Exception exception) {
-                 Main.LOGGER.warn("Failed to load datapacks, can't proceed with server load. You can either fix your datapacks or reset to vanilla with --safeMode", exception);
-                 packrepository.close();
-                 return;
-             }
- 
-             serverresources.updateGlobals();
--            RegistryReadOps registryreadops = RegistryReadOps.create(NbtOps.INSTANCE, serverresources.getResourceManager(), registryaccess_registryholder);
--            Object object = levelstoragesource_levelstorageaccess.getDataTag(registryreadops, datapackconfig1);
-+            RegistryReadOps<net.minecraft.nbt.Tag> registryreadops = RegistryReadOps.create(NbtOps.INSTANCE, serverresources.getResourceManager(), registryaccess_registryholder);
-+            WorldData worlddata = levelstoragesource_levelstorageaccess.getDataTag(registryreadops, datapackconfig1);
- 
--            if (object == null) {
-+            if (worlddata == null) {
-                 LevelSettings levelsettings;
-                 WorldGenSettings worldgensettings;
- 
--                if (optionset.has(optionspecbuilder2)) {
-+                if (demo) {
-                     levelsettings = MinecraftServer.DEMO_SETTINGS;
-                     worldgensettings = WorldGenSettings.demoSettings(registryaccess_registryholder);
-                 } else {
-                     DedicatedServerProperties dedicatedserverproperties = dedicatedserversettings.getProperties();
- 
-                     levelsettings = new LevelSettings(dedicatedserverproperties.levelName, dedicatedserverproperties.gamemode, dedicatedserverproperties.hardcore, dedicatedserverproperties.difficulty, false, new GameRules(), datapackconfig1);
--                    worldgensettings = optionset.has(optionspecbuilder3) ? dedicatedserverproperties.worldGenSettings.withBonusChest() : dedicatedserverproperties.worldGenSettings;
-+                    worldgensettings = bonusChest ? dedicatedserverproperties.worldGenSettings.withBonusChest() : dedicatedserverproperties.worldGenSettings;
-                 }
- 
--                object = new PrimaryLevelData(levelsettings, worldgensettings, Lifecycle.stable());
-+                worlddata = new PrimaryLevelData(levelsettings, worldgensettings, Lifecycle.stable());
-             }
- 
--            if (optionset.has(optionspecbuilder4)) {
--                forceUpgrade(levelstoragesource_levelstorageaccess, DataFixers.getDataFixer(), optionset.has(optionspecbuilder5), () -> {
--                    return true;
--                }, ((WorldData) object).worldGenSettings().levels());
-+            if (forceUpgrade) {
-+                forceUpgrade(levelstoragesource_levelstorageaccess, DataFixers.getDataFixer(), eraseCache, () -> true, worlddata.worldGenSettings().levels());
-             }
- 
--            levelstoragesource_levelstorageaccess.saveDataTag(registryaccess_registryholder, (WorldData) object);
--            final DedicatedServer dedicatedserver = (DedicatedServer) MinecraftServer.spin((thread) -> {
--                DedicatedServer dedicatedserver1 = new DedicatedServer(thread, registryaccess_registryholder, levelstoragesource_levelstorageaccess, packrepository, serverresources, object, dedicatedserversettings, DataFixers.getDataFixer(), minecraftsessionservice, gameprofilerepository, gameprofilecache, LoggerChunkProgressListener::new);
-+            levelstoragesource_levelstorageaccess.saveDataTag(registryaccess_registryholder, worlddata);
-+            WorldData finalworlddata = worlddata;
-+            final DedicatedServer dedicatedserver = MinecraftServer.spin((thread) -> {
-+                DedicatedServer dedicatedserver1 = new DedicatedServer(thread, registryaccess_registryholder, levelstoragesource_levelstorageaccess, packrepository, serverresources, finalworlddata, dedicatedserversettings, DataFixers.getDataFixer(), minecraftsessionservice, gameprofilerepository, gameprofilecache, LoggerChunkProgressListener::new);
- 
--                dedicatedserver1.setSingleplayerName((String) optionset.valueOf(argumentacceptingoptionspec));
--                dedicatedserver1.setPort((Integer) optionset.valueOf(argumentacceptingoptionspec3));
--                dedicatedserver1.setDemo(optionset.has(optionspecbuilder2));
--                dedicatedserver1.setId((String) optionset.valueOf(argumentacceptingoptionspec4));
--                boolean flag1 = !optionset.has(optionspecbuilder) && !optionset.valuesOf(nonoptionargumentspec).contains("nogui");
-+                dedicatedserver1.setSingleplayerName(singleplayer);
-+                dedicatedserver1.setPort(port);
-+                dedicatedserver1.setDemo(demo);
-+                dedicatedserver1.setId(serverId);
-+                boolean flag1 = !nogui && !nonOptions.contains("nogui");
- 
-                 if (flag1 && !GraphicsEnvironment.isHeadless()) {
-                     dedicatedserver1.showGui();
-                 }
- 

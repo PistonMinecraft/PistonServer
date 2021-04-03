@@ -1,35 +1,36 @@
 plugins {
-    id 'org.checkerframework' version '0.5.17' apply false
+    id 'org.checkerframework' version '0.5.19-SNAPSHOT' apply false
 }
+
 ext {
     ENV = System.getenv()
     MC_VERSION = '1.16.5'
     VERSION = '0.1'
     BUILD = "${ENV.GITHUB_RUN_NUMBER ? 'build' : 'INTERNAL_BUILD'}${ENV.GITHUB_RUN_NUMBER ?: ''}"
 }
+
 allprojects {
     group = 'org.pistonmc'
 }
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'org.checkerframework'
 
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(8)
-            vendor = JvmVendorSpec.ADOPTOPENJDK
-        }
-    }
+    java.toolchain.languageVersion = JavaLanguageVersion.of(11)
 
     tasks.withType(JavaCompile) {
         options.encoding 'UTF-8'
         options.compilerArgs.addAll(['-Xplugin:Manifold'])
     }
 
+    compileJava {
+        options.release = 8
+    }
+
     checkerFramework {
         excludeTests = true
-        skipCheckerFramework = true
         checkers = [
             'org.checkerframework.checker.nullness.NullnessChecker',
             'org.checkerframework.checker.units.UnitsChecker'
@@ -47,13 +48,12 @@ subprojects {
             url 'https://files.minecraftforge.net/maven/'
         }
     }
+
     configurations {
         testImplementation.extendsFrom annotationProcessor
     }
-    dependencies {
-        compileOnly 'org.checkerframework:checker:3.11.0'
-        compileOnly 'org.checkerframework:checker-qual:3.11.0'
 
+    dependencies {
         implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
         implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
 

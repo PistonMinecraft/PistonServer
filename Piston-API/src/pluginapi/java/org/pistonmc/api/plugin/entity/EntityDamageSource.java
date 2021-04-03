@@ -33,8 +33,7 @@ public class EntityDamageSource {
         this.id = Objects.requireNonNull(id);
     }
 
-    @NonNull
-    public String getId() {
+    public @NonNull String getId() {
         return id;
     }
 }
