@@ -3,7 +3,6 @@ plugins {
 }
 
 archivesBaseName = 'piston-api'
-version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
 
 sourceSets {
     pluginApi {

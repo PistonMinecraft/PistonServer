@@ -32,7 +32,6 @@ task applyPatches(type: ApplyPatchesTask) {
 }
 
 archivesBaseName = 'piston-server'
-version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
 
 repositories {
     maven {

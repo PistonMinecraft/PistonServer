@@ -18,6 +18,8 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'org.checkerframework'
 
+    version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
+
     java.toolchain.languageVersion = JavaLanguageVersion.of(11)
 
     tasks.withType(JavaCompile) {
