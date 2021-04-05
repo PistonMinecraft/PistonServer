@@ -56,6 +56,12 @@ configurations {
     }
 }
 
+checkerFramework {
+    extraJavacArgs = [
+            '-AskipDefs=^(net\\.minecraft\\.|com\\.mojang\\.)'
+    ]
+}
+
 dependencies {
     if(Files.exists(genProcessedJar.outputPath)) {
         implementation files(genProcessedJar.outputPath)

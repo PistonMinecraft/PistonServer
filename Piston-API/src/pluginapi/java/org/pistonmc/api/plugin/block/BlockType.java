@@ -845,26 +845,4 @@ public enum BlockType {
     POINTED_DRIPSTONE,
     DRIPSTONE_BLOCK,
     GLOW_LICHEN,
-    MOD {
-        private Block specificBlock;
-
-        @Override
-        public void setSpecificBlock(Block specificBlock) {
-            this.specificBlock = specificBlock;
-        }
-
-        @Override
-        public Block getSpecificBlock() {
-            return specificBlock;
-        }
-    },
-    UNKNOWN;
-
-    public void setSpecificBlock(Block specificBlock) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Block getSpecificBlock() {
-        throw new UnsupportedOperationException();
-    }
 }

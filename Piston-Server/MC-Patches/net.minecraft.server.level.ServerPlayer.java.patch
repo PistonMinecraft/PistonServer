@@ -7,7 +7,7 @@
     public boolean wonGame;
  
 +   @Override
-+   public org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity getPistonPluginImpl() { // PistonMC - Add pistonEntity getter
++   public org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity getPistonPluginEntityImpl() { // PistonMC - Add pistonEntity getter
 +      if(pistonEntity == null) pistonEntity = new org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity(this);
 +      return (org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity) pistonEntity;
 +   }

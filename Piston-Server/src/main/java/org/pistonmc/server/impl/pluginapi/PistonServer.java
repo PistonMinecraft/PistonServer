@@ -3,6 +3,8 @@ package org.pistonmc.server.impl.pluginapi;
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import com.google.common.collect.Lists;
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.Component;
 import net.minecraft.server.dedicated.DedicatedPlayerList;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.*;
@@ -25,6 +27,7 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.CachedServerIcon;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.pistonmc.api.plugin.Piston;
@@ -68,12 +71,18 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
         return null;
     }
 
+    @Override
+    public int getMaxPlayer() {
+        return 0;
+    }
+
     public BukkitImpl getBukkitImpl() {
         return bukkitImpl;
     }
 
     public class BukkitImpl implements org.bukkit.Server {
-        private final List<org.bukkit.entity.Player> onlinePlayers = Lists.transform(playerList.getPlayers(), e->e.getPistonPluginEntityImpl().getBukkitImpl());
+        private final List<org.bukkit.entity.Player> onlinePlayers = Collections.unmodifiableList(
+                Lists.transform(playerList.getPlayers(), e->e.getPistonPluginEntityImpl().getBukkitImpl()));
         private BukkitImpl() {
             Bukkit.setServer(this);
         }
@@ -105,7 +114,7 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
         @NotNull
         @Override
         public Collection<? extends org.bukkit.entity.Player> getOnlinePlayers() {
-            return null;
+            return onlinePlayers;
         }
 
         @Override
@@ -310,6 +319,11 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
             return null;
         }
 
+        @Override
+        public @Nullable World getWorld(@NotNull NamespacedKey worldKey) {
+            return null;
+        }
+
         @Nullable
         @Override
         public MapView getMap(int id) {
@@ -445,6 +459,11 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
             return 0;
         }
 
+        @Override
+        public int broadcast(@NotNull Component message, @NotNull String permission) {
+            return 0;
+        }
+
         @NotNull
         @Override
         public OfflinePlayer getOfflinePlayer(@NotNull String name) {
@@ -544,6 +563,11 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
             return null;
         }
 
+        @Override
+        public @NotNull Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull Component title) {
+            return null;
+        }
+
         @NotNull
         @Override
         public Inventory createInventory(@Nullable InventoryHolder owner, @NotNull InventoryType type, @NotNull String title) {
@@ -556,9 +580,19 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
             return null;
         }
 
+        @Override
+        public @NotNull Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull Component title) throws IllegalArgumentException {
+            return null;
+        }
+
         @NotNull
         @Override
         public Inventory createInventory(@Nullable InventoryHolder owner, int size, @NotNull String title) throws IllegalArgumentException {
+            return null;
+        }
+
+        @Override
+        public @NotNull Merchant createMerchant(@Nullable Component title) {
             return null;
         }
 
@@ -598,9 +632,19 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
             return false;
         }
 
+        @Override
+        public @NotNull Component motd() {
+            return null;
+        }
+
         @NotNull
         @Override
         public String getMotd() {
+            return null;
+        }
+
+        @Override
+        public @Nullable Component shutdownMessage() {
             return null;
         }
 
@@ -860,6 +904,11 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
         @NotNull
         @Override
         public Set<String> getListeningPluginChannels() {
+            return null;
+        }
+
+        @Override
+        public @NonNull Iterable<? extends Audience> audiences() {
             return null;
         }
     }

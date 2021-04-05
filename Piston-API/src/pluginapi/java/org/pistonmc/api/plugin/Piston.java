@@ -1,13 +1,16 @@
 package org.pistonmc.api.plugin;
 
-public class Piston {
-    private static Server server;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-    public static Server getServer() {
+public class Piston {
+    private static @Nullable Server server;
+
+    public static @Nullable Server getServer() {
         return server;
     }
 
-    public static void setServer(Server server) {
+    public static void setServer(@NonNull Server server) {
         Piston.server = server;
     }
 }

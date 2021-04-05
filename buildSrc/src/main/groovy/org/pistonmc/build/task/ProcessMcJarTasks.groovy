@@ -64,16 +64,16 @@ class GenProcessedVanillaServerJarTask extends DefaultTask {
         }
         FileUtil.deleteDirectory(tempPath)
         FileUtil.ensureDirectoryExist(tempPath)
-        Path deobfuscatedPath = tempPath.resolve("deobfuscated.jar")
-        new ProguardDeobfuscator(mappingPath.toString()).deobfuscate(inputPath, deobfuscatedPath)
+        Path processed = tempPath.resolve('deobfuscated.jar')
+        new ProguardDeobfuscator(mappingPath.toString()).deobfuscate(inputPath, processed)
         if(accessTransformers != null && !accessTransformers.isEmpty()) {
-            def list = ['--inJar', deobfuscatedPath.toAbsolutePath().toString(), '--outJar', outputPath.toAbsolutePath().toString()]
+            def list = ['--inJar', processed.toAbsolutePath().toString(), '--outJar', outputPath.toAbsolutePath().toString()]
             accessTransformers.forEach({
                 list.add('--atFile')
                 list.add(it.toAbsolutePath().toString())
             })
             TransformerProcessor.main(list.toArray() as String[])
-        }
+        } else Files.copy(processed, outputPath)
         logger.info('Processed complete.')
     }
 

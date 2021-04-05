@@ -1,5 +1,6 @@
 plugins {
     id 'org.checkerframework' version '0.5.19-SNAPSHOT' apply false
+    id 'io.freefair.lombok' version '5.3.0' apply false
 }
 
 ext {
@@ -17,19 +18,26 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'idea'
     apply plugin: 'org.checkerframework'
+    apply plugin: 'io.freefair.lombok'
+
+    lombok {
+        config['lombok.sneakyThrows.flagUsage'] = 'error'
+        config['lombok.equalsAndHashCode.flagUsage'] = 'error'
+    }
 
     version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
 
-    java.toolchain.languageVersion = JavaLanguageVersion.of(11)
+    java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+    java.toolchain.vendor = JvmVendorSpec.ADOPTOPENJDK
 
     tasks.withType(JavaCompile) {
         options.encoding 'UTF-8'
         options.compilerArgs.addAll(['-Xplugin:Manifold'])
     }
 
-    compileJava {
-        options.release = 8
-    }
+//    compileJava {
+//        options.release = 8
+//    }
 
     checkerFramework {
         excludeTests = true
@@ -57,6 +65,7 @@ subprojects {
 
     dependencies {
         implementation "systems.manifold:manifold-rt:$LIB_MANIFOLD_VERSION"
+        implementation "systems.manifold:manifold-props-rt:$LIB_MANIFOLD_VERSION"
         implementation "systems.manifold:manifold-ext-rt:$LIB_MANIFOLD_VERSION"
 
         annotationProcessor "systems.manifold:manifold:$LIB_MANIFOLD_VERSION"
@@ -64,5 +73,6 @@ subprojects {
         annotationProcessor "systems.manifold:manifold-exceptions:$LIB_MANIFOLD_VERSION"
         annotationProcessor "systems.manifold:manifold-strings:$LIB_MANIFOLD_VERSION"
         annotationProcessor "systems.manifold:manifold-ext:$LIB_MANIFOLD_VERSION"
+        annotationProcessor "systems.manifold:manifold-props:$LIB_MANIFOLD_VERSION"
     }
 }

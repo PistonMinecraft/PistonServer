@@ -30,6 +30,9 @@ dependencies {
     implementation 'io.github.java-diff-utils:java-diff-utils:4.9'
     implementation('net.minecraftforge:accesstransformers:3.0.1') {
         exclude module: 'modlauncher'
+        exclude module: 'jopt-simple'
+        exclude group: 'org.ow2.asm'
+        exclude group: 'org.apache.logging.log4j'
     }
     implementation 'cn.maxpixel:minecraft-decompiler:2.2-SNAPSHOT'
 

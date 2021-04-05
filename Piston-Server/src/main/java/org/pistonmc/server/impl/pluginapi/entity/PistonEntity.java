@@ -1,7 +1,7 @@
 package org.pistonmc.server.impl.pluginapi.entity;
 
+import net.kyori.adventure.text.Component;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.Tag;
 import net.minecraft.world.damagesource.DamageSource;
@@ -12,19 +12,19 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.common.value.qual.IntRange;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.pistonmc.api.plugin.effect.Effect;
-import org.pistonmc.api.plugin.location.Location;
 import org.pistonmc.api.plugin.Sound;
+import org.pistonmc.api.plugin.effect.Effect;
 import org.pistonmc.api.plugin.entity.EntityDamageSource;
 import org.pistonmc.api.plugin.entity.EntityPose;
 import org.pistonmc.api.plugin.fluid.FluidType;
+import org.pistonmc.api.plugin.location.Location;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class PistonEntity implements org.pistonmc.api.plugin.entity.Entity {
+public abstract class PistonEntity implements org.pistonmc.api.plugin.entity.Entity {
     protected final Entity entity;
     public PistonEntity(Entity entity) {
         this.entity = entity;
@@ -130,7 +130,7 @@ public class PistonEntity implements org.pistonmc.api.plugin.entity.Entity {
 
     @Override
     public void playSound(@NonNull Sound sound, float volume, float pitch) {
-        entity.playSound(Registry.SOUND_EVENT.get(new ResourceLocation("minecraft", sound.getId())), volume, pitch);
+        entity.playSound(Registry.SOUND_EVENT.get(sound.getId().toNative()), volume, pitch);
     }
 
     @Override
@@ -744,6 +744,16 @@ public class PistonEntity implements org.pistonmc.api.plugin.entity.Entity {
         @Override
         public boolean isTicking() {
             return false;
+        }
+
+        @Override
+        public @Nullable Component customName() {
+            return null;
+        }
+
+        @Override
+        public void customName(@Nullable Component customName) {
+
         }
 
         @Nullable

@@ -112,26 +112,4 @@ public enum EntityType {
     ZOMBIFIED_PIGLIN,
     PLAYER,
     FISHING_BOBBER,
-    MOD {
-        private Entity specificEntity;
-
-        @Override
-        public void setSpecificEntity(Entity specificEntity) {
-            this.specificEntity = specificEntity;
-        }
-
-        @Override
-        public Entity getSpecificEntity() {
-            return specificEntity;
-        }
-    },
-    UNKNOWN;
-
-    public void setSpecificEntity(Entity specificEntity) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Entity getSpecificEntity() {
-        throw new UnsupportedOperationException();
-    }
 }

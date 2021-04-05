@@ -992,47 +992,14 @@ public enum Sound {
     ZOMBIE_VILLAGER_CURE("entity.zombie_villager.cure"),
     ZOMBIE_VILLAGER_DEATH("entity.zombie_villager.death"),
     ZOMBIE_VILLAGER_HURT("entity.zombie_villager.hurt"),
-    ZOMBIE_VILLAGER_STEP("entity.zombie_villager.step"),
-    MOD {
-        private ResourceName specificSoundId;
+    ZOMBIE_VILLAGER_STEP("entity.zombie_villager.step");
+    private final NamespacedResource id;
 
-        @Override
-        public void setSpecificSoundId(ResourceName specificSoundId) {
-            this.specificSoundId = specificSoundId;
-        }
-
-        @Override
-        public ResourceName getSpecificSoundId() {
-            return specificSoundId;
-        }
-    },
-    UNKNOWN {
-        private ResourceName specificSoundId;
-
-        @Override
-        public void setSpecificSoundId(ResourceName specificSoundId) {
-            this.specificSoundId = specificSoundId;
-        }
-
-        @Override
-        public ResourceName getSpecificSoundId() {
-            return specificSoundId;
-        }
-    };
-
-    public void setSpecificSoundId(ResourceName specificSoundId) {
-        throw new UnsupportedOperationException();
-    }
-
-    public ResourceName getSpecificSoundId() {
-        throw new UnsupportedOperationException();
-    }
-    private final ResourceName id;
-    Sound() { id = null; }
     Sound(String id) {
-        this.id = ResourceName.minecraft(id);
+        this.id = NamespacedResource.minecraft(id);
     }
-    public ResourceName getId() {
-        return id == null ? getSpecificSoundId() : id;
+
+    public NamespacedResource getId() {
+        return id;
     }
 }

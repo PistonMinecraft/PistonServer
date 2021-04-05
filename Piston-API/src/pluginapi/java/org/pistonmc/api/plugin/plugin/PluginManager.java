@@ -1,19 +1,20 @@
 package org.pistonmc.api.plugin.plugin;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.pistonmc.api.plugin.Server;
 
 public interface PluginManager {
-    boolean loadPistonPlugin(String mainClass);
+    boolean loadPistonPlugin(@NonNull String mainClass);
 
     boolean registerEventListener();
 
-    boolean loadPlugin(PistonPlugin plugin);
+    boolean loadPlugin(@NonNull PistonPlugin plugin);
 
-    boolean loadPlugin(String plugin);
+    boolean loadPlugin(@NonNull String plugin);
 
-    boolean unloadPlugin(PistonPlugin plugin);
+    boolean unloadPlugin(@NonNull PistonPlugin plugin);
 
-    boolean unloadPlugin(String plugin);
+    boolean unloadPlugin(@NonNull String plugin);
 
-    Server getServer();
+    @NonNull Server getServer();
 }

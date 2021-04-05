@@ -32,26 +32,4 @@ public enum EffectType {
     CONDUIT_POWER,
     DOLPHINS_GRACE,
     BAD_OMEN,
-    MOD {
-        private Effect specificEffect;
-
-        @Override
-        public void setSpecificEffect(Effect specificEffect) {
-            this.specificEffect = specificEffect;
-        }
-
-        @Override
-        public Effect getSpecificEffect() {
-            return specificEffect;
-        }
-    },
-    UNKNOWN;
-
-    public void setSpecificEffect(Effect specificEffect) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Effect getSpecificEffect() {
-        throw new UnsupportedOperationException();
-    }
 }

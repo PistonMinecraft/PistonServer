@@ -1047,26 +1047,4 @@ public enum ItemType {
     SCULK_SENSOR,
     GLOW_LICHEN,
     GLOW_INK_SAC,
-    MOD {
-        private Item specificItem;
-
-        @Override
-        public void setSpecificItem(Item specificItem) {
-            this.specificItem = specificItem;
-        }
-
-        @Override
-        public Item getSpecificItem() {
-            return specificItem;
-        }
-    },
-    UNKNOWN;
-
-    public void setSpecificItem(Item specificItem) {
-        throw new UnsupportedOperationException();
-    }
-
-    public Item getSpecificItem() {
-        throw new UnsupportedOperationException();
-    }
 }

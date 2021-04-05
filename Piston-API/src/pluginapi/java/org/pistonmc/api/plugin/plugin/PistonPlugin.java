@@ -1,7 +1,9 @@
 package org.pistonmc.api.plugin.plugin;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 public abstract class PistonPlugin {
-    private PluginManager pluginManager;
+    private @Nullable PluginManager pluginManager;
 
     public void onLoad() {}
 
@@ -9,7 +11,7 @@ public abstract class PistonPlugin {
 
     public void onDisable() {}
 
-    protected PluginManager getPluginManager() {
+    protected @Nullable PluginManager getPluginManager() {
         return pluginManager;
     }
 }

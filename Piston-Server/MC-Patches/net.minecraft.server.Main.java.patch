@@ -81,7 +81,7 @@
           ServerResources serverresources;
           try {
              serverresources = completablefuture.get();
-@@ -130,40 +129,40 @@
+@@ -130,35 +129,35 @@
           RegistryReadOps<Tag> registryreadops = RegistryReadOps.create(NbtOps.INSTANCE, serverresources.getResourceManager(), registryaccess_registryholder);
           WorldData worlddata = levelstoragesource_levelstorageaccess.getDataTag(registryreadops, datapackconfig1);
           if (worlddata == null) {
@@ -109,29 +109,20 @@
  
           levelstoragesource_levelstorageaccess.saveDataTag(registryaccess_registryholder, worlddata);
           WorldData worlddata1 = worlddata;
--         final DedicatedServer dedicatedserver = MinecraftServer.spin((threadx) -> {
--            DedicatedServer dedicatedserver = new DedicatedServer(threadx, registryaccess_registryholder, levelstoragesource_levelstorageaccess, packrepository, serverresources, worlddata1, dedicatedserversettings, DataFixers.getDataFixer(), minecraftsessionservice, gameprofilerepository, gameprofilecache, LoggerChunkProgressListener::new);
--            dedicatedserver.setSingleplayerName(optionset.valueOf(optionspec8));
--            dedicatedserver.setPort(optionset.valueOf(optionspec11));
--            dedicatedserver.setDemo(optionset.has(optionspec2));
--            dedicatedserver.setId(optionset.valueOf(optionspec12));
--            boolean flag = !optionset.has(optionspec) && !optionset.valuesOf(optionspec13).contains("nogui");
-+         final DedicatedServer dedicatedserver = MinecraftServer.spin((threadx) -> { // PistonMC - decompile error fix
-+            DedicatedServer dedicatedserver1 = new DedicatedServer(threadx, registryaccess_registryholder, levelstoragesource_levelstorageaccess, packrepository, serverresources, worlddata1, dedicatedserversettings, DataFixers.getDataFixer(), minecraftsessionservice, gameprofilerepository, gameprofilecache, LoggerChunkProgressListener::new);
+          final DedicatedServer dedicatedserver = MinecraftServer.spin((thread1) -> {
+             DedicatedServer dedicatedserver1 = new DedicatedServer(thread1, registryaccess_registryholder, levelstoragesource_levelstorageaccess, packrepository, serverresources, worlddata1, dedicatedserversettings, DataFixers.getDataFixer(), minecraftsessionservice, gameprofilerepository, gameprofilecache, LoggerChunkProgressListener::new);
+-            dedicatedserver1.setSingleplayerName(optionset.valueOf(optionspec8));
+-            dedicatedserver1.setPort(optionset.valueOf(optionspec11));
+-            dedicatedserver1.setDemo(optionset.has(optionspec2));
+-            dedicatedserver1.setId(optionset.valueOf(optionspec12));
+-            boolean flag1 = !optionset.has(optionspec) && !optionset.valuesOf(optionspec13).contains("nogui");
 +            dedicatedserver1.setSingleplayerName(singleplayer);
 +            dedicatedserver1.setPort(port);
 +            dedicatedserver1.setDemo(demo);
 +            dedicatedserver1.setId(serverId);
-+            boolean flag = !nogui && !nonOptions.contains("nogui");
-             if (flag && !GraphicsEnvironment.isHeadless()) {
--               dedicatedserver.showGui();
-+               dedicatedserver1.showGui();
++            boolean flag1 = !nogui && !nonOptions.contains("nogui");
+             if (flag1 && !GraphicsEnvironment.isHeadless()) {
+                dedicatedserver1.showGui();
              }
  
--            return dedicatedserver;
-+            return dedicatedserver1;
-          });
-          Thread thread = new Thread("Server Shutdown Thread") {
-             public void run() {
-                dedicatedserver.halt(true);
-             }
+             return dedicatedserver1;
