@@ -2,6 +2,7 @@ package org.pistonmc.api.plugin;
 
 import lombok.AllArgsConstructor;
 import manifold.ext.props.rt.api.val;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Objects;
 
@@ -32,7 +33,7 @@ public class NamespacedResource {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(@Nullable Object o) {
         if (this == o) return true;
         if (!(o instanceof NamespacedResource)) return false;
         NamespacedResource that = (NamespacedResource) o;

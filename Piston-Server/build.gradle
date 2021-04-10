@@ -6,6 +6,8 @@ import org.pistonmc.build.task.GenProcessedVanillaServerJarTask
 import java.nio.file.Files
 import java.util.jar.Attributes.Name
 
+ext.BUKKIT_VERSION = "${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
+
 task genProcessedJar(type: GenProcessedVanillaServerJarTask) {
     accessTransformers = [
             file('src/main/resources/access.at').toPath()
@@ -48,8 +50,6 @@ repositories {
     }
 }
 
-def bukkitVersion = "${rootProject.ext.MC_VERSION}-R0.1-SNAPSHOT"
-
 configurations {
     implementation {
         canBeResolved = true
@@ -66,17 +66,13 @@ dependencies {
     if(Files.exists(genProcessedJar.outputPath)) {
         implementation files(genProcessedJar.outputPath)
     }
-    implementation "com.destroystokyo.paper:paper-api:$bukkitVersion"
+    implementation "com.destroystokyo.paper:paper-api:$BUKKIT_VERSION"
     implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
     implementation project(path: ':Piston-API', configuration: 'expose')
 
     implementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
 
-    implementation "org.apache.logging.log4j:log4j-core:$LIB_LOG4J_VERSION"
-    implementation "org.apache.logging.log4j:log4j-api:$LIB_LOG4J_VERSION"
-    implementation "org.apache.logging.log4j:log4j-slf4j18-impl:$LIB_LOG4J_VERSION"
-    implementation "org.apache.logging.log4j:log4j-jul:$LIB_LOG4J_VERSION"
-    implementation "org.apache.logging.log4j:log4j-iostreams:$LIB_LOG4J_VERSION"
+    implementation libs.bundles.log4j
     implementation 'com.lmax:disruptor:3.4.2'
 
     implementation 'io.netty:netty-all:4.1.60.Final'
@@ -84,10 +80,7 @@ dependencies {
     implementation 'cpw.mods:modlauncher:8.0.9'
 
     implementation 'net.minecrell:terminalconsoleappender:1.2.0'
-    implementation "org.jline:jline:$LIB_JLINE_VERSION"
-    implementation "org.jline:jline-terminal:$LIB_JLINE_VERSION"
-    implementation "org.jline:jline-reader:$LIB_JLINE_VERSION"
-    implementation "org.jline:jline-terminal-jansi:$LIB_JLINE_VERSION"
+    implementation libs.bundles.jline
 }
 
 jar {
@@ -97,7 +90,7 @@ jar {
                 (Name.IMPLEMENTATION_VENDOR.toString()): 'PistonMC',
                 (Name.IMPLEMENTATION_TITLE.toString()): 'Piston',
                 (Name.IMPLEMENTATION_VERSION.toString()): rootProject.ext.VERSION,
-                'Bukkit-Version': bukkitVersion
+                'Bukkit-Version': BUKKIT_VERSION
         ])
 //        configurations.implementation.each { dep ->
 //            from(project.zipTree(dep)) {

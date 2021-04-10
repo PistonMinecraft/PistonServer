@@ -1,0 +1,34 @@
+[versions]
+manifold = "2021.1.10"
+log4j = "2.14.1"
+jline = "3.19.0"
+
+[libraries]
+manifold-rt = { module = "systems.manifold:manifold-rt", version.ref = "manifold" }
+manifold-props-rt = { module = "systems.manifold:manifold-props-rt", version.ref = "manifold" }
+manifold-ext-rt = { module = "systems.manifold:manifold-ext-rt", version.ref = "manifold" }
+
+manifold-processor = { module = "systems.manifold:manifold", version.ref = "manifold" }
+manifold-preprocessor-processor = { module = "systems.manifold:manifold-preprocessor", version.ref = "manifold" }
+manifold-exceptions-processor = { module = "systems.manifold:manifold-exceptions", version.ref = "manifold" }
+manifold-strings-processor = { module = "systems.manifold:manifold-strings", version.ref = "manifold" }
+manifold-ext-processor = { module = "systems.manifold:manifold-ext", version.ref = "manifold" }
+manifold-props-processor = { module = "systems.manifold:manifold-props", version.ref = "manifold" }
+
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+log4j-slf4j18-impl = { module = "org.apache.logging.log4j:log4j-slf4j18-impl", version.ref = "log4j" }
+log4j-jul = { module = "org.apache.logging.log4j:log4j-jul", version.ref = "log4j" }
+log4j-iostreams = { module = "org.apache.logging.log4j:log4j-iostreams", version.ref = "log4j" }
+
+jline-core = { module = "org.jline:jline", version.ref = "jline" }
+jline-terminal = { module = "org.jline:jline-terminal", version.ref = "jline" }
+jline-reader = { module = "org.jline:jline-reader", version.ref = "jline" }
+jline-jansi-terminal = { module = "org.jline:jline-terminal-jansi", version.ref = "jline" }
+
+[bundles]
+manifold-resources = ["manifold-rt", "manifold-props-rt", "manifold-ext-rt"]
+manifold-processors = ["manifold-processor", "manifold-preprocessor-processor", "manifold-exceptions-processor",
+    "manifold-strings-processor", "manifold-ext-processor", "manifold-props-processor"]
+log4j = ["log4j-core", "log4j-api", "log4j-slf4j18-impl", "log4j-jul", "log4j-iostreams"]
+jline = ["jline-core", "jline-terminal", "jline-reader", "jline-jansi-terminal"]

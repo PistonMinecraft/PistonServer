@@ -2,7 +2,6 @@ package org.pistonmc.server.impl.pluginapi;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
 import com.destroystokyo.paper.profile.PlayerProfile;
-import com.google.common.collect.Lists;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.minecraft.server.dedicated.DedicatedPlayerList;
@@ -31,7 +30,6 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.pistonmc.api.plugin.Piston;
-import org.pistonmc.api.plugin.entity.player.PlayerEntity;
 import org.pistonmc.server.RuntimeProperties;
 
 import java.awt.image.BufferedImage;
@@ -58,12 +56,12 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
     }
 
     @Override
-    public PlayerEntity getPlayer(String playerName) {
+    public org.pistonmc.api.plugin.entity.player.PlayerEntity getPlayer(String playerName) {
         return null;
     }
 
     @Override
-    public PlayerEntity getPlayer(UUID playerUUID) {
+    public org.pistonmc.api.plugin.entity.player.PlayerEntity getPlayer(UUID playerUUID) {
         return null;
     }
 
@@ -81,8 +79,8 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
     }
 
     public class BukkitImpl implements org.bukkit.Server {
-        private final List<org.bukkit.entity.Player> onlinePlayers = Collections.unmodifiableList(
-                Lists.transform(playerList.getPlayers(), e->e.getPistonPluginEntityImpl().getBukkitImpl()));
+//        private final List<org.bukkit.entity.Player> onlinePlayers = Collections.unmodifiableList(
+//                Lists.transform(playerList.getPlayers(), e->e.getPistonPluginEntityImpl().getBukkitImpl()));
         private BukkitImpl() {
             Bukkit.setServer(this);
         }
