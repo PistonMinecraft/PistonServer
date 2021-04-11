@@ -14,17 +14,14 @@
        this.level = level;
        this.dimensions = entitytype.getDimensions();
        this.position = Vec3.ZERO;
-@@ -372,13 +375,23 @@
- 
-       this.firstTick = false;
-       this.level.getProfiler().pop();
+@@ -375,10 +378,20 @@
     }
  
-+   // PistonMC - start
-+   private int dimensionChangingDelay = this.getDimensionChangingDelay();
     public void setPortalCooldown() {
        this.portalCooldown = this.getDimensionChangingDelay();
     }
++   // PistonMC - start
++   private int dimensionChangingDelay = this.getDimensionChangingDelay();
 +   public void setDimensionChangingDelay(int dimensionChangingDelay) {
 +      if(dimensionChangingDelay < 0) return;
 +      this.dimensionChangingDelay = dimensionChangingDelay;
@@ -38,17 +35,14 @@
        return this.portalCooldown > 0;
     }
  
-@@ -387,13 +400,23 @@
-          --this.portalCooldown;
-       }
- 
+@@ -390,10 +403,20 @@
     }
  
-+   // PistonMC - start
-+   private int portalWaitTime = getPortalWaitTime();
     public int getPortalWaitTime() {
        return 0;
     }
++   // PistonMC - start
++   private int portalWaitTime = getPortalWaitTime();
 +   public void setPortalWaitTime(int portalWaitTime) {
 +      if(portalWaitTime < 0) return;
 +      this.portalWaitTime = portalWaitTime;

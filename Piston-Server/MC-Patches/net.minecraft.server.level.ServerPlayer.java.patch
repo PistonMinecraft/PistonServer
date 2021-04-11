@@ -7,9 +7,9 @@
     public boolean wonGame;
  
 +   @Override
-+   public org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity getPistonPluginEntityImpl() { // PistonMC - Add pistonEntity getter
-+      if(pistonEntity == null) pistonEntity = new org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity(this);
-+      return (org.pistonmc.server.impl.pluginapi.entity.player.PistonActualPlayerEntity) pistonEntity;
++   public org.pistonmc.server.impl.pluginapi.entity.player.PistonServerPlayerEntity getPistonPluginEntityImpl() { // PistonMC - Add pistonEntity getter
++      if(pistonEntity == null) pistonEntity = new org.pistonmc.server.impl.pluginapi.entity.player.PistonServerPlayerEntity(this);
++      return (org.pistonmc.server.impl.pluginapi.entity.player.PistonServerPlayerEntity) pistonEntity;
 +   }
 +
     public ServerPlayer(MinecraftServer minecraftserver, ServerLevel serverlevel, GameProfile gameprofile, ServerPlayerGameMode serverplayergamemode) {
