@@ -24,6 +24,9 @@ jobs:
       run: chmod +x gradlew
     - name: Apply MC Patches
       run: ./gradlew applyPatches
+      env:
+        GPR_USERNAME: ${{ github.actor }}
+        GPR_TOKEN: ${{ github.token }}
     - name: Build with Gradle
       run: ./gradlew build
       env:
