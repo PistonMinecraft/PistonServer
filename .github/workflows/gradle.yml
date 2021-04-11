@@ -23,7 +23,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./gradlew applyPatches build
       env:
         GPR_USERNAME: ${{ github.actor }}
         GPR_TOKEN: ${{ github.token }}
