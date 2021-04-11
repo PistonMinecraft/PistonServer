@@ -22,8 +22,10 @@ jobs:
         java-version: 11
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Apply MC Patches
+      run: ./gradlew applyPatches
     - name: Build with Gradle
-      run: ./gradlew applyPatches build
+      run: ./gradlew build
       env:
         GPR_USERNAME: ${{ github.actor }}
         GPR_TOKEN: ${{ github.token }}
