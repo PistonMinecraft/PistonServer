@@ -45,7 +45,10 @@ configurations {
 dependencies {
     pluginApiImplementation 'net.md-5:bungeecord-chat:1.16-R0.5-SNAPSHOT'
 
-    moddingApiImplementation 'cpw.mods:modlauncher:8.0.9'
+    moddingApiImplementation('cpw.mods:modlauncher:8.0.9') {
+        exclude group: 'org.ow2.asm'
+        exclude module: 'jopt-simple'
+    }
 
     api 'org.slf4j:slf4j-api:2.0.0-alpha1'
 

@@ -1,4 +1,4 @@
-package org.pistonmc.server;
+package org.pistonmc;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMaps;
@@ -45,6 +45,7 @@ public class RuntimeProperties {
         public static final Key<String> SERVER_NAME = new Key<>("server_name", true);
         public static final Key<String> SERVER_VERSION = new Key<>("server_version", true);
         public static final Key<String> SERVER_BUKKIT_VERSION = new Key<>("server_bukkit_version", true);
+        public static final Key<String[]> SERVER_LAUNCH_ARGS = new Key<>("server_launch_args", true);
     }
     public static class SystemPropKey {
         final String key;
@@ -70,6 +71,7 @@ public class RuntimeProperties {
         put(Key.SERVER_NAME, p.getImplementationTitle());
         put(Key.SERVER_VERSION, p.getImplementationVersion());
         put(Key.SERVER_BUKKIT_VERSION, man.getMainAttributes().getValue("Bukkit-Version"));
+        put(Key.SERVER_LAUNCH_ARGS, man.getMainAttributes().getValue("Server-Launch-Args").split(" "));
     }
     @SuppressWarnings("unchecked")
     public static <V> V put(Key<V> key, V value) {

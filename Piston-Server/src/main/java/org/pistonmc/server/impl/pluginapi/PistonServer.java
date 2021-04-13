@@ -29,8 +29,8 @@ import org.bukkit.util.CachedServerIcon;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.pistonmc.RuntimeProperties;
 import org.pistonmc.api.plugin.Piston;
-import org.pistonmc.server.RuntimeProperties;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -94,7 +94,7 @@ public class PistonServer implements org.pistonmc.api.plugin.Server {
         @NotNull
         @Override
         public String getVersion() {
-            return "${RuntimeProperties.get(RuntimeProperties.Key.SERVER_VERSION)} (MC: ${server.getServerVersion()})";
+            return "${org.pistonmc.RuntimeProperties.get(RuntimeProperties.Key.SERVER_VERSION)} (MC: ${server.getServerVersion()})";
         }
 
         @NotNull

@@ -58,7 +58,8 @@ configurations {
 
 checkerFramework {
     extraJavacArgs = [
-            '-AskipDefs=^(net\\.minecraft\\.|com\\.mojang\\.)'
+            '-AskipDefs=^(net\\.minecraft\\.|com\\.mojang\\.)',
+            '-AskipUses=^(net\\.minecraft\\.|com\\.mojang\\.)'
     ]
 }
 
@@ -66,8 +67,14 @@ dependencies {
     if(Files.exists(genProcessedJar.outputPath)) {
         implementation files(genProcessedJar.outputPath)
     }
-    implementation "com.destroystokyo.paper:paper-api:$BUKKIT_VERSION"
-    implementation 'org.spongepowered:spongeapi:8.0.0-SNAPSHOT'
+    implementation("com.destroystokyo.paper:paper-api:$BUKKIT_VERSION") {
+        exclude group: 'org.ow2.asm'
+        exclude group: 'org.ow2.asm'
+        exclude module: 'jsr305'
+    }
+    implementation('org.spongepowered:spongeapi:8.0.0-SNAPSHOT') {
+        exclude group: 'org.checkerframework'
+    }
     implementation project(path: ':Piston-API', configuration: 'expose')
 
     implementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
@@ -77,7 +84,32 @@ dependencies {
 
     implementation 'io.netty:netty-all:4.1.60.Final'
 
-    implementation 'cpw.mods:modlauncher:8.0.9'
+    implementation('cpw.mods:modlauncher:8.0.9') {
+        exclude group: 'org.ow2.asm'
+        exclude module: 'jopt-simple'
+    }
+    runtimeOnly('net.minecraftforge:forgespi:3.2.0') {
+        exclude module: 'modlauncher'
+        exclude group: 'org.ow2.asm'
+        exclude group: 'org.apache.logging.log4j'
+    }
+    runtimeOnly('net.minecraftforge:coremods:4.0.6') {
+        exclude module: 'modlauncher'
+        exclude module: 'forgespi'
+        exclude group: 'org.ow2.asm'
+        exclude group: 'org.apache.logging.log4j'
+    }
+    runtimeOnly('net.minecraftforge:eventbus:4.0.0') {
+        exclude module: 'modlauncher'
+        exclude group: 'org.ow2.asm'
+        exclude group: 'org.apache.logging.log4j'
+    }
+    runtimeOnly('net.minecraftforge:accesstransformers:3.0.1') {
+        exclude module: 'modlauncher'
+        exclude module: 'jopt-simple'
+        exclude group: 'org.ow2.asm'
+        exclude group: 'org.apache.logging.log4j'
+    }
 
     implementation 'net.minecrell:terminalconsoleappender:1.2.0'
     implementation libs.bundles.jline
@@ -86,11 +118,13 @@ dependencies {
 jar {
     manifest {
         attributes([
-                (Name.MAIN_CLASS.toString()): 'org.pistonmc.server.main.PistonMain',
+                (Name.MAIN_CLASS.toString()): 'org.pistonmc.main.PreLaunch',
                 (Name.IMPLEMENTATION_VENDOR.toString()): 'PistonMC',
                 (Name.IMPLEMENTATION_TITLE.toString()): 'Piston',
                 (Name.IMPLEMENTATION_VERSION.toString()): rootProject.ext.VERSION,
-                'Bukkit-Version': BUKKIT_VERSION
+                'Bukkit-Version': BUKKIT_VERSION,
+                'Multi-Release': 'true',
+                'Server-Launch-Args': '--gameDir . --launchTarget pistonserver'
         ])
 //        configurations.implementation.each { dep ->
 //            from(project.zipTree(dep)) {
