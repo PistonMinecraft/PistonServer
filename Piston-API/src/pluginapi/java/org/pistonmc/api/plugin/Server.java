@@ -1,7 +1,6 @@
 package org.pistonmc.api.plugin;
 
 import org.pistonmc.api.plugin.entity.player.PlayerEntity;
-import org.pistonmc.api.plugin.world.World;
 
 import java.util.UUID;
 
@@ -25,13 +24,6 @@ public interface Server {
      * @return 玩家实体
      */
     PlayerEntity getPlayer(UUID playerUUID);
-
-    /**
-     * 通过名称获取世界
-     * @param worldName
-     * @return 世界
-     */
-    World getWorld(String worldName);
 
     /**
      * 获取服务器最大人数

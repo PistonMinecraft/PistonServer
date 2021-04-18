@@ -1,24 +1,24 @@
 package org.pistonmc.api.plugin.entity;
 
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.event.HoverEventSource;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.common.value.qual.IntRange;
-import org.pistonmc.api.plugin.location.Location;
+import org.pistonmc.api.plugin.CommandSource;
+import org.pistonmc.api.plugin.Nameable;
 import org.pistonmc.api.plugin.Sound;
-import org.pistonmc.api.plugin.effect.Effect;
 import org.pistonmc.api.plugin.fluid.FluidType;
 
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 /**
- * 此接口表示一个{@code 实体}。
+ * 表示一个{@code 实体}。
  * <br><br>
- * This interface represents an {@code Entity}.
+ * Represents an {@code Entity}.
  */
-public interface Entity {
+public interface Entity extends Nameable, CommandSource, HoverEventSource<HoverEvent.ShowEntity> {
     /**
-     * Returns whether this entity is in spectator mode or not.
+     * Gets whether this entity is in spectator mode.
      * @return if this entity is in spectator mode.
      */
     boolean isSpectator();
@@ -34,7 +34,7 @@ public interface Entity {
      * @return the type of this entity
      */
     @NonNull
-    EntityType getEntityType();
+    IEntityType getEntityType();
 
     /**
      * Returns the id of this entity
@@ -65,9 +65,11 @@ public interface Entity {
     boolean removeTag(@NonNull String tag);
 
     /**
-     * Kills this entity
+     * Kills this entity. Default delegates to {@link Entity#remove()}
      */
-    void kill();
+    default void kill() {
+        remove();
+    }
 
     /**
      * Mark this entity as removed
@@ -84,8 +86,7 @@ public interface Entity {
      * Returns the pose of this entity
      * @return the pose of this entity
      */
-    @NonNull
-    EntityPose getEntityPose();
+    @NonNull EntityPose getEntityPose();
 
     /**
      * Sets the position of this entity
@@ -253,15 +254,4 @@ public interface Entity {
      * @return if entity have been hurt successfully
      */
     boolean hurt(@NonNull EntityDamageSource damageSource, float hurtDamage);
-    UUID getUUID();
-    String getName();
-    String getDisplayName();
-    void setDisplayName(String displayName);
-    double getHealth();
-    void setHealth(double health);
-    boolean hasPermission(String permission);
-    Location getLocation();
-    void setLocation(Location location);
-    List<Effect> getEffects();
-    void removeEffect();
 }

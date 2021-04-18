@@ -1,11 +1,11 @@
 package org.pistonmc.api.plugin.block;
 
-import org.pistonmc.api.plugin.location.Location;
 import org.pistonmc.api.plugin.DyeColor;
+import org.pistonmc.api.plugin.location.Position;
 
 public interface Block {
     BlockType getBlockType();
-    Location getBlockLocation();
+    Position getBlockLocation();
     boolean hasColor();
     DyeColor getColor();
 }

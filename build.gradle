@@ -27,8 +27,6 @@ subprojects {
 
     version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
 
-    targetCompatibility = sourceCompatibility = 11
-
     tasks.withType(JavaCompile) {
         options.encoding 'UTF-8'
         options.compilerArgs.addAll(['-Xplugin:Manifold'])

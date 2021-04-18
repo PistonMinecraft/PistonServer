@@ -9,13 +9,11 @@ sourceSets {
         java.srcDirs =  ['src/pluginapi/java']
         resources.srcDirs =  ['src/pluginapi/resources']
         compileClasspath += main.output
-        compileClasspath += main.compileClasspath
     }
     moddingApi {
         java.srcDirs =  ['src/moddingapi/java']
         resources.srcDirs =  ['src/moddingapi/resources']
         compileClasspath += main.output
-        compileClasspath += main.compileClasspath
     }
     main {
         java.srcDirs = ['src/common/java']
@@ -24,6 +22,9 @@ sourceSets {
 }
 
 configurations {
+    nonTransitiveImpl {
+        transitive = false
+    }
     pluginApiAnnotationProcessor.extendsFrom annotationProcessor
     moddingApiAnnotationProcessor.extendsFrom annotationProcessor
     expose {
@@ -33,24 +34,30 @@ configurations {
     }
     implementation {
         canBeResolved = true
+        extendsFrom(nonTransitiveImpl)
     }
     pluginApiImplementation {
         canBeResolved = true
+        extendsFrom(implementation)
     }
     moddingApiImplementation {
         canBeResolved = true
+        extendsFrom(implementation)
     }
 }
 
 dependencies {
-    pluginApiImplementation 'net.md-5:bungeecord-chat:1.16-R0.5-SNAPSHOT'
-
     moddingApiImplementation('cpw.mods:modlauncher:8.0.9') {
         exclude group: 'org.ow2.asm'
         exclude module: 'jopt-simple'
     }
 
     api 'org.slf4j:slf4j-api:2.0.0-alpha1'
+    api 'net.kyori:adventure-api:4.7.0'
+    api 'org.joml:joml:1.10.1'
+
+    runtimeOnly 'net.jodah:typetools:0.8.3' // EventBus lib
+    nonTransitiveImpl 'net.minecraftforge:eventbus:4.0.0'
 
     implementation 'org.snakeyaml:snakeyaml-engine:2.2.1'
 }
