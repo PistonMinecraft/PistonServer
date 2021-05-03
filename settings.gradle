@@ -1,4 +1,3 @@
 enableFeaturePreview("VERSION_CATALOGS")
 
-rootProject.name = 'Piston'
-include('Piston-API', 'Piston-Server')
+rootProject.name = 'Piston-Server'

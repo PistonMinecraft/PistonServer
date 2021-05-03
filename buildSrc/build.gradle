@@ -1,7 +1,7 @@
 repositories {
     mavenCentral()
     maven { url = 'https://dl.bintray.com/lxgaming/maven' }  // MD repo
-    maven { url = 'https://files.minecraftforge.net/maven' }
+    maven { url = 'https://maven.minecraftforge.net/' }
     maven {
         url = 'https://maven.pkg.github.com/MaxPixelStudios/MinecraftDecompiler'
         credentials {
@@ -12,7 +12,6 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'io.github.java-diff-utils:java-diff-utils:4.9'
     implementation('net.minecraftforge:accesstransformers:3.0.1') {
         exclude module: 'modlauncher'

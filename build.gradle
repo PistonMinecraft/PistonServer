@@ -1,64 +1,191 @@
+import org.pistonmc.build.PistonBuild
+import org.pistonmc.build.util.FileUtil
+
+import java.util.jar.Attributes.Name
+
 plugins {
-    id 'org.checkerframework' version '0.5.19' apply false
-    id 'io.freefair.lombok' version '5.3.0' apply false
+    id 'java'
+    id 'idea'
+    id 'org.checkerframework' version '+'
+    id 'io.freefair.lombok' version '5.+'
 }
 
 ext {
     ENV = System.getenv()
     MC_VERSION = '1.16.5'
-    VERSION = '0.1'
-    BUILD = "${ENV.GITHUB_RUN_NUMBER ? 'build' : 'INTERNAL_BUILD'}${ENV.GITHUB_RUN_NUMBER ?: ''}"
+    BUKKIT_VERSION = "$MC_VERSION-R0.1-SNAPSHOT"
+    VERSION = '0.1.0'
+    BUILD = "${ENV.GITHUB_RUN_NUMBER ? (ENV.GITHUB_RUN_NUMBER ?: '0') : 'INTERNAL_BUILD'}"
 }
 
-allprojects {
-    group = 'org.pistonmc'
+group = 'org.pistonmc'
+archivesBaseName = 'piston-server'
+version = "$MC_VERSION-$VERSION.$BUILD"
+
+apply plugin: PistonBuild
+
+minecraftProcess {
+    accessTransformers = [
+            layout.projectDirectory.file('src/main/resources/access.at')
+    ]
+    minecraftPatches = layout.projectDirectory.dir('MC-Patches')
+    minecraftSources = layout.projectDirectory.dir('src/main/java/')
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'org.checkerframework'
-    apply plugin: 'io.freefair.lombok'
+tasks.withType(JavaCompile) {
+    options.encoding 'UTF-8'
+    options.compilerArgs.addAll(['-Xplugin:Manifold'])
+}
 
-    lombok {
-        config['lombok.sneakyThrows.flagUsage'] = 'error'
-        config['lombok.equalsAndHashCode.flagUsage'] = 'error'
-    }
+lombok {
+    config['lombok.sneakyThrows.flagUsage'] = 'error'
+    config['lombok.equalsAndHashCode.flagUsage'] = 'error'
+}
 
-    version = "${rootProject.ext.MC_VERSION}-${rootProject.ext.VERSION}+${rootProject.ext.BUILD}"
-
-    tasks.withType(JavaCompile) {
-        options.encoding 'UTF-8'
-        options.compilerArgs.addAll(['-Xplugin:Manifold'])
-    }
-
-    checkerFramework {
-        excludeTests = true
-        checkers = [
+checkerFramework {
+    excludeTests = true
+    checkers = [
             'org.checkerframework.checker.nullness.NullnessChecker',
             'org.checkerframework.checker.units.UnitsChecker'
-        ]
-    }
+    ]
+    extraJavacArgs = [
+            '-AskipDefs=^(net\\.minecraft\\.|com\\.mojang\\.)',
+            '-AskipUses=^(net\\.minecraft\\.|com\\.mojang\\.)'
+    ]
+}
 
-    repositories {
-        mavenCentral()
-        maven {
-            name 'Spigot Public Repo'
-            url 'https://hub.spigotmc.org/nexus/content/groups/public'
+repositories {
+    mavenCentral()
+    maven {
+        name 'Spigot Public Repo'
+        url 'https://hub.spigotmc.org/nexus/content/groups/public'
+    }
+    maven {
+        name 'forge-repo'
+        url 'https://maven.minecraftforge.net/'
+    }
+    maven {
+        name 'Minecraft Libraries'
+        url "https://libraries.minecraft.net"
+    }
+    maven {
+        name 'paper-repo'
+        url 'https://papermc.io/repo/repository/maven-public/'
+    }
+    maven {
+        name 'sponge-repo'
+        url 'https://repo-new.spongepowered.org/repository/maven-public'
+    }
+    maven {
+        name 'Piston API Common Repo'
+        url "https://maven.pkg.github.com/PistonMinecraft/PistonAPI-Common"
+        credentials {
+            username = ENV.GPR_USERNAME
+            password = ENV.GPR_TOKEN
         }
-        maven {
-            name 'forge-repo'
-            url 'https://files.minecraftforge.net/maven/'
+    } // TODO: Remove this
+    maven {
+        name 'Piston Mod API Repo'
+        url "https://maven.pkg.github.com/PistonMinecraft/Piston-ModAPI"
+        credentials {
+            username = ENV.GPR_USERNAME
+            password = ENV.GPR_TOKEN
         }
     }
+    maven {
+        name 'Piston Plugin API Repo'
+        url "https://maven.pkg.github.com/PistonMinecraft/Piston-PluginAPI"
+        credentials {
+            username = ENV.GPR_USERNAME
+            password = ENV.GPR_TOKEN
+        }
+    }
+}
 
-    configurations {
-        testImplementation.extendsFrom annotationProcessor
+configurations {
+    forgeImplementation
+    fabricImplementation
+    bukkitImplementation
+    spongeImplementation
+    commonImplementation
+    implementation {
+        canBeResolved = true
+        extendsFrom(commonImplementation, bukkitImplementation, forgeImplementation, spongeImplementation, fabricImplementation)
+    }
+    testImplementation.extendsFrom annotationProcessor
+}
+
+dependencies {
+    if(FileUtil.exists(genProcessedServerJar.output)) {
+        commonImplementation files(genProcessedServerJar.output)
+    }
+    bukkitImplementation("com.destroystokyo.paper:paper-api:$BUKKIT_VERSION") {
+        exclude group: 'org.ow2.asm'
+        exclude group: 'org.ow2.asm'
+        exclude module: 'jsr305'
+    }
+    spongeImplementation('org.spongepowered:spongeapi:8.0.0-SNAPSHOT') {
+        exclude group: 'org.checkerframework'
     }
 
-    dependencies {
-        implementation libs.bundles.manifold.resources
+    commonImplementation 'org.pistonmc.api:api-common:0.1.0.+' // TODO: Remove this
+//    commonImplementation 'org.pistonmc.api:plugin-api:0.1.0.+' // TODO: Coming soon
+//    commonImplementation 'org.pistonmc.api:mod-api:0.1.0.+' // TODO: Coming soon
 
-        annotationProcessor libs.bundles.manifold.processors
+    commonImplementation 'net.sf.jopt-simple:jopt-simple:6.0-alpha-3'
+
+    commonImplementation libs.bundles.log4j
+    commonImplementation 'com.lmax:disruptor:3.4.2'
+
+    commonImplementation 'io.netty:netty-all:4.1.60.Final'
+
+    compileOnly 'com.google.code.findbugs:jsr305:3.0.2' // Other APIs need this
+    commonImplementation('cpw.mods:grossjava9hacks:+') {
+        transitive = false
+    }
+    commonImplementation('cpw.mods:modlauncher:8.0.9') {
+        transitive = false
+    }
+    commonImplementation 'org.apache.maven:maven-artifact:3.6.3' // ForgeSPI lib
+    commonImplementation('net.minecraftforge:forgespi:3.2.0') {
+        transitive = false
+    }
+    commonImplementation('net.minecraftforge:coremods:4.0.6') {
+        transitive = false
+    }
+    commonImplementation 'org.antlr:antlr4-runtime:4.9.1' // AccessTransformers lib
+    commonImplementation('net.minecraftforge:accesstransformers:3.0.1') {
+        transitive = false
+    }
+
+    forgeImplementation('net.minecraftforge:forge:1.16.5-36.1.13:universal')
+
+    commonImplementation 'net.minecrell:terminalconsoleappender:1.2.0'
+    commonImplementation libs.bundles.jline
+
+    commonImplementation libs.bundles.manifold.resources
+
+    annotationProcessor libs.bundles.manifold.processors
+}
+
+jar {
+    manifest {
+        attributes([
+                (Name.MAIN_CLASS.toString())            : 'org.pistonmc.main.PreLaunch',
+                (Name.IMPLEMENTATION_VENDOR.toString()) : 'PistonMC',
+                (Name.IMPLEMENTATION_TITLE.toString())  : 'Piston',
+                (Name.IMPLEMENTATION_VERSION.toString()): rootProject.ext.VERSION,
+                'Bukkit-Version'                        : BUKKIT_VERSION,
+                'Multi-Release'                         : 'true',
+                'Server-Launch-Args'                    : '--gameDir . --launchTarget pistonserver'
+        ])
+//        configurations.implementation.each { dep ->
+//            from(project.zipTree(dep)) {
+//                exclude 'module-info.class'
+//                if(dep.name.contains('server_processed')) {
+//                    exclude 'log4j2.xml', 'org/apache/logging/', 'joptsimple/', 'META-INF/', 'io/netty', 'it/unimi/dsi/fastutil/', 'javax/annotation'
+//                }
+//            }
+//        }
     }
 }

@@ -1,11 +1,9 @@
 # idea
-/.idea/
+.idea/
 *.iml
 
-# Ignore Gradle project-specific cache directory
+# Gradle
 .gradle/
-
-# Ignore Gradle build output directory
 build/
 
 # VSCode
@@ -15,7 +13,10 @@ build/
 bin/
 
 # MC patched java files
-/Piston-Server/src/main/java/net/minecraft/
+**/net/minecraft/
 
 # Auto-generated Lombok configuration
 lombok.config
+
+# These shouldn't be ignored
+!**/org/pistonmc/build/

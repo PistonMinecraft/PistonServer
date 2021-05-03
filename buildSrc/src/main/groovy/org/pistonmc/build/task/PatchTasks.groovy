@@ -1,37 +1,68 @@
+/*
+ * PistonServer. A high performance, multi-API support Minecraft server.
+ * Copyright (C) 2019-2021 PistonMC Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.pistonmc.build.task
 
-import cn.maxpixel.mcdecompiler.util.FileUtil
 import com.github.difflib.DiffUtils
 import com.github.difflib.UnifiedDiffUtils
+import groovy.transform.PackageScope
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.FileVisitDetails
+import org.gradle.api.tasks.*
 
-import java.nio.file.Files
-import java.nio.file.Path
+import static org.pistonmc.build.PistonBuild.CHARSET
+import static org.pistonmc.build.util.FileUtil.createFileIfNotExists
+import static org.pistonmc.build.util.FileUtil.getFile
 
-class GenPatchesTask extends DefaultTask {
+@PackageScope abstract class PatchTask extends DefaultTask {
+    @Internal final ProcessMcJarTask task
+
+    PatchTask() {
+        TaskCollection<ProcessMcJarTask> tasks = project.tasks.withType(ProcessMcJarTask)
+        dependsOn tasks
+        task = tasks.iterator().next()
+    }
+}
+
+abstract class GenPatchesTask extends PatchTask {
     @InputDirectory
-    Path inputSourcesDir
+    abstract DirectoryProperty getInputSources()
+
     @OutputDirectory
-    Path outputPatchesDir
+    abstract DirectoryProperty getOutputPatches()
+
     @TaskAction
     void execute() {
-        GenDecompiledSourcesTask task = dependsOn.find { it instanceof GenDecompiledSourcesTask } as GenDecompiledSourcesTask
-        if(task == null) throw new Exception("Must depend on a GenDecompiledSourcesTask to be sure that decompiled sources are generated")
-        Path decompiledSources = task.output
-        if(Files.exists(inputSourcesDir)) {
-            Files.walk(inputSourcesDir).filter{Files.isRegularFile(it) }.withCloseable {
-                it.forEach {
-                    Path relativizePath = inputSourcesDir.relativize(it)
-                    if(relativizePath.startsWith('net/minecraft')) {
-                        List<String> originalLines = Files.readAllLines(decompiledSources.resolve(relativizePath))
-                        String fileName = relativizePath.toString().replace(System.getProperty('file.separator'), '.')
-                        Files.write(outputPatchesDir.resolve(fileName + '.patch'),
-                                UnifiedDiffUtils.generateUnifiedDiff('a/' + relativizePath.toString().replace('\\', '/'),
-                                'b/' + relativizePath.toString().replace('\\', '/'), originalLines,
-                                        DiffUtils.diff(originalLines, Files.readAllLines(it)), 5))
+        Directory decompiledSources = task.decompileOutput.locationOnly.get()
+        if(inputSources.asFile.get().exists()) {
+            inputSources.asFileTree.matching {
+                include 'net/minecraft/'
+            }.visit { FileVisitDetails details ->
+                if(!details.directory) {
+                    String relativePathString = details.relativePath.pathString
+                    File originalFile = decompiledSources.file(relativePathString).asFile
+                    List<String> originalLines = originalFile.exists() ? originalFile.readLines(CHARSET) : Collections.<String>emptyList()
+                    createFileIfNotExists(getFile(outputPatches.file(relativePathString.replace('/', '.') + '.patch')))
+                            .withWriter(CHARSET) {
+                        UnifiedDiffUtils.generateUnifiedDiff('a/' + relativePathString, 'b/' + relativePathString, originalLines,
+                                DiffUtils.diff(originalLines, details.file.readLines(CHARSET)), 5).forEach(it::writeLine)
                     }
                 }
             }
@@ -39,25 +70,26 @@ class GenPatchesTask extends DefaultTask {
     }
 }
 
-class ApplyPatchesTask extends DefaultTask {
+abstract class ApplyPatchesTask extends PatchTask {
     @InputDirectory
-    Path inputPatchesDir
+    abstract DirectoryProperty getInputPatches()
+
     @OutputDirectory
-    Path outputSourceDir
+    abstract DirectoryProperty getOutputSources()
+
     @TaskAction
     void execute() {
-        GenDecompiledSourcesTask task = dependsOn.find { it instanceof GenDecompiledSourcesTask } as GenDecompiledSourcesTask
-        if(task == null) throw new Exception("Must depend on a GenDecompiledSourcesTask to be sure that decompiled sources are generated")
-        Path originalBase = task.output
+        Directory decompiledSources = task.decompileOutput.locationOnly.get()
         logger.info('Applying patches')
-        Files.list(inputPatchesDir).filter {it.toString().endsWith('.patch')}.withCloseable {
-            it.forEach {
-                logger.info('Applying ' + it + '...')
-                Path p = inputPatchesDir.relativize(it)
-                String path = p.toString().substring(0, p.toString().lastIndexOf('.java.patch')).replace('.', '/') + '.java'
-                FileUtil.ensureDirectoryExist(outputSourceDir.resolve(path).getParent())
-                Files.write(outputSourceDir.resolve(path), DiffUtils.patch(Files.readAllLines(originalBase.resolve(path)),
-                        UnifiedDiffUtils.parseUnifiedDiff(Files.readAllLines(it))))
+        inputPatches.asFileTree.matching {
+            include '**/*.patch'
+        }.visit { FileVisitDetails details ->
+            String fileName = details.name
+            logger.info('Applying {} ...', fileName)
+            String path = fileName.substring(0, fileName.lastIndexOf('.java.patch')).replace('.', '/').concat('.java')
+            createFileIfNotExists(getFile(outputSources.file(path))).withWriter('UTF-8') {
+                DiffUtils.patch(decompiledSources.file(path).asFile.readLines('UTF-8'),
+                        UnifiedDiffUtils.parseUnifiedDiff(details.file.readLines('UTF-8'))).forEach(it::writeLine)
             }
         }
     }

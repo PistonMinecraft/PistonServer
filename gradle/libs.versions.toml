@@ -1,5 +1,5 @@
 [versions]
-manifold = "2021.1.10"
+manifold = "2021.1.12"
 log4j = "2.14.1"
 jline = "3.19.0"
 

@@ -1,126 +1,131 @@
+/*
+ * PistonServer. A high performance, multi-API support Minecraft server.
+ * Copyright (C) 2019-2021 PistonMC Team
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package org.pistonmc.build.task
 
 import cn.maxpixel.mcdecompiler.Deobfuscator
 import cn.maxpixel.mcdecompiler.Info
 import cn.maxpixel.mcdecompiler.Properties
-import cn.maxpixel.mcdecompiler.deobfuscator.ProguardDeobfuscator
-import cn.maxpixel.mcdecompiler.util.FileUtil
 import cn.maxpixel.mcdecompiler.util.NetworkUtil
 import cn.maxpixel.mcdecompiler.util.VersionManifest
 import com.google.gson.JsonObject
+import groovy.transform.PackageScope
 import net.minecraftforge.accesstransformer.TransformerProcessor
 import org.gradle.api.DefaultTask
+import org.gradle.api.UncheckedIOException
+import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFile
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
 import org.gradle.api.tasks.*
+import org.pistonmc.build.PistonBuild
 
-import java.nio.file.Files
-import java.nio.file.Path
-import java.nio.file.StandardCopyOption
+import static org.pistonmc.build.util.FileUtil.*
 
-class GenProcessedVanillaServerJarTask extends DefaultTask {
-    private final String MC_VERSION = project.rootProject.ext.MC_VERSION
-
-    private final Path PISTON_DIR
-    {
-        Files.createDirectories(PISTON_DIR = project.buildDir.toPath().resolve('pistonmc'))
-    }
-
-    @InputFile
-    Path getInputPath() {
-        Path ip = PISTON_DIR.resolve('server.jar')
-        checkFile(ip, VersionManifest.getVersion(MC_VERSION).get('downloads').asJsonObject.get('server').asJsonObject)
-        return ip
-    }
-
-    @InputFile
-    Path getMappingPath() {
-        Path mp = PISTON_DIR.resolve('mappings.txt')
-        checkFile(mp, VersionManifest.getVersion(MC_VERSION).get('downloads').asJsonObject.get('server_mappings').asJsonObject)
-        return mp
-    }
+@PackageScope abstract class ProcessMcJarTask extends DefaultTask {
+    @Internal final JsonObject downloads = VersionManifest.getVersion(project.MC_VERSION).get('downloads').asJsonObject
 
     @Input
-    boolean forceProcess
+    boolean force
+
+    @InputFile
+    abstract RegularFileProperty getInput()
+
+    @InputFile
+    abstract RegularFileProperty getMapping()
 
     @InputFiles
-    List<Path> accessTransformers
+    abstract ListProperty<RegularFile> getAccessTransformers()
 
     @OutputFile
-    Path getOutputPath() {
-        return PISTON_DIR.resolve('server_processed.jar')
+    abstract RegularFileProperty getOutput()
+
+    @OutputDirectory
+    abstract DirectoryProperty getDecompileOutput()
+
+    ProcessMcJarTask() {
+        PistonBuild build = PistonBuild.INSTANCE
+        input.convention(build.PISTON_DIR.file('server.jar'))
+        mapping.convention(build.PISTON_DIR.file('mappings.txt'))
+        output.convention(build.PISTON_DIR.file('server_processed.jar'))
+        decompileOutput.convention(build.PISTON_DIR.dir('mc-sources'))
+        Properties.put(Properties.Key.TEMP_DIR, build.PISTON_DIR.dir('md-temp').asFile.toPath())
+        Properties.put(Properties.Key.DOWNLOAD_DIR, build.PISTON_DIR.dir('downloads').asFile.toPath())
+        Properties.put(Properties.Key.REGEN_VAR_NAME, true)
+    }
+
+    void checkFile(RegularFileProperty input, JsonObject artifact) {
+        File f = getFile(input)
+        if(f.exists()) {
+            byte[] b = f.readBytes()
+            if(!(b.digest('SHA-1') == artifact.get('sha1').asString && b.length == artifact.get('size').asInt)) {
+                logger.error('File doesn\'t match hash or size, redownloading...')
+                project.delete(input)
+            }
+        }
+        if(!f.exists()) {
+            NetworkUtil.newBuilder(artifact.get("url").getAsString()).connect().withCloseable {
+                logger.info('Downloading...')
+                createFileIfNotExists(f).append(it.asStream())
+            }
+        }
     }
 
     @TaskAction
     void execute() {
-        Path tempPath = PISTON_DIR.resolve('md-temp')
-        Properties.put(Properties.Key.TEMP_DIR, tempPath)
-        Properties.put(Properties.Key.REGEN_VAR_NAME, true)
-        if(!forceProcess && Files.exists(outputPath)) return
+        Directory dir = PistonBuild.INSTANCE.PISTON_DIR.dir('md-temp')
+        if(!force && exists(output) && exists(decompileOutput) && project.files(output).files.size() > 1000) return
         logger.info('Processing jar...')
-        try {
-            Files.deleteIfExists(outputPath)
-        } catch(IOException ignored) {
-            logger.info('Process failed. Maybe your IDE locked the previously processed jar')
+        if(exists(output)) {
+            try {
+                project.delete(output)
+            } catch(UncheckedIOException ignored) {
+                logger.error('Process failed. Maybe your IDE locked the previously processed jar')
+            }
             return
         }
-        FileUtil.deleteDirectory(tempPath)
-        FileUtil.ensureDirectoryExist(tempPath)
-        Path processed = tempPath.resolve('deobfuscated.jar')
-        new ProguardDeobfuscator(mappingPath.toString()).deobfuscate(inputPath, processed)
-        if(accessTransformers != null && !accessTransformers.isEmpty()) {
-            def list = ['--inJar', processed.toAbsolutePath().toString(), '--outJar', outputPath.toAbsolutePath().toString()]
-            accessTransformers.forEach({
+        project.delete(dir)
+        project.delete(decompileOutput)
+        project.mkdir(dir)
+        RegularFile processed = dir.file('deobfuscated.jar')
+        Deobfuscator deobfuscator = new Deobfuscator(project.MC_VERSION, getFile(mapping).path)
+        deobfuscator.deobfuscate(getAsPath(input), getAsPath(processed))
+        if(accessTransformers.isPresent() && !accessTransformers.get().isEmpty()) {
+            def list = ['--inJar', processed.asFile.absolutePath, '--outJar', getFile(output).absolutePath]
+            accessTransformers.get().forEach({
                 list.add('--atFile')
-                list.add(it.toAbsolutePath().toString())
+                list.add(it.asFile.absolutePath)
             })
             TransformerProcessor.main(list.toArray() as String[])
-        } else Files.copy(processed, outputPath)
-        logger.info('Processed complete.')
-    }
+        } else project.copy {
+            from(processed)
+            into(output)
+        }
 
-    void checkFile(Path inputPath, JsonObject obj) {
-        if(Files.exists(inputPath)) {
-            byte[] b = Files.readAllBytes(inputPath)
-            if(!(b.digest('SHA-1') == obj.get('sha1').asString && b.length == obj.get('size').asInt)) {
-                logger.error('File doesn\'t match hash or size, redownloading...')
-                Files.delete(inputPath)
-            }
-        }
-        if(Files.notExists(inputPath)) {
-            NetworkUtil.newBuilder(obj.get("url").getAsString()).connect().withCloseable {
-                logger.info('Downloading...')
-                Files.copy(it.asStream(), inputPath, StandardCopyOption.REPLACE_EXISTING)
-            }
-        }
+        deobfuscator.decompile(Info.DecompilerType.FORGEFLOWER, getAsPath(output), getAsPath(decompileOutput))
+        logger.info('Processed complete.')
     }
 }
 
-class GenDecompiledSourcesTask extends DefaultTask {
-    private final Path PISTON_DIR = project.buildDir.toPath().resolve('pistonmc')
-
-    @Input
-    boolean forceGen = false
-
-    @InputFile
-    Path inputJar
-
-    @OutputDirectory
-    Path getOutput() {
-        return PISTON_DIR.resolve('mc-sources')
-    }
-
-    @TaskAction
-    void execute() {
-        if(forceGen) {
-            Files.deleteIfExists(output)
-        } else if(Files.exists(output) && Files.list(output).withCloseable {it.count() > 1}) {
-            return
-        }
-        Properties.put(Properties.Key.TEMP_DIR, PISTON_DIR.resolve('md-temp'))
-        Properties.put(Properties.Key.DOWNLOAD_DIR, PISTON_DIR.resolve('downloads'))
-        Files.copy(Properties.get(Properties.Key.TEMP_DIR).resolve("fernflower_abstract_parameter_names.txt"), PISTON_DIR.resolve("ffapn"))
-        Deobfuscator deobfuscator = new Deobfuscator(project.rootProject.ext.MC_VERSION, PISTON_DIR.resolve('mappings.txt').toString())
-        Files.move(PISTON_DIR.resolve("ffapn"), Properties.get(Properties.Key.TEMP_DIR).resolve("fernflower_abstract_parameter_names.txt"))
-        deobfuscator.decompile(Info.DecompilerType.FORGEFLOWER, inputJar, getOutput())
-        FileUtil.deleteDirectory(Properties.get(Properties.Key.TEMP_DIR))
+abstract class ProcessServerJarTask extends ProcessMcJarTask {
+    ProcessServerJarTask() {
+        checkFile(input, downloads.get('server').asJsonObject)
+        checkFile(mapping, downloads.get('server_mappings').asJsonObject)
     }
 }
